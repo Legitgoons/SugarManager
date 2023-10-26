@@ -5,8 +5,11 @@ declare module '*.png' {
   export = value;
 }
 declare module '*.svg' {
-  const value: any;
-  export = value;
+  import React from 'react';
+  import { SvgProps } from 'react-native-svg';
+
+  const content: React.FC<SvgProps>;
+  export default content;
 }
 declare module '*.jpeg' {
   const value: any;
