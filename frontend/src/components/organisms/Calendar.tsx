@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/native';
 import getMonthObj from '@/utils/time';
-import BlackLeftArrowIcon from '@/assets/icon/BlackLeftArrowIcon.svg';
-import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
+import CalendarHeader from '../molecules/CalendarHeader';
 
 const CalendarContainer = styled.View`
   display: flex;
@@ -14,17 +13,7 @@ const CalendarContainer = styled.View`
   width: 320px;
   gap: 16px;
 `;
-const CalendarHeader = styled.View`
-  width: 160px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
 
-const CalendarHeaderText = styled.Text`
-  ${({ theme }) => theme.typography.h3b}
-`;
 const CalendarContentBox = styled.View`
   width: 100%;
   display: flex;
@@ -33,16 +22,8 @@ const CalendarContentBox = styled.View`
   align-items: center;
 `;
 
-const CalendarHeaderButton = styled.Pressable`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export default function Calendar() {
-  const curDate = useMemo(() => new Date(), []);
+  const curDate = new Date();
   const [year, setYear] = useState(curDate.getFullYear());
   const [month, setMonth] = useState(curDate.getMonth() + 1);
   const currentMonthObj = useMemo(
@@ -66,21 +47,33 @@ export default function Calendar() {
     }
   };
 
+  /*
+  일 클릭 시, 동작하는 함수
+  */
+  const handleClickDay = (
+    selectedYear: number,
+    selectedMonth: number,
+    selectedDay: number
+  ) => {
+    console.log(selectedYear, selectedMonth, selectedDay);
+  };
+
   return (
     <CalendarContainer>
-      <CalendarHeader>
-        <CalendarHeaderButton onPress={handleAddDate}>
-          <BlackLeftArrowIcon width={20} height={20} />
-        </CalendarHeaderButton>
-        <CalendarHeaderText>{`${year}-${month}`}</CalendarHeaderText>
-        <CalendarHeaderButton onPress={handleMinusDate}>
-          <BlackRightArrowIcon />
-        </CalendarHeaderButton>
-      </CalendarHeader>
+      <CalendarHeader
+        onClickLeft={handleAddDate}
+        onClickRight={handleMinusDate}
+        title={`${year}.${month}`}
+      />
       <CalendarContentBox>
         <WeekDayWeek />
         {currentMonthObj.map((cur) => (
-          <NumberWeek weekInfo={cur} />
+          <NumberWeek
+            weekInfo={cur}
+            year={year}
+            month={month}
+            onPress={handleClickDay}
+          />
         ))}
       </CalendarContentBox>
     </CalendarContainer>

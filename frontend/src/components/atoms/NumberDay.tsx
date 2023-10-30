@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 interface NumberDayProps extends DefaultPressableProps {
   isMarked: boolean;
   title: number;
+  onPress: () => void;
 }
 
 const NumberDayWrapper = styled(DefaultPressable)`
@@ -27,9 +28,13 @@ const NumberDayMark = styled.View<{ isMarked: boolean }>`
   height: 4px;
   border-radius: 2px;
 `;
-export default function NumberDay({ isMarked, title }: NumberDayProps) {
+export default function NumberDay({
+  isMarked,
+  title,
+  onPress,
+}: NumberDayProps) {
   return (
-    <NumberDayWrapper>
+    <NumberDayWrapper onPress={onPress}>
       <NumberDayText>{title >= 1 && title <= 31 ? title : ''}</NumberDayText>
       <NumberDayMark isMarked={isMarked} />
     </NumberDayWrapper>

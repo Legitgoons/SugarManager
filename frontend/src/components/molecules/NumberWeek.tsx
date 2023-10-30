@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import styled from 'styled-components/native';
 import NumberDay from '../atoms/NumberDay';
@@ -12,17 +13,36 @@ const NumberWeekWrapper = styled.View`
 `;
 
 interface NumberWeekProps {
+  year: number;
+  month: number;
   weekInfo: Array<{
     numberDay: number;
     weekDay: string;
   }>;
+  onPress: (
+    selectedYear: number,
+    selectedMonth: number,
+    selectedDay: number
+  ) => void;
 }
 
-export default function NumberWeek({ weekInfo }: NumberWeekProps) {
+export default function NumberWeek({
+  year,
+  month,
+  weekInfo,
+  onPress,
+}: NumberWeekProps) {
   return (
     <NumberWeekWrapper>
       {weekInfo.map(({ numberDay }) => (
-        <NumberDay title={numberDay} isMarked={false} />
+        <NumberDay
+          key={`${year}_${month}_${numberDay}`}
+          title={numberDay}
+          isMarked={false}
+          onPress={() => {
+            onPress(year, month, numberDay);
+          }}
+        />
       ))}
     </NumberWeekWrapper>
   );
