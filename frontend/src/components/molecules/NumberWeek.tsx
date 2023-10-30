@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import styled from 'styled-components/native';
@@ -34,9 +35,9 @@ export default function NumberWeek({
 }: NumberWeekProps) {
   return (
     <NumberWeekWrapper>
-      {weekInfo.map(({ numberDay }) => (
+      {weekInfo.map(({ numberDay }, idx) => (
         <NumberDay
-          key={`${year}_${month}_${numberDay}`}
+          key={`${year}_${month}_${numberDay}_${idx}`}
           title={numberDay}
           isMarked={false}
           onPress={() => {

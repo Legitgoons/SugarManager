@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/native';
 import getMonthObj from '@/utils/time';
@@ -55,20 +56,22 @@ export default function Calendar() {
     selectedMonth: number,
     selectedDay: number
   ) => {
+    if (selectedYear === 0 || selectedMonth === 0 || selectedDay === 0) return;
     console.log(selectedYear, selectedMonth, selectedDay);
   };
 
   return (
     <CalendarContainer>
       <CalendarHeader
-        onClickLeft={handleAddDate}
-        onClickRight={handleMinusDate}
+        onClickLeft={handleMinusDate}
+        onClickRight={handleAddDate}
         title={`${year}.${month}`}
       />
       <CalendarContentBox>
         <WeekDayWeek />
-        {currentMonthObj.map((cur) => (
+        {currentMonthObj.map((cur, idx) => (
           <NumberWeek
+            key={`${year}_${month}_week_${idx}`}
             weekInfo={cur}
             year={year}
             month={month}

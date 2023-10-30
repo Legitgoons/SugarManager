@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import styled from 'styled-components/native';
 import weekDayArr from '@/config/weekConfig';
@@ -14,8 +15,8 @@ const WeekDayWeekWrapper = styled.View`
 export default function WeekDayWeek() {
   return (
     <WeekDayWeekWrapper>
-      {weekDayArr.map((cur) => (
-        <WeekDay title={cur} />
+      {weekDayArr.map((cur, idx) => (
+        <WeekDay key={`${cur}_${idx}`} title={cur} />
       ))}
     </WeekDayWeekWrapper>
   );
