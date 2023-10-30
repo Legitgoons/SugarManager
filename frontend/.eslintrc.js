@@ -33,5 +33,6 @@ module.exports = {
       },
     ],
     'import/no-extraneous-dependencies': 0,
+    'import/no-unresolved': 'off',
   },
 };
