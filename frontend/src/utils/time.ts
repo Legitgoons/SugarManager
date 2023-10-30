@@ -30,18 +30,18 @@ function getMonthObj(year: number, month: number) {
     const firstNumberDay = week[0].numberDay;
     while (week.length < 7) {
       if (firstNumberDay === 1) {
-        week.unshift({ numberDay: 0, weekDay: '' });
+        week.unshift({ numberDay: 0, weekDay: ' ' });
       } else {
-        week.push({ numberDay: 0, weekDay: '' });
+        week.push({ numberDay: 0, weekDay: ' ' });
       }
     }
   });
 
   if (monthInfo.length === 5) {
-    const arr = new Array(7);
-    arr.forEach((cur, i) => {
-      arr[i] = { numberDay: 0, weekDay: '' };
-    });
+    const arr = [];
+    for (let i = 0; i < 7; i += 1) {
+      arr.push({ numberDay: 0, weekDay: ' ' });
+    }
     monthInfo.push(arr);
   }
 
