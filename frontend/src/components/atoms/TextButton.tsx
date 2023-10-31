@@ -9,9 +9,9 @@ const TextButtonWrapper = styled(DefaultPressable)`
 `;
 
 const ButtonTitleWrapper = styled.Text<{ selected: boolean }>`
-  color: ${({ selected, theme }) =>
+  color: ${({ selected = true, theme }) =>
     selected ? theme.colors.black : theme.colors.secondary};
-  ${({ selected, theme }) =>
+  ${({ selected = true, theme }) =>
     selected ? theme.typography.h4b : theme.typography.h4r};
 `;
 
