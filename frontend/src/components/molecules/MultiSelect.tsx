@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
+import Week from '@/types/week';
 import TextButton from '../atoms/TextButton';
 
-type Weeks = '일' | '월' | '화' | '수' | '목' | '금' | '토';
 interface MultiSelectProps {
-  items: Array<Weeks>;
+  subject: string;
+  items: Record<Week, boolean>;
+  setItems: React.Dispatch<React.SetStateAction<Record<Week, boolean>>>;
 }
 
 const MultiSelectContainer = styled.View`
@@ -13,36 +15,20 @@ const MultiSelectContainer = styled.View`
   width: 320px;
 `;
 
-function MultiSelect({ items }: MultiSelectProps) {
-  const [selectedItems, setSelectedItems] = useState<Record<Weeks, boolean>>({
-    일: false,
-    월: false,
-    화: false,
-    수: false,
-    목: false,
-    금: false,
-    토: false,
-  });
-
-  useEffect(() => {
-    items.forEach((item) => {
-      setSelectedItems((prev) => ({ ...prev, [item]: !prev[item] }));
-    });
-  }, [items]);
-
-  const handleClickText = (item: Weeks) => {
-    setSelectedItems((prev) => ({ ...prev, [item]: !prev[item] }));
+function MultiSelect({ subject, items, setItems }: MultiSelectProps) {
+  const handleClickText = (item: Week) => {
+    setItems((prev) => ({ ...prev, [item]: !prev[item] }));
   };
 
   return (
     <MultiSelectContainer>
-      {Object.entries(selectedItems).map(([weekDay, isSelected]) => (
+      {Object.entries(items).map(([weekDay, isSelected]) => (
         <TextButton
-          key={`${weekDay}`}
+          key={`${subject}_${weekDay}`}
           title={weekDay}
           isSelected={isSelected}
           onPress={() => {
-            handleClickText(weekDay as Weeks);
+            handleClickText(weekDay as Week);
           }}
         />
       ))}
