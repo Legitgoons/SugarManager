@@ -3,10 +3,10 @@ import styled from 'styled-components/native';
 import Week from '@/types/week';
 import TextButton from '../atoms/TextButton';
 
-interface MultiSelectProps {
+interface MultiSelectProps<T extends string | number | symbol | Week> {
   subject: string;
-  items: Record<Week, boolean>;
-  setItems: React.Dispatch<React.SetStateAction<Record<Week, boolean>>>;
+  items: Record<T, boolean>;
+  setItems: React.Dispatch<React.SetStateAction<Record<T, boolean>>>;
 }
 
 const MultiSelectContainer = styled.View`
@@ -15,8 +15,12 @@ const MultiSelectContainer = styled.View`
   width: 320px;
 `;
 
-function MultiSelect({ subject, items, setItems }: MultiSelectProps) {
-  const handleClickText = (item: Week) => {
+function MultiSelect<T extends string | number | symbol | Week>({
+  subject,
+  items,
+  setItems,
+}: MultiSelectProps<T>) {
+  const handleClickText = (item: T) => {
     setItems((prev) => ({ ...prev, [item]: !prev[item] }));
   };
 
@@ -26,9 +30,9 @@ function MultiSelect({ subject, items, setItems }: MultiSelectProps) {
         <TextButton
           key={`${subject}_${weekDay}`}
           title={weekDay}
-          isSelected={isSelected}
+          isSelected={isSelected as boolean}
           onPress={() => {
-            handleClickText(weekDay as Week);
+            handleClickText(weekDay as T);
           }}
         />
       ))}
