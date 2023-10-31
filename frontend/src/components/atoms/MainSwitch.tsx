@@ -1,15 +1,14 @@
+import theme from '@/styles/theme';
 import React, { useRef, useEffect } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Pressable } from 'react-native';
 import styled from 'styled-components/native';
 
-const MainSwitchWrapper = styled.TouchableOpacity<{ isOn: boolean }>`
+const BackgroundWrapper = styled(Animated.View)<{ isOn: boolean }>`
   width: 52px;
   height: 28px;
   border-radius: 14px;
   justify-content: center;
   padding: 2px;
-  background-color: ${({ isOn, theme }) =>
-    isOn ? theme.colors.b4 : theme.colors.tertiary};
 `;
 
 const Circle = styled(Animated.View)`
@@ -41,14 +40,21 @@ function MainSwitch({ isOn, setIsOn }: MainSwitchProps) {
     outputRange: [2, 26],
   });
 
-  const toggleSwitch = () => {
-    setIsOn((prev) => !prev);
-  };
+  const backgroundColor = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [theme.colors.tertiary, theme.colors.b4],
+  });
 
   return (
-    <MainSwitchWrapper activeOpacity={1} onPress={toggleSwitch} isOn={isOn}>
-      <Circle style={{ left: circleLeft }} />
-    </MainSwitchWrapper>
+    <Pressable
+      onPress={() => {
+        setIsOn((prev) => !prev);
+      }}
+    >
+      <BackgroundWrapper style={{ backgroundColor }} isOn={isOn}>
+        <Circle style={{ left: circleLeft }} />
+      </BackgroundWrapper>
+    </Pressable>
   );
 }
 export default MainSwitch;
