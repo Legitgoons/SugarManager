@@ -23,13 +23,17 @@ const CalendarContentBox = styled.View`
   align-items: center;
 `;
 
-export default function Calendar() {
+interface CalendarProps {
+  monthStatus: Record<string, boolean>;
+}
+
+export default function Calendar({ monthStatus }: CalendarProps) {
   const curDate = new Date();
   const [year, setYear] = useState(curDate.getFullYear());
   const [month, setMonth] = useState(curDate.getMonth() + 1);
   const currentMonthObj = useMemo(
-    () => getMonthObj(year, month),
-    [year, month]
+    () => getMonthObj({ year, month, monthStatus }),
+    [year, month, monthStatus]
   );
   const handleMinusDate = () => {
     if (month - 1 === 0) {

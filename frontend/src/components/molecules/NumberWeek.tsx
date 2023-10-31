@@ -19,6 +19,7 @@ interface NumberWeekProps {
   weekInfo: Array<{
     numberDay: number;
     weekDay: string;
+    isMarked: boolean;
   }>;
   onPress: (
     selectedYear: number,
@@ -35,11 +36,11 @@ export default function NumberWeek({
 }: NumberWeekProps) {
   return (
     <NumberWeekWrapper>
-      {weekInfo.map(({ numberDay }, idx) => (
+      {weekInfo.map(({ numberDay, isMarked }, idx) => (
         <NumberDay
           key={`${year}_${month}_${numberDay}_${idx}`}
           title={numberDay}
-          isMarked={false}
+          isMarked={isMarked}
           onPress={() => {
             onPress(year, month, numberDay);
           }}
