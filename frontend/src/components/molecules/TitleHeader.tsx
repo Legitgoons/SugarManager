@@ -1,0 +1,26 @@
+import React from 'react';
+import styled from 'styled-components/native';
+import MainTitle from '../atoms/MainTitle';
+import SubTitle from '../atoms/SubTitle';
+
+interface TitleHeaderProps {
+  mainTitle: string;
+  subTitle: string;
+}
+
+const TitleHeaderBox = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: start;
+`;
+export default function TitleHeader({
+  mainTitle = '',
+  subTitle = '',
+}: TitleHeaderProps) {
+  return (
+    <TitleHeaderBox>
+      {mainTitle && <MainTitle title={mainTitle} />}
+      {subTitle && <SubTitle title={subTitle} />}
+    </TitleHeaderBox>
+  );
+}
