@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SplashScreen from 'react-native-splash-screen';
 import theme from './styles/theme';
 // import { persistor, store } from './redux/store/storeConfig';
-import HomeScreen from './screens/Home/HomeScreen';
+import { SigninScreen, HomeScreen } from './screens';
 
 /* @Todo : 현재, Slice가 없어서 ReduxProvider의 Store를 넣는 부분이 에러가 나서 임시 주석 처리했음.
  * 추후 Store 변동 시, 해당 주석 제거 필요!
@@ -29,6 +29,13 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen
+              name="Signin"
+              component={SigninScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             <Stack.Screen name="Home" component={HomeScreen} />
           </Stack.Navigator>
         </NavigationContainer>
