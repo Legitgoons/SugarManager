@@ -9,7 +9,8 @@ interface TitleHeaderProps {
 }
 
 const TitleHeaderBox = styled.View`
-  flex: 1;
+  display: flex;
+  width: 320px;
   justify-content: center;
   align-items: start;
 `;
