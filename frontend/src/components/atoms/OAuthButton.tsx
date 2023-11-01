@@ -9,7 +9,7 @@ interface OAuthButtonProps extends DefaultPressableProps {
   OAuthIcon: React.FC<SvgProps>;
 }
 
-const OAuthTouchableOpacityWrapper = styled(DefaultPressable)`
+const OAuthButtonWrapper = styled(DefaultPressable)`
   width: 320px;
   height: 100px;
   justify-content: space-between;
@@ -30,10 +30,10 @@ export default function OAuthButton({
   bgColor,
 }: OAuthButtonProps) {
   return (
-    <OAuthTouchableOpacityWrapper onPress={onPress} bgColor={bgColor}>
+    <OAuthButtonWrapper onPress={onPress} bgColor={bgColor}>
       <OAuthIcon width={18} height={18} />
       <OAuthTitleWrapper>{title}</OAuthTitleWrapper>
       <Text />
-    </OAuthTouchableOpacityWrapper>
+    </OAuthButtonWrapper>
   );
 }

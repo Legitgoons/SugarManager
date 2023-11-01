@@ -1,5 +1,7 @@
+import { ColorType } from '@/styles/theme';
+
 interface DefaultPressableProps {
-  bgColor?: string;
+  bgColor?: keyof ColorType;
   borderColor?: string;
   onPress?: () => void;
   title?: string | number;
