@@ -3,7 +3,7 @@ import DefaultPressable from '@/styles/pressable';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
 
-const MainFillButtonWrapper = styled(DefaultPressable)`
+const MainFillButtonBox = styled(DefaultPressable)`
   width: 320px;
   height: 48px;
 `;
@@ -24,8 +24,8 @@ export default function MainFillButton({
   onPress,
 }: MainFillButtonProps) {
   return (
-    <MainFillButtonWrapper bgColor={bgColor} onPress={onPress}>
+    <MainFillButtonBox bgColor={bgColor} onPress={onPress}>
       <ButtonTitleWrapper>{title}</ButtonTitleWrapper>
-    </MainFillButtonWrapper>
+    </MainFillButtonBox>
   );
 }

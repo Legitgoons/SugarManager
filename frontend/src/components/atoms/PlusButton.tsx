@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 interface PlusButtonProps extends DefaultPressableProps {}
 
-const PlusButtonWrapper = styled.Pressable`
+const PlusButtonBox = styled.Pressable`
   width: 40px;
   height: 40px;
   display: flex;
@@ -17,8 +17,8 @@ const ButtonTitleWrapper = styled.Text`
 
 export default function PlusButton({ onPress }: PlusButtonProps) {
   return (
-    <PlusButtonWrapper onPress={onPress}>
+    <PlusButtonBox onPress={onPress}>
       <ButtonTitleWrapper>+</ButtonTitleWrapper>
-    </PlusButtonWrapper>
+    </PlusButtonBox>
   );
 }
