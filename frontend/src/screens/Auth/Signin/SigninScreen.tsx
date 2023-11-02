@@ -5,17 +5,13 @@ import React from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
 import { login } from '@react-native-seoul/kakao-login';
-// import postKakaoSignin from '@/apis/auth';
+import postKakaoSignin from '@/apis/auth';
 import { setKakaoToken, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Alert } from 'react-native';
-
-export type RootStackParam = {
-  Home: undefined;
-  Signin: undefined;
-};
+import showAlert from '@/utils/alert';
+import { RootStackParam } from '@/types/navigation';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -38,22 +34,11 @@ export default function SigninScreen() {
         })
       );
 
-      // const response: any = await postKakaoSignin({
-      //   accessToken,
-      //   fcmToken: '1234',
-      // });
+      const apiRes: any = await postKakaoSignin({
+        accessToken: kakaoAccessToken,
+        fcmToken: '1234',
+      });
 
-      const apiRes = {
-        data: {
-          response: {
-            accessToken: 'testAccessToken',
-            refreshToken: 'testRefreshToken',
-          },
-          error: null,
-        },
-      };
-
-      // success
       if (apiRes.data.error === null) {
         const { accessToken, refreshToken } = apiRes.data.response;
         dispatch(
@@ -62,28 +47,22 @@ export default function SigninScreen() {
             refreshToken,
           })
         );
-        navigation.navigate('Home'); // 홈 페이지 이동
+        navigation.navigate('Home');
       } else {
-        Alert.alert('로그인 실패', '다시, 로그인을 시도해주세요', [
-          {
-            text: '취소',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          { text: '확인', onPress: () => console.log('OK Pressed') },
-        ]);
+        showAlert({
+          title: '로그인 실패',
+          content: apiRes.data.error.message,
+          onOk: () => {},
+        });
       }
 
       return apiRes;
     } catch (e) {
-      Alert.alert('로그인 실패', '다시, 로그인을 시도해주세요', [
-        {
-          text: '취소',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: '확인', onPress: () => console.log('OK Pressed') },
-      ]);
+      showAlert({
+        title: '로그인 실패',
+        content: '네트워크 상태를 다시 확인해주세요!',
+        onOk: () => {},
+      });
       return e;
     }
   };
