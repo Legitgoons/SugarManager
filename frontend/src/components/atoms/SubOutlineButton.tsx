@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components/native';
 import DefaultPressable from '@/styles/pressable';
 import DefaultPressableProps from '@/types/pressable';
+import { ColorType } from '@/styles/theme';
 
 interface SubOutlineButtonProps extends DefaultPressableProps {
-  borderColor: string;
+  borderColor: keyof ColorType;
   title: string;
 }
 

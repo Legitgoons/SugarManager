@@ -17,11 +17,11 @@ const NumberDayWrapper = styled(DefaultPressable)`
   width: 100%;
 `;
 
-const NumberDayText = styled.Text`
+const NumberDayTextWrapper = styled.Text`
   ${({ theme }) => theme.typography.p2r}
 `;
 
-const NumberDayMark = styled.View<{ isMarked: boolean }>`
+const NumberDayMarkWrapper = styled.View<{ isMarked: boolean }>`
   background-color: ${({ theme, isMarked }) =>
     isMarked ? theme.colors.b4 : theme.colors.white};
   width: 4px;
@@ -35,8 +35,10 @@ export default function NumberDay({
 }: NumberDayProps) {
   return (
     <NumberDayWrapper onPress={onPress}>
-      <NumberDayText>{title >= 1 && title <= 31 ? title : ''}</NumberDayText>
-      <NumberDayMark isMarked={isMarked} />
+      <NumberDayTextWrapper>
+        {title >= 1 && title <= 31 ? title : ''}
+      </NumberDayTextWrapper>
+      <NumberDayMarkWrapper isMarked={isMarked} />
     </NumberDayWrapper>
   );
 }

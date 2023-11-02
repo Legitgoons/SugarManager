@@ -2,7 +2,7 @@ import { ColorType } from '@/styles/theme';
 
 interface DefaultPressableProps {
   bgColor?: keyof ColorType;
-  borderColor?: string;
+  borderColor?: keyof ColorType;
   onPress?: () => void;
   title?: string | number;
 }
