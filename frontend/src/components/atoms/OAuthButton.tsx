@@ -1,4 +1,4 @@
-import DefaultPressable from '@/styles/pressable';
+import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import React from 'react';
 import styled from 'styled-components/native';
