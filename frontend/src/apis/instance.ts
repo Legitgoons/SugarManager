@@ -1,3 +1,4 @@
+import { navigate } from '@/navigation/NavigationService';
 import { store, RootState } from '@/redux/store/storeConfig';
 import axios from 'axios';
 
@@ -22,7 +23,29 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const { data } = response;
+
+    if (data?.error) {
+      /*
+        1. token Refreshing ->  token refresh -> re-request
+          - U003(JWT 만료)
+        2. can't token Refreshing -> navigate signin
+          - U001(인증 실패), U002(권한 없음)
+      */
+      switch (data.error.code) {
+        case 'U003':
+          console.log('need TokenRefreshing');
+          break;
+        case 'U001' || 'U002':
+          navigate('Signin');
+          break;
+        default:
+          break;
+      }
+    }
+    return response;
+  },
   async (error) => error
 );
 
