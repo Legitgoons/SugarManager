@@ -34,5 +34,14 @@ module.exports = {
     ],
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 'off',
+    'react/require-default-props': 'off',
   },
+  overrides: [
+    {
+      files: ['./src/redux/slice/*.ts', './src/apis/*.ts'],
+      rules: {
+        'no-param-reassign': 'off',
+      },
+    },
+  ],
 };
