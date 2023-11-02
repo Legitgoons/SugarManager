@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { PURGE } from 'redux-persist';
 
 interface userSliceStateType {
+  isSignin: boolean;
   nickName: string;
   email: string;
   kakaoAccessToken: string;
@@ -10,6 +11,7 @@ interface userSliceStateType {
   refreshToken: string;
 }
 const initialState: userSliceStateType = {
+  isSignin: false,
   nickName: '',
   email: '',
   kakaoAccessToken: '',
@@ -22,6 +24,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
+      state.isSignin = action.payload.isSignin;
       state.email = action.payload.email;
       state.nickName = action.payload.nickName;
       state.accessToken = action.payload.accessToken;
@@ -36,6 +39,9 @@ const userSlice = createSlice({
     setKakaoToken(state, action) {
       state.kakaoAccessToken = action.payload.kakaoAccessToken;
       state.kakaoRefreshToken = action.payload.kakaoRefreshToken;
+    },
+    setIsSignin(state, action) {
+      state.isSignin = action.payload;
     },
     setNickName(state, action) {
       state.nickName = action.payload;
@@ -65,6 +71,7 @@ export const {
   setUser,
   setToken,
   setKakaoToken,
+  setIsSignin,
   setNickName,
   setEmail,
   setAccessToken,

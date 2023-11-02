@@ -6,7 +6,7 @@ import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
 import { login } from '@react-native-seoul/kakao-login';
 import postKakaoSignin from '@/apis/auth';
-import { setKakaoToken, setToken } from '@/redux/slice/userSlice';
+import { setIsSignin, setKakaoToken, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -47,6 +47,7 @@ export default function SigninScreen() {
             refreshToken,
           })
         );
+        dispatch(setIsSignin(true));
         navigation.navigate('Home');
       } else {
         showAlert({
