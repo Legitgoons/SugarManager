@@ -3,8 +3,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { HomeScreen, SigninScreen } from '@/screens';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
-import Spinner from '@/components/atoms/Spinner';
+import Spinner from '@/components/organisms/Spinner';
 
+function SuspenseSigninScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SigninScreen />
+    </Suspense>
+  );
+}
 function SuspenseHomeScreen() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -23,7 +30,7 @@ export default function Navigation({ Stack }: { Stack: any }) {
         ) : (
           <Stack.Screen
             name="Signin"
-            component={SigninScreen}
+            component={SuspenseSigninScreen}
             options={{
               headerShown: false,
             }}
