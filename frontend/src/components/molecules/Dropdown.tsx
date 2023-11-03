@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Pressable, FlatList } from 'react-native';
-import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import styled from 'styled-components/native';
+import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
+import { rWidth, rHeight } from '@/utils/style';
 
 interface DropdownProps {
   placeholder: string;
@@ -24,8 +25,8 @@ const DropdownContainer = styled.View`
 `;
 const DropdownButton = styled(Pressable)`
   border-width: 1px;
-  width: 120px;
-  height: 40px;
+  width: ${rWidth(120)}px;
+  height: ${rHeight(40)}px;
   border-color: ${(props) => props.theme.colors.secondary};
   border-radius: 10px;
   display: flex;

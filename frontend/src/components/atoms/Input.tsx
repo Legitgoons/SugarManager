@@ -1,20 +1,22 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import InputProps from '@/types/input';
+import DefaultInputProps from '@/types/input';
+import { rWidth, rHeight } from '@/utils/style';
+
+interface InputProps extends DefaultInputProps {}
 
 const InputBox = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 200px;
-  height: 40px;
+  width: ${rWidth(320)}px;
+  height: ${rHeight(40)}px;
 `;
 
 const InputWrapper = styled.TextInput`
-  width: 160px;
-  height: 40px;
-  color: black;
+  width: ${rWidth(280)}px;
+  height: ${rHeight(40)}px;
 `;
 
 const InputUnitWrapper = styled.Text``;
@@ -32,7 +34,7 @@ export default function Input({
         value={value}
         onChangeText={onChangeText}
       />
-      <InputUnitWrapper>{unit}</InputUnitWrapper>
+      {unit && <InputUnitWrapper>{unit}</InputUnitWrapper>}
     </InputBox>
   );
 }

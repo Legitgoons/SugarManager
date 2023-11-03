@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import InputProps from '@/types/input';
+import DefaultInputProps from '@/types/input';
+import { rWidth, rHeight } from '@/utils/style';
 import Input from '../atoms/Input';
 import InputUnderLine from '../atoms/InputUnderLine';
 
-interface InputLineProps extends InputProps {}
+interface InputLineProps extends DefaultInputProps {}
 
 const InputLineBox = styled.View`
   display: flex;
-  width: 200px;
+  width: ${rWidth(320)}px;
+  height: ${rHeight(40)}px;
 `;
 
 export default function InputLine({

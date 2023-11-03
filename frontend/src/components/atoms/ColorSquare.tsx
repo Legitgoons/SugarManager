@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { rWidth, rHeight } from '@/utils/style';
 
 const SquareBoxWrapper = styled.View<{ type: 'safety' | 'warning' | 'danger' }>`
-  width: 44px;
-  height: 44px;
+  width: ${rWidth(44)}px;
+  height: ${rHeight(44)}px;
   display: flex;
   border-radius: 10px;
   justify-content: center;
