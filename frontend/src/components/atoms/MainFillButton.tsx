@@ -11,7 +11,7 @@ const MainFillButtonBox = styled(DefaultPressable)`
 `;
 
 const ButtonTitleWrapper = styled.Text`
-  ${({ theme }) => theme.typographyss.h3b};
+  ${({ theme }) => theme.typographys.h3b};
   color: ${({ theme }) => theme.colors.white};
 `;
 
