@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { rWidth } from '@/utils/style';
 import MainTitle from '../atoms/MainTitle';
 import SubTitle from '../atoms/SubTitle';
 
@@ -10,7 +11,7 @@ interface TitleHeaderProps {
 
 const TitleHeaderBox = styled.View`
   display: flex;
-  width: 320px;
+  width: ${rWidth(320)}px;
   justify-content: center;
   align-items: start;
 `;

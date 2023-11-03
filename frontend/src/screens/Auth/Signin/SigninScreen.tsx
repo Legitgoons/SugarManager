@@ -12,11 +12,12 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import showAlert from '@/utils/alert';
 import { RootStackParam } from '@/types/navigation';
+import { rHeight } from '@/utils/style';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
-  gap: 36px;
+  gap: ${rHeight(36)}px;
 `;
 
 export default function SigninScreen() {

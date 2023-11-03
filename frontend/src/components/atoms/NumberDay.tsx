@@ -2,6 +2,7 @@ import React from 'react';
 import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
+import { rWidth, rHeight } from '@/utils/style';
 
 interface NumberDayProps extends DefaultPressableProps {
   isMarked: boolean;
@@ -24,9 +25,9 @@ const NumberDayTextWrapper = styled.Text`
 const NumberDayMarkWrapper = styled.View<{ isMarked: boolean }>`
   background-color: ${({ theme, isMarked }) =>
     isMarked ? theme.colors.b4 : theme.colors.white};
-  width: 4px;
-  height: 4px;
-  border-radius: 2px;
+  width: ${rWidth(4)}px;
+  height: ${rHeight(4)}px;
+  border-radius: ${rHeight(2)}px;
 `;
 export default function NumberDay({
   isMarked,
