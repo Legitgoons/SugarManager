@@ -7,7 +7,7 @@ import { rWidth, rHeight } from '@/utils/style';
 
 const MainFillButtonBox = styled(DefaultPressable)`
   width: ${rWidth(320)}px;
-  height: ${rHeight(42)}px;
+  height: ${rHeight(48)}px;
 `;
 
 const ButtonTitleWrapper = styled.Text`
