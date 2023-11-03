@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import DefaultPressable from '@/styles/pressable';
+import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import { ColorType } from '@/styles/theme';
 
