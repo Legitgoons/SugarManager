@@ -2,11 +2,12 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import styled from 'styled-components/native';
+import { rWidth, rHeight } from '@/utils/style';
 import NumberDay from '../atoms/NumberDay';
 
 const NumberWeekWrapper = styled.View`
-  width: 320px;
-  height: 40px;
+  width: ${rWidth(320)}px;
+  height: ${rHeight(40)}px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import { ColorType } from '@/styles/theme';
+import { rWidth, rHeight } from '@/utils/style';
 
 interface SubFillButtonProps extends DefaultPressableProps {
   bgColor: keyof ColorType;
@@ -10,8 +11,8 @@ interface SubFillButtonProps extends DefaultPressableProps {
 }
 
 const SubFillButtonWrapper = styled(DefaultPressable)`
-  width: 120px;
-  height: 32px;
+  width: ${rWidth(120)}px;
+  height: ${rHeight(32)}px;
 `;
 const ButtonTitleWrapper = styled.Text`
   ${({ theme }) => theme.typography.captionb};

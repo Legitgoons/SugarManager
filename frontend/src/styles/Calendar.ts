@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
+import { rHeight, rWidth } from '@/utils/style';
 
 const DefaultCalendarCard = styled.View`
-  width: 320px;
-  border-radius: 8px;
+  width: ${rWidth(320)}px;
+  border-radius: ${rHeight(8)}px;
   display: flex;
   justify-content: center;
   align-items: center;

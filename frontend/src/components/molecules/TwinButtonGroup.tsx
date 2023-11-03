@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import theme from '@/styles/theme';
+import { rWidth } from '@/utils/style';
 import SubOutlineButton from '../atoms/SubOutlineButton';
 import SubFillButton from '../atoms/SubFillButton';
 
@@ -16,7 +16,7 @@ const TwinButtonGroupBox = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 320px;
+  width: ${rWidth(320)}px;
 `;
 
 export default function TwinButtonGroup({
@@ -30,13 +30,9 @@ export default function TwinButtonGroup({
       <SubOutlineButton
         onPress={onLeftPress}
         title={leftTitle}
-        borderColor={theme.colors.b4}
+        borderColor="b4"
       />
-      <SubFillButton
-        onPress={onRightPress}
-        title={rightTitle}
-        bgColor={theme.colors.b4}
-      />
+      <SubFillButton onPress={onRightPress} title={rightTitle} bgColor="b4" />
     </TwinButtonGroupBox>
   );
 }

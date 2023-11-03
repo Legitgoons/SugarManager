@@ -1,3 +1,4 @@
+import { rFontSize } from '@/utils/style';
 import { DefaultTheme, css } from 'styled-components/native';
 
 const fonts = {
@@ -29,118 +30,116 @@ const colors = {
   yellow: '#FFD382',
   green: '#AED581',
 } as const;
-
 const typography = {
   h1b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 32px;
+    font-size: ${rFontSize(32)}px;
     font-weight: 600;
-    line-height: 38.4px; // 32px * 1.2
+    line-height: ${rFontSize(38.4)}px;
   `,
   h1r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 32px;
+    font-size: ${rFontSize(32)}px;
     font-weight: normal;
-    line-height: 38.4px; // 32px * 1.2
+    line-height: ${rFontSize(38.4)}px;
   `,
   h2b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 28px;
+    font-size: ${rFontSize(28)}px;
     font-weight: 600;
-    line-height: 33.6px; // 28px * 1.2
+    line-height: ${rFontSize(33.6)}px;
   `,
   h2r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 28px;
+    font-size: ${rFontSize(28)}px;
     font-weight: normal;
-    line-height: 33.6px; // 28px * 1.2
+    line-height: ${rFontSize(33.6)}px;
   `,
   h3b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 24px;
+    font-size: ${rFontSize(24)}px;
     font-weight: 600;
-    line-height: 28.8px; // 24px * 1.2
+    line-height: ${rFontSize(28.8)}px;
   `,
   h3r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 24px;
+    font-size: ${rFontSize(24)}px;
     font-weight: normal;
-    line-height: 28.8px; // 24px * 1.2
+    line-height: ${rFontSize(28.8)}px;
   `,
   h4b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 20px;
+    font-size: ${rFontSize(20)}px;
     font-weight: 600;
-    line-height: 26px; // 20px * 1.3
+    line-height: ${rFontSize(26)}px;
   `,
   h4r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 20px;
+    font-size: ${rFontSize(20)}px;
     font-weight: normal;
-    line-height: 26px; // 20px * 1.3
+    line-height: ${rFontSize(26)}px;
   `,
   p1b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 18px;
+    font-size: ${rFontSize(18)}px;
     font-weight: 600;
-    line-height: 25.2px; // 18px * 1.4
+    line-height: ${rFontSize(25.2)}px;
   `,
   p1r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 18px;
+    font-size: ${rFontSize(18)}px;
     font-weight: normal;
-    line-height: 25.2px; // 18px * 1.4
+    line-height: ${rFontSize(25.2)}px;
   `,
   p2b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 16px;
+    font-size: ${rFontSize(16)}px;
     font-weight: 600;
-    line-height: 22.4px; // 16px * 1.4
+    line-height: ${rFontSize(22.4)}px;
   `,
   p2r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 16px;
+    font-size: ${rFontSize(16)}px;
     font-weight: normal;
-    line-height: 22.4px; // 16px * 1.4
+    line-height: ${rFontSize(22.4)}px;
   `,
   p3b: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 14px;
+    font-size: ${rFontSize(14)}px;
     font-weight: 600;
-    line-height: 19.6px; // 14px * 1.4
+    line-height: ${rFontSize(19.6)}px;
   `,
   p3r: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 14px;
+    font-size: ${rFontSize(14)}px;
     font-weight: normal;
-    line-height: 19.6px; // 14px * 1.4
+    line-height: ${rFontSize(19.6)}px;
   `,
   captionb: css`
     font-family: ${fonts.SUIT.semibold};
-    font-size: 12px;
+    font-size: ${rFontSize(12)}px;
     font-weight: 600;
-    line-height: 16.8px; // 12px * 1.4
+    line-height: ${rFontSize(16.8)}px;
   `,
   captionr: css`
     font-family: ${fonts.SUIT.regular};
-    font-size: 12px;
+    font-size: ${rFontSize(12)}px;
     font-weight: normal;
-    line-height: 16.8px; // 12px * 1.4
+    line-height: ${rFontSize(16.8)}px;
   `,
   t1: css`
     font-family: ${fonts.JALNAN};
-    font-size: 80px;
+    font-size: ${rFontSize(80)}px;
     font-weight: normal;
-    line-height: 96px; // 80px * 1.2
+    line-height: ${rFontSize(96)}px;
   `,
   t3: css`
     font-family: ${fonts.JALNAN};
-    font-size: 28px;
+    font-size: ${rFontSize(28)}px;
     font-weight: normal;
-    line-height: 33.6px; // 28px * 1.2
+    line-height: ${rFontSize(33.6)}px;
   `,
 } as const;
-
 const theme: DefaultTheme = { typography, colors };
 
 export type TypographyType = typeof typography;
