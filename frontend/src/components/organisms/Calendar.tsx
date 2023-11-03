@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/native';
 import getMonthObj from '@/utils/time';
 import { rWidth, rHeight } from '@/utils/style';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
 import CalendarHeader from '../molecules/CalendarHeader';
@@ -25,37 +26,48 @@ const CalendarContentBox = styled.View`
 `;
 
 interface CalendarProps {
-  monthStatus: Record<string, boolean>;
+  time: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  setTime: React.Dispatch<
+    React.SetStateAction<{ year: number; month: number; day: number }>
+  >;
+  onPress: () => void;
 }
 
-export default function Calendar({ monthStatus }: CalendarProps) {
-  const curDate = new Date();
-  const [year, setYear] = useState(curDate.getFullYear());
-  const [month, setMonth] = useState(curDate.getMonth() + 1);
+export default function Calendar({ time, setTime, onPress }: CalendarProps) {
+  const { data } = useSuspenseQuery({
+    queryKey: ['monthStatus', time],
+    queryFn: () => {},
+  });
+  const { response } = data;
+  const { year, month } = time;
   const currentMonthObj = useMemo(
-    () => getMonthObj({ year, month, monthStatus }),
-    [year, month, monthStatus]
+    () =>
+      getMonthObj({
+        year,
+        month,
+        monthStatus: response,
+      }),
+    [response, year, month]
   );
   const handleMinusDate = () => {
     if (month - 1 === 0) {
-      setMonth(12);
-      setYear((prev) => prev - 1);
+      setTime((prev) => ({ ...prev, month: 12, year: prev.year - 1 }));
     } else {
-      setMonth((prev) => prev - 1);
+      setTime((prev) => ({ ...prev, month: prev.month - 1 }));
     }
   };
   const handleAddDate = () => {
     if (month + 1 === 13) {
-      setMonth(1);
-      setYear((prev) => prev + 1);
+      setTime((prev) => ({ ...prev, month: 1, year: prev.year + 1 }));
     } else {
-      setMonth((prev) => prev + 1);
+      setTime((prev) => ({ ...prev, month: prev.month + 1 }));
     }
   };
 
-  /*
-  일 클릭 시, 동작하는 함수
-  */
   const handleClickDay = (
     selectedYear: number,
     selectedMonth: number,
