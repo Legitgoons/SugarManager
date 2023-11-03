@@ -11,7 +11,7 @@ const WeekDayWrapper = styled(DefaultPressable)`
 `;
 
 const WeekDayText = styled.Text`
-  ${({ theme }) => theme.typography.captionr}
+  ${({ theme }) => theme.typographys.captionr}
 `;
 
 export default function WeekDay({ title }: DefaultPressableProps) {

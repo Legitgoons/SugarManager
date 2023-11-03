@@ -20,7 +20,7 @@ const OAuthButtonBox = styled(DefaultPressable)`
 `;
 
 const OAuthTitleWrapper = styled.Text`
-  ${({ theme }) => theme.typography.h4b};
+  ${({ theme }) => theme.typographys.h4b};
   color: ${({ theme }) => theme.colors.black};
 `;
 

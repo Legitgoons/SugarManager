@@ -10,7 +10,7 @@ const CalendarHeaderBox = styled(DefaultCalendarCard)`
   padding: ${rHeight(20)}px ${rWidth(10)}px;
 `;
 const CalendarHeaderText = styled.Text`
-  ${({ theme }) => theme.typography.h4r}
+  ${({ theme }) => theme.typographys.h4r}
   color : black;
 `;
 const CalendarHeaderButton = styled.Pressable`

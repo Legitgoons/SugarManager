@@ -9,7 +9,7 @@ interface MainTitleProps {
 
 const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
   color: ${({ theme }) => theme.colors.black};
-  ${({ fontSize, theme }) => theme.typography[fontSize]};
+  ${({ fontSize, theme }) => theme.typographys[fontSize]};
 `;
 
 export default function MainTitle({ title, fontSize = 'h1b' }: MainTitleProps) {

@@ -19,7 +19,7 @@ const NumberDayWrapper = styled(DefaultPressable)`
 `;
 
 const NumberDayTextWrapper = styled.Text`
-  ${({ theme }) => theme.typography.p2r}
+  ${({ theme }) => theme.typographys.p2r}
 `;
 
 const NumberDayMarkWrapper = styled.View<{ isMarked: boolean }>`

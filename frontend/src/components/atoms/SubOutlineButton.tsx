@@ -17,7 +17,7 @@ const SubOutlineButtonWrapper = styled(DefaultPressable)`
 `;
 
 const ButtonTitleWrapper = styled.Text<{ color: string }>`
-  ${({ theme }) => theme.typography.captionb};
+  ${({ theme }) => theme.typographys.captionb};
   color: ${(props) => props.color};
 `;
 

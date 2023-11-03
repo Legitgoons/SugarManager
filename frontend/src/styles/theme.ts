@@ -30,7 +30,7 @@ const colors = {
   yellow: '#FFD382',
   green: '#AED581',
 } as const;
-const typography = {
+const typographys = {
   h1b: css`
     font-family: ${fonts.SUIT.semibold};
     font-size: ${rFontSize(32)}px;
@@ -140,9 +140,9 @@ const typography = {
     line-height: ${rFontSize(33.6)}px;
   `,
 } as const;
-const theme: DefaultTheme = { typography, colors };
+const theme: DefaultTheme = { typographys, colors };
 
-export type TypographyType = typeof typography;
+export type TypographyType = typeof typographys;
 export type ColorType = typeof colors;
 
 export default theme;

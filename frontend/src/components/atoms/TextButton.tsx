@@ -12,7 +12,7 @@ const ButtonTitleWrapper = styled.Text<{ selected: boolean }>`
   color: ${({ selected = true, theme }) =>
     selected ? theme.colors.black : theme.colors.secondary};
   ${({ selected = true, theme }) =>
-    selected ? theme.typography.h4b : theme.typography.h4r};
+    selected ? theme.typographys.h4b : theme.typographys.h4r};
 `;
 
 interface TextButtonProps extends DefaultPressableProps {
