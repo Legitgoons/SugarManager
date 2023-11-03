@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/native';
 import getMonthObj from '@/utils/time';
+import { rWidth, rHeight } from '@/utils/style';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
 import CalendarHeader from '../molecules/CalendarHeader';
@@ -11,8 +12,8 @@ const CalendarContainer = styled.View`
   justify-content: cetner;
   align-items: center;
   flex-direction: column;
-  width: 320px;
-  gap: 16px;
+  width: ${rWidth(320)}px;
+  gap: ${rHeight(16)}px;
 `;
 
 const CalendarContentBox = styled.View`

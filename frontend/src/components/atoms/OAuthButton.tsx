@@ -1,19 +1,20 @@
-import DefaultPressable from '@/styles/pressable';
+import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import React from 'react';
 import styled from 'styled-components/native';
 import { SvgProps } from 'react-native-svg';
 import { Text } from 'react-native';
+import { rWidth, rHeight } from '@/utils/style';
 
 interface OAuthButtonProps extends DefaultPressableProps {
   OAuthIcon: React.FC<SvgProps>;
 }
 
-const OAuthTouchableOpacityWrapper = styled(DefaultPressable)`
-  width: 320px;
-  height: 100px;
+const OAuthButtonBox = styled(DefaultPressable)`
+  width: ${rWidth(320)}px;
+  height: ${rHeight(100)}px;
   justify-content: space-between;
-  padding: 20px 20px;
+  padding: ${rHeight(20)}px ${rWidth(20)}px;
   border-color: black;
   border-width: 1px;
 `;
@@ -30,10 +31,10 @@ export default function OAuthButton({
   bgColor,
 }: OAuthButtonProps) {
   return (
-    <OAuthTouchableOpacityWrapper onPress={onPress} bgColor={bgColor}>
-      <OAuthIcon width={18} height={18} />
+    <OAuthButtonBox onPress={onPress} bgColor={bgColor}>
+      <OAuthIcon width={rWidth(18)} height={rHeight(18)} />
       <OAuthTitleWrapper>{title}</OAuthTitleWrapper>
       <Text />
-    </OAuthTouchableOpacityWrapper>
+    </OAuthButtonBox>
   );
 }

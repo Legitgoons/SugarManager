@@ -1,20 +1,21 @@
 import theme from '@/styles/theme';
+import { rHeight, rWidth } from '@/utils/style';
 import React, { useRef, useEffect } from 'react';
 import { Animated, Pressable } from 'react-native';
 import styled from 'styled-components/native';
 
 const BackgroundWrapper = styled(Animated.View)<{ isOn: boolean }>`
-  width: 52px;
-  height: 28px;
-  border-radius: 14px;
+  width: ${rWidth(52)}px;
+  height: ${rHeight(28)}px;
+  border-radius: ${rHeight(14)}px;
   justify-content: center;
-  padding: 2px;
+  padding: ${rHeight(2)}px ${rWidth(2)}px;
 `;
 
 const Circle = styled(Animated.View)`
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
+  width: ${rWidth(24)}px;
+  height: ${rHeight(24)}px;
+  border-radius: ${rHeight(12)}px;
   background-color: white;
   position: absolute;
 `;

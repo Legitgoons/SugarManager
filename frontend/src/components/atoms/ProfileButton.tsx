@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import DefaultPressable from '@/styles/pressable';
+import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
+import { rHeight, rWidth } from '@/utils/style';
 
 interface ProfileButtonProps extends DefaultPressableProps {
   imgUrl: string;
@@ -9,10 +10,10 @@ interface ProfileButtonProps extends DefaultPressableProps {
 }
 
 const ProfileButtonWrapper = styled(DefaultPressable)<{ isFocus: boolean }>`
-  border-radius: 40px;
+  border-radius: ${rHeight(40)}px;
   overflow: hidden;
-  width: 80px;
-  height: 80px;
+  width: ${rWidth(80)}px;
+  height: ${rHeight(80)}px;
   border-width: ${({ isFocus }) => (isFocus ? '4px' : '0px')};
   border-color: ${({ theme }) => theme.colors.b3};
 `;

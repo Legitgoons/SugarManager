@@ -2,10 +2,11 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import weekDayArr from '@/config/weekConfig';
+import { rWidth } from '@/utils/style';
 import WeekDay from '../atoms/WeekDay';
 
 const WeekDayWeekWrapper = styled.View`
-  width: 320px;
+  width: ${rWidth(320)}px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

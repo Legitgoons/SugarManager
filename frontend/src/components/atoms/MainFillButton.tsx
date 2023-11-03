@@ -1,11 +1,13 @@
 import React from 'react';
-import DefaultPressable from '@/styles/pressable';
+import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
+import { ColorType } from '@/styles/theme';
+import { rWidth, rHeight } from '@/utils/style';
 
 const MainFillButtonBox = styled(DefaultPressable)`
-  width: 320px;
-  height: 48px;
+  width: ${rWidth(320)}px;
+  height: ${rHeight(48)}px;
 `;
 
 const ButtonTitleWrapper = styled.Text`
@@ -15,7 +17,7 @@ const ButtonTitleWrapper = styled.Text`
 
 interface MainFillButtonProps extends DefaultPressableProps {
   title: string;
-  bgColor: string;
+  bgColor: keyof ColorType;
 }
 
 export default function MainFillButton({
