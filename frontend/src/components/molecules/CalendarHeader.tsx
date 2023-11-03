@@ -3,18 +3,19 @@ import styled from 'styled-components/native';
 import BlackLeftArrowIcon from '@/assets/icon/BlackLeftArrowIcon.svg';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import DefaultCalendarCard from '@/styles/Calendar';
+import { rHeight, rWidth } from '@/utils/style';
 
 const CalendarHeaderBox = styled(DefaultCalendarCard)`
   justify-content: space-between;
-  padding: 20px 10px;
+  padding: ${rHeight(20)}px ${rWidth(10)}px;
 `;
 const CalendarHeaderText = styled.Text`
   ${({ theme }) => theme.typography.h4r}
   color : black;
 `;
 const CalendarHeaderButton = styled.Pressable`
-  width: 20px;
-  height: 20px;
+  width: ${rWidth(20)}px;
+  height: ${rHeight(20)}px;
   display: flex;
   justify-content: center;
   align-items: center;

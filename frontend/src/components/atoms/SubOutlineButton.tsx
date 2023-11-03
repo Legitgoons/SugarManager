@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import { ColorType } from '@/styles/theme';
+import { rWidth, rHeight } from '@/utils/style';
 
 interface SubOutlineButtonProps extends DefaultPressableProps {
   borderColor: keyof ColorType;
@@ -10,8 +11,8 @@ interface SubOutlineButtonProps extends DefaultPressableProps {
 }
 
 const SubOutlineButtonWrapper = styled(DefaultPressable)`
-  width: 120px;
-  height: 32px;
+  width: ${rWidth(120)}px;
+  height: ${rHeight(32)}px;
   border-width: 1px;
 `;
 

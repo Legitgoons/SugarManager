@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Week from '@/types/week';
+import { rWidth } from '@/utils/style';
 import TextButton from '../atoms/TextButton';
 
 interface MultiSelectProps<T extends string | number | symbol | Week> {
@@ -12,7 +13,7 @@ interface MultiSelectProps<T extends string | number | symbol | Week> {
 const MultiSelectContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  width: 320px;
+  width: ${rWidth(320)}px;
 `;
 
 function MultiSelect<T extends string | number | symbol | Week>({
