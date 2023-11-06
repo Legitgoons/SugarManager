@@ -1,78 +1,98 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import styled from 'styled-components/native';
-import Navigation from '@/navigation/Navigation';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { HomeDropdownParam } from '@/types/navigation';
+import { DropdownItem } from '@/types/homeDropdown';
+import HamburgerlineIcon from '@/assets/icon/HamburgerIcon.svg';
+import { rWidth, rHeight } from '@/utils/style';
+import Line from '../atoms/Line';
 
 /** HomeDropDownProps
- * @param {String} items 이름과 클릭 시 이동될 경로
- * @param {String} isOpen Dropdown Item의 이름
- * @param {() => void} onClick Callback 함수
+ * @param {DropdownItem[]} items 클릭 시 이동될 이름과 경로
  * @param {() => void} signOut 로그아웃용 Callback함수
  * @returns {JSX.Element} HomeDropDown 컴포넌트
  */
+
 export interface HomeDropDownProps {
-  isOpen: boolean;
-  items: { name: string; link: string };
-  onClick: () => void;
+  items: DropdownItem[];
   signOut: () => void;
 }
 
-const DropDownContainer = styled.View`
-  position: absolute;
-  right: 0;
+const DropDownBox = styled.View`
+  position: relative;
   z-index: 10;
 `;
 
+const DropdownButton = styled(Pressable)`
+  width: ${rWidth(20)}px;
+  height: ${rHeight(20)}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ItemList = styled.View`
-  width: 60px;
-  height: 100px;
-  flex-direction: column;
-  justify-content: space-between;
+  position: absolute;
+  top: ${rHeight(20)}px;
+  right: 0px;
+  width: ${rWidth(60)}px;
+  height: ${rHeight(100)}px;
+  justify-content: space-evenly;
   align-items: center;
   background-color: white;
-  border: 2px solid;
-  border-radius: 5px;
+  border: 1px solid;
+  border-radius: 10px;
 `;
 
 const Item = styled.Text`
-  height: 20px;
-  justify-content: center;
-`;
-
-const Button = styled.Pressable`
-  border-top-width: 2px;
-  border-style: solid;
+  display: flex;
   width: 100%;
-  height: 20px;
+  height: ${rHeight(20)}px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const HamburgerIcon = styled(HamburgerlineIcon)<{ modalVisible: boolean }>``;
+
+const Button = styled(Pressable)`
+  display: flex;
+  width: 100%;
+  height: ${rHeight(20)}px;
+  align-items: center;
   justify-content: center;
 `;
 
-export default function HomeDropDown({
-  isOpen,
-  items,
-  onClick,
-  signOut,
-}: HomeDropDownProps) {
-  if (!isOpen) {
-    return null;
-  }
+const ButtonTitle = styled.Text``;
+
+export default function HomeDropDown({ items, signOut }: HomeDropDownProps) {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeDropdownParam>>();
 
   return (
-    <DropDownContainer>
-      <ItemList>
-        {[items].map((item) => (
-          <Item key={item.name}>
+    <DropDownBox>
+      <DropdownButton onPress={() => setDropdownVisible(!dropdownVisible)}>
+        <HamburgerIcon width={20} height={20} modalVisible={dropdownVisible} />
+      </DropdownButton>
+      {dropdownVisible && (
+        <ItemList>
+          {items.map((item) => (
             <Pressable
-              onPress={() => {
-                Navigation.push(`${item.link}`);
-              }}
+              onPress={() => navigation.navigate(item.link)}
+              key={item.name}
             >
-              {item.name}
+              <Item>{item.name}</Item>
             </Pressable>
-          </Item>
-        ))}
-        <Button onPress={signOut}>로그아웃</Button>
-      </ItemList>
-    </DropDownContainer>
+          ))}
+          <Line />
+          <Button onPress={signOut}>
+            <ButtonTitle>로그아웃</ButtonTitle>
+          </Button>
+        </ItemList>
+      )}
+    </DropDownBox>
   );
 }
