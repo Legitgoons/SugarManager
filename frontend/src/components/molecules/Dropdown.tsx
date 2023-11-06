@@ -71,13 +71,13 @@ export default function Dropdown({
   selectItem,
   setSelectItem,
 }: DropdownProps) {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const renderItem = ({ item }: { item: { id: string; value: string } }) => (
     <ListItem
       onPress={() => {
         setSelectItem(item);
-        setModalVisible(false);
+        setDropdownVisible(false);
       }}
     >
       <ListItemText>{item.value}</ListItemText>
@@ -86,13 +86,13 @@ export default function Dropdown({
 
   return (
     <DropdownContainer>
-      <DropdownButton onPress={() => setModalVisible(!modalVisible)}>
+      <DropdownButton onPress={() => setDropdownVisible(!dropdownVisible)}>
         <DropdownText>
           {selectItem ? selectItem.value : placeholder}
         </DropdownText>
-        <BlackArrowIcon width={20} height={20} modalVisible={modalVisible} />
+        <BlackArrowIcon width={20} height={20} modalVisible={dropdownVisible} />
       </DropdownButton>
-      {modalVisible && (
+      {dropdownVisible && (
         <DropdownListContainer>
           <FlatList
             data={list}

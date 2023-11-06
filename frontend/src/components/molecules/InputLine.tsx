@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import DefaultInputProps from '@/types/input';
 import { rWidth, rHeight } from '@/utils/style';
 import Input from '../atoms/Input';
-import InputUnderLine from '../atoms/InputUnderLine';
+import Line from '../atoms/Line';
 
 interface InputLineProps extends DefaultInputProps {}
 
@@ -27,7 +27,7 @@ export default function InputLine({
         onChangeText={onChangeText}
         unit={unit}
       />
-      <InputUnderLine />
+      <Line />
     </InputLineBox>
   );
 }
