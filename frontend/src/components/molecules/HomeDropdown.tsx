@@ -54,7 +54,7 @@ const Item = styled.Text`
   align-items: center;
 `;
 
-const HamburgerIcon = styled(HamburgerlineIcon)<{ modalVisible: boolean }>``;
+const HamburgerIcon = styled(HamburgerlineIcon)<{ dropdownVisible: boolean }>``;
 
 const Button = styled(Pressable)`
   display: flex;
@@ -75,7 +75,11 @@ export default function HomeDropDown({ items, signOut }: HomeDropDownProps) {
   return (
     <DropDownBox>
       <DropdownButton onPress={() => setDropdownVisible(!dropdownVisible)}>
-        <HamburgerIcon width={20} height={20} modalVisible={dropdownVisible} />
+        <HamburgerIcon
+          width={20}
+          height={20}
+          dropdownVisible={dropdownVisible}
+        />
       </DropdownButton>
       {dropdownVisible && (
         <ItemList>

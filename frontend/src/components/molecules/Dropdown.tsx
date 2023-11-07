@@ -37,10 +37,12 @@ const DropdownButton = styled(Pressable)`
 
 const DropdownText = styled.Text``;
 
-const BlackArrowIcon = styled(BlackRightArrowIcon)<{ modalVisible: boolean }>`
+const BlackArrowIcon = styled(BlackRightArrowIcon)<{
+  dropdownVisible: boolean;
+}>`
   justify-self: end;
   transform: ${(props) => {
-    if (props.modalVisible === true) {
+    if (props.dropdownVisible === true) {
       return 'rotate(270deg)';
     }
     return 'rotate(90deg)';
@@ -90,7 +92,11 @@ export default function Dropdown({
         <DropdownText>
           {selectItem ? selectItem.value : placeholder}
         </DropdownText>
-        <BlackArrowIcon width={20} height={20} modalVisible={dropdownVisible} />
+        <BlackArrowIcon
+          width={20}
+          height={20}
+          dropdownVisible={dropdownVisible}
+        />
       </DropdownButton>
       {dropdownVisible && (
         <DropdownListContainer>
