@@ -4,19 +4,19 @@ import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeDropdownParam } from '@/types/navigation';
-import { DropdownItem } from '@/types/homeDropdown';
+import { HomeDropdownItem } from '@/types/homeDropdown';
 import HamburgerlineIcon from '@/assets/icon/HamburgerIcon.svg';
 import { rWidth, rHeight } from '@/utils/style';
 import Line from '../atoms/Line';
 
 /** HomeDropDownProps
- * @param {DropdownItem[]} items 클릭 시 이동될 이름과 경로
+ * @param {HomeDropdownItem[]} items 클릭 시 이동될 이름과 경로
  * @param {() => void} signOut 로그아웃용 Callback함수
  * @returns {JSX.Element} HomeDropDown 컴포넌트
  */
 
 export interface HomeDropDownProps {
-  items: DropdownItem[];
+  items: HomeDropdownItem[];
   signOut: () => void;
 }
 
