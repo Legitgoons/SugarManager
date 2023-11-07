@@ -1,12 +1,13 @@
 import React from 'react';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
+import { rWidth, rHeight } from '@/utils/style';
 
 interface PlusButtonProps extends DefaultPressableProps {}
 
 const PlusButtonBox = styled.Pressable`
-  width: 40px;
-  height: 40px;
+  width: ${rWidth(40)}px;
+  height: ${rHeight(40)}px;
   display: flex;
   justify-content: center;
   align-items: center;

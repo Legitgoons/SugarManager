@@ -51,14 +51,14 @@ const BlackArrowIcon = styled(BlackRightArrowIcon)<{
 
 const DropdownListContainer = styled.View`
   position: absolute;
-  width: 120px;
+  width: ${rWidth(120)}px;
   top: 100%;
   border-radius: 10px;
   overflow: hidden;
 `;
 const ListItem = styled(Pressable)`
-  width: 120px;
-  height: 80px;
+  width: ${rWidth(120)}px;
+  height: ${rHeight(80)}px;
   display: flex;
   justify-content: center;
   align-items: center;
