@@ -21,6 +21,10 @@ const InputWrapper = styled.TextInput`
 
 const InputUnitWrapper = styled.Text``;
 
+/** Input
+ * @returns {JSX.Element} 입력받는 Input Component
+ */
+
 export default function Input({
   placeholder,
   value,

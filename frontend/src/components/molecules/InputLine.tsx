@@ -13,6 +13,10 @@ const InputLineBox = styled.View`
   height: ${rHeight(40)}px;
 `;
 
+/**
+ * @returns {JSX.Element} 밑줄이 있는 InputLineBox Component
+ */
+
 export default function InputLine({
   placeholder,
   value,

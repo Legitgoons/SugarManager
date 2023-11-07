@@ -15,6 +15,10 @@ const ButtonTitleWrapper = styled.Text`
   ${({ theme }) => theme.typography.h3b};
 `;
 
+/**
+ * @returns +모양의 Button Component
+ */
+
 export default function PlusButton({ onPress }: PlusButtonProps) {
   return (
     <PlusButtonBox onPress={onPress}>

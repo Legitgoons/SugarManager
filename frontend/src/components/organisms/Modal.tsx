@@ -17,17 +17,6 @@ interface DefaultModalProps {
   onRightPress: () => void;
 }
 
-/** DefaultModal
- * @param {Boolean} modalVisible 모달 띄울지 여부
- * @param {React.Dispatch<React.SetStateAction<boolean>>} setModalVisible
- * @param {String} mainTitle 모달 상단 Title
- * @param {React.ReactNode} children 모달 내부 내용
- * @param {String} leftBtnTitle 모달 좌측 버튼 Title
- * @param {() => void} onLeftPress 모달 좌측 버튼 callback함수
- * @param {String} rightBntTitle 모달 우측 버튼 Title
- * @param {() => void} onRightPress 모달 우측 버튼 callback함수
- */
-
 const ModalContainer = styled.View`
   width: ${rWidth(360)}px;
   height: ${rHeight(496)}px;
@@ -55,6 +44,18 @@ const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
   justify-content: center;
   align-items: center;
 `;
+
+/** DefaultModal
+ * @param {Boolean} modalVisible 모달 띄울지 여부
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setModalVisible
+ * @param {String} mainTitle 모달 상단 Title
+ * @param {React.ReactNode} children 모달 내부 내용
+ * @param {String} leftBtnTitle 모달 좌측 버튼 Title
+ * @param {() => void} onLeftPress 모달 좌측 버튼 callback함수
+ * @param {String} rightBntTitle 모달 우측 버튼 Title
+ * @param {() => void} onRightPress 모달 우측 버튼 callback함수
+ * @returns {JSX.Element} Modal Component 반환
+ */
 
 export default function DefaultModal({
   modalVisible,
