@@ -16,7 +16,7 @@ const DefaultCard = styled.View<{ size: 'lg' | 'md' | 'sm' }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${(props) => props.theme.colors.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.colors.white};
 `;
 

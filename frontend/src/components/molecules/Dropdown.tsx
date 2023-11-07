@@ -35,7 +35,9 @@ const DropdownButton = styled(Pressable)`
   align-items: center;
 `;
 
-const DropdownText = styled.Text``;
+const DropdownText = styled.Text`
+  ${({ theme }) => theme.typography.p2r};
+`;
 
 const BlackArrowIcon = styled(BlackRightArrowIcon)<{
   dropdownVisible: boolean;
@@ -65,7 +67,9 @@ const ListItem = styled(Pressable)`
   background-color: white;
 `;
 
-const ListItemText = styled.Text``;
+const ListItemText = styled.Text`
+  ${({ theme }) => theme.typography.p2r};
+`;
 
 export default function Dropdown({
   placeholder,

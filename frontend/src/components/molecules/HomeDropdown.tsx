@@ -52,6 +52,7 @@ const Item = styled.Text`
   height: ${rHeight(20)}px;
   justify-content: center;
   align-items: center;
+  ${({ theme }) => theme.typography.captionb};
 `;
 
 const HamburgerIcon = styled(HamburgerlineIcon)<{ dropdownVisible: boolean }>`
@@ -67,7 +68,10 @@ const Button = styled(Pressable)`
   justify-content: center;
 `;
 
-const ButtonTitle = styled.Text``;
+const ButtonTitle = styled.Text`
+  ${({ theme }) => theme.typography.captionr};
+  color: ${({ theme }) => theme.colors.red};
+`;
 
 export default function HomeDropDown({ items, signOut }: HomeDropDownProps) {
   const [dropdownVisible, setDropdownVisible] = useState(false);

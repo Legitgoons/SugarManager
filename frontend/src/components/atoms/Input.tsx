@@ -19,7 +19,9 @@ const InputWrapper = styled.TextInput`
   height: ${rHeight(40)}px;
 `;
 
-const InputUnitWrapper = styled.Text``;
+const InputUnitWrapper = styled.Text`
+  ${({ theme }) => theme.typography.h3b};
+`;
 
 /** Input
  * @returns {JSX.Element} 입력받는 Input Component
