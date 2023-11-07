@@ -10,15 +10,18 @@ interface SubOutlineButtonProps extends DefaultPressableProps {
   title: string;
 }
 
-const SubOutlineButtonWrapper = styled(DefaultPressable)`
+const SubOutlineButtonWrapper = styled(DefaultPressable)<{
+  borderColor: keyof ColorType;
+}>`
   width: ${rWidth(120)}px;
   height: ${rHeight(32)}px;
   border-width: 1px;
+  border-color: ${({ theme, borderColor }) => theme.colors[borderColor]};
 `;
 
-const ButtonTitleWrapper = styled.Text<{ color: string }>`
-  ${({ theme }) => theme.typographys.captionb};
-  color: ${(props) => props.color};
+const ButtonTitleWrapper = styled.Text<{ color: keyof ColorType }>`
+  ${({ theme }) => theme.typography.captionb};
+  color: ${({ theme, color }) => theme.colors[color]};
 `;
 
 export default function SubOutlineButton({
