@@ -8,7 +8,8 @@ const DefaultPressable = styled.Pressable<DefaultButtonProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  ${(props) => props.borderColor && `border-color: ${props.borderColor};`}
+  ${({ theme, borderColor }) =>
+    borderColor && `border-color: ${theme.colors[borderColor]};`}
   background-color: ${({ theme, bgColor }) =>
     bgColor ? theme.colors[bgColor] : theme.colors.white};
 `;
