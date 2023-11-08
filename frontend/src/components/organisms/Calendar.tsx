@@ -5,7 +5,7 @@ import getMonthObj from '@/utils/time';
 import { rWidth, rHeight } from '@/utils/style';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
-import CalendarHeader from '../molecules/CalendarHeader';
+import CalendarCard from '../molecules/CalendarCard';
 
 const CalendarContainer = styled.View`
   display: flex;
@@ -67,7 +67,7 @@ export default function Calendar({ monthStatus }: CalendarProps) {
 
   return (
     <CalendarContainer>
-      <CalendarHeader
+      <CalendarCard
         onClickLeft={handleMinusDate}
         onClickRight={handleAddDate}
         title={`${year}.${month}`}

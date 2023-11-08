@@ -5,15 +5,15 @@ import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import DefaultCalendarCard from '@/styles/Calendar';
 import { rHeight, rWidth } from '@/utils/style';
 
-const CalendarHeaderBox = styled(DefaultCalendarCard)`
+const CalendarCardBox = styled(DefaultCalendarCard)`
   justify-content: space-between;
   padding: ${rHeight(20)}px ${rWidth(10)}px;
 `;
-const CalendarHeaderText = styled.Text`
+const CalendarCardText = styled.Text`
   ${({ theme }) => theme.typography.h4r}
   color : black;
 `;
-const CalendarHeaderButton = styled.Pressable`
+const CalendarCardButton = styled.Pressable`
   width: ${rWidth(20)}px;
   height: ${rHeight(20)}px;
   display: flex;
@@ -21,25 +21,25 @@ const CalendarHeaderButton = styled.Pressable`
   align-items: center;
 `;
 
-interface CalendarHeaderProps {
+interface CalendarCardProps {
   onClickLeft: () => void;
   onClickRight: () => void;
   title: string;
 }
-export default function CalendarHeader({
+export default function CalendarCard({
   onClickLeft,
   onClickRight,
   title,
-}: CalendarHeaderProps) {
+}: CalendarCardProps) {
   return (
-    <CalendarHeaderBox>
-      <CalendarHeaderButton onPress={onClickLeft}>
+    <CalendarCardBox size="lg">
+      <CalendarCardButton onPress={onClickLeft}>
         <BlackLeftArrowIcon width={20} height={20} />
-      </CalendarHeaderButton>
-      <CalendarHeaderText>{title}</CalendarHeaderText>
-      <CalendarHeaderButton onPress={onClickRight}>
+      </CalendarCardButton>
+      <CalendarCardText>{title}</CalendarCardText>
+      <CalendarCardButton onPress={onClickRight}>
         <BlackRightArrowIcon width={20} height={20} />
-      </CalendarHeaderButton>
-    </CalendarHeaderBox>
+      </CalendarCardButton>
+    </CalendarCardBox>
   );
 }
