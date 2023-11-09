@@ -7,7 +7,7 @@ interface DefaultTextProps {
 }
 
 const DefaultText = styled.Text<DefaultTextProps>`
-  ${({ color, theme }) => theme.colors[color]};
+  color: ${({ color, theme }) => theme.colors[color]};
   ${({ typography, theme }) => theme.typographys[typography]};
 `;
 
