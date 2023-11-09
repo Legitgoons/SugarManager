@@ -1,9 +1,12 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import getMonthObj from '@/utils/time';
 import { rWidth, rHeight } from '@/utils/style';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/redux/slice/userSlice';
+import { getTimelineState } from '@/apis/timeline';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
 import CalendarHeader from '../molecules/CalendarHeader';
@@ -38,21 +41,23 @@ interface CalendarProps {
 }
 
 export default function Calendar({ time, setTime, onPress }: CalendarProps) {
-  const { data } = useSuspenseQuery({
-    queryKey: ['monthStatus', time],
-    queryFn: () => {},
+  const { nickname } = useSelector(selectUser);
+  const { isSuccess, data: timelineState } = useSuspenseQuery({
+    queryKey: ['getTimelineState', nickname],
+    queryFn: () =>
+      getTimelineState({ nickname, year: time.year, month: time.month }),
+    staleTime: 1000 * 60 * 100,
+    refetchOnWindowFocus: false,
   });
-  const { response } = data;
+
+  const { response } = timelineState;
   const { year, month } = time;
-  const currentMonthObj = useMemo(
-    () =>
-      getMonthObj({
-        year,
-        month,
-        monthStatus: response,
-      }),
-    [response, year, month]
-  );
+  const currentMonthObj = getMonthObj({
+    year,
+    month,
+    monthStatus: isSuccess && response ? response : undefined,
+  });
+
   const handleMinusDate = () => {
     if (month - 1 === 0) {
       setTime((prev) => ({ ...prev, month: 12, year: prev.year - 1 }));
@@ -74,7 +79,13 @@ export default function Calendar({ time, setTime, onPress }: CalendarProps) {
     selectedDay: number
   ) => {
     if (selectedYear === 0 || selectedMonth === 0 || selectedDay === 0) return;
-    console.log(selectedYear, selectedMonth, selectedDay);
+    onPress();
+    setTime((prev) => ({
+      ...prev,
+      year: selectedYear,
+      month: selectedMonth,
+      day: selectedDay,
+    }));
   };
 
   return (
