@@ -1,21 +1,33 @@
-import axios from 'axios';
 import { API_ENDPOINT } from '@env';
+import fetchWithAuth from '@/utils/fetchWithAuth';
 
 const AUTH_ENDPOINT = `${API_ENDPOINT}/auth`;
-
 interface SigninProps {
-  accessToken: string;
-  fcmToken: string;
+  access_token: string;
+  fcm_token: string;
 }
+
 const postKakaoSignin = async (props: SigninProps) => {
   try {
-    const res = await axios.post(`${AUTH_ENDPOINT}/kakao`, props, {
+    const response = await fetch(`${AUTH_ENDPOINT}/kakao`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(props),
     });
-    return res;
+    const data = await response.json();
+    return data;
   } catch (e) {
     return e;
   }
 };
 
-export default postKakaoSignin;
+const postSignout = async () => {
+  try {
+    const result = await fetchWithAuth(`${AUTH_ENDPOINT}/logout`);
+    return result;
+  } catch (e) {
+    return e;
+  }
+};
+
+export { postKakaoSignin, postSignout };

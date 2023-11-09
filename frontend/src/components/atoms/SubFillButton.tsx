@@ -15,7 +15,7 @@ const SubFillButtonWrapper = styled(DefaultPressable)`
   height: ${rHeight(32)}px;
 `;
 const ButtonTitleWrapper = styled.Text`
-  ${({ theme }) => theme.typography.captionb};
+  ${({ theme }) => theme.typographys.captionb};
   color: ${({ theme }) => theme.colors.white};
 `;
 export default function SubFillButton({

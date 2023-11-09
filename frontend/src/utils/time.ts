@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import weekDayArr from '@/config/weekConfig';
 
 interface GetMonthObjProps {
@@ -15,6 +16,9 @@ function format8Date(date: Date) {
 }
 
 function getMonthObj({ year, month, monthStatus }: GetMonthObjProps) {
+  if (!monthStatus || typeof monthStatus !== 'object') {
+    monthStatus = {};
+  }
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
 
@@ -32,7 +36,7 @@ function getMonthObj({ year, month, monthStatus }: GetMonthObjProps) {
     weekInfo.push({
       numberDay,
       weekDay,
-      isMarked: monthStatus[format8Date(day)],
+      isMarked: monthStatus[format8Date(day)] || false,
     });
 
     if (day.getDay() === 6) {

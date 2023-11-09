@@ -9,7 +9,14 @@ import theme from './styles/theme';
 import { persistor, store } from './redux/store/storeConfig';
 import Navigation from './navigation/Navigation';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      suspense: true,
+    },
+  },
+});
 const Stack = createNativeStackNavigator();
 export default function App() {
   useEffect(() => {
