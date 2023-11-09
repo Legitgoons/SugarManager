@@ -5,7 +5,6 @@ import DefaultButtonProps from '../types/pressable';
 const DefaultPressable = styled.Pressable<DefaultButtonProps>`
   border-radius: ${rHeight(10)}px;
   display: flex;
-
   flex-direction: row;
   justify-content: center;
   align-items: center;

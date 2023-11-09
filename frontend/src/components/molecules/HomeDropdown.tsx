@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { HomeDropdownParam } from '@/types/navigation';
 import { HomeDropdownItem } from '@/types/homeDropdown';
 import HamburgerlineIcon from '@/assets/icon/HamburgerIcon.svg';
 import { rWidth, rHeight } from '@/utils/style';
+import useRouter from '@/hooks/useRouter';
 import Line from '../atoms/Line';
 
 /** HomeDropDownProps
@@ -52,7 +50,7 @@ const Item = styled.Text`
   height: ${rHeight(20)}px;
   justify-content: center;
   align-items: center;
-  ${({ theme }) => theme.typography.captionb};
+  ${({ theme }) => theme.typographys.captionb};
 `;
 
 const HamburgerIcon = styled(HamburgerlineIcon)<{ dropdownVisible: boolean }>`
@@ -69,15 +67,13 @@ const Button = styled(Pressable)`
 `;
 
 const ButtonTitle = styled.Text`
-  ${({ theme }) => theme.typography.captionr};
+  ${({ theme }) => theme.typographys.captionr};
   color: ${({ theme }) => theme.colors.red};
 `;
 
 export default function HomeDropDown({ items, signOut }: HomeDropDownProps) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
-  const navigation =
-    useNavigation<NativeStackNavigationProp<HomeDropdownParam>>();
+  const router = useRouter();
 
   return (
     <DropDownBox>
@@ -88,7 +84,7 @@ export default function HomeDropDown({ items, signOut }: HomeDropDownProps) {
         <ItemList>
           {items.map((item) => (
             <Pressable
-              onPress={() => navigation.navigate(item.link)}
+              onPress={() => router.navigate(item.link)}
               key={item.name}
             >
               <Item>{item.name}</Item>

@@ -39,7 +39,7 @@ const DropdownButton = styled(Pressable)`
 `;
 
 const DropdownText = styled.Text`
-  ${({ theme }) => theme.typography.p2r};
+  ${({ theme }) => theme.typographys.p2r};
 `;
 
 const BlackArrowIcon = styled(BlackRightArrowIcon)<{
@@ -71,7 +71,7 @@ const ListItem = styled(Pressable)`
 `;
 
 const ListItemText = styled.Text`
-  ${({ theme }) => theme.typography.p2r};
+  ${({ theme }) => theme.typographys.p2r};
 `;
 
 export default function Dropdown({
