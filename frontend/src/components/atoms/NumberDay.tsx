@@ -16,6 +16,7 @@ const NumberDayWrapper = styled(DefaultPressable)`
   flex: 1;
   height: 100%;
   width: 100%;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const NumberDayTextWrapper = styled.Text`

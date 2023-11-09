@@ -8,6 +8,7 @@ const WeekDayWrapper = styled(DefaultPressable)`
   flex-direction: column;
   flex: 1;
   width: 100%;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const WeekDayText = styled.Text`
