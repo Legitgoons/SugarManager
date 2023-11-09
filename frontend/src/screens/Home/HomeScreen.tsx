@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Calendar from '@/components/organisms/Calendar';
 import ChanllengeCard from '@/components/molecules/ChallengeCard';
 import HomeInfoCard from '@/components/molecules/HomeInfoCard';
@@ -6,12 +7,13 @@ import HomeHeader from '@/components/organisms/HomeHeader';
 import HomeNoneGroupBar from '@/components/organisms/HomeNoneGroupBar';
 import { selectUser } from '@/redux/slice/userSlice';
 import { rHeight } from '@/utils/style';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import DailyInfoModal from '@/components/organisms/DailyInfoModal';
 import useRouter from '@/hooks/useRouter';
+import { setNavigation } from '@/redux/slice/navigationSlice';
 
 const HomeContainer = styled.View`
   padding: ${rHeight(30)}px 0;
@@ -28,9 +30,10 @@ const HomeCardBox = styled.View`
 `;
 
 export default function HomeScreen() {
+  const dispatch = useDispatch();
+  const { groupCode, nickname } = useSelector(selectUser);
   const curDate = new Date();
   const router = useRouter();
-  const { groupCode } = useSelector(selectUser);
   const [time, setTime] = useState<{
     year: number;
     month: number;
@@ -41,13 +44,17 @@ export default function HomeScreen() {
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
+
+  useEffect(() => {
+    dispatch(setNavigation({ isMine: true, nickname }));
+  }, []);
+
   return (
     <>
       <ScrollView style={{ flex: 1 }}>
         <HomeContainer>
           <HomeHeader />
-          {groupCode !== '' ? <HomeGroupBar /> : <HomeNoneGroupBar />}
-
+          {groupCode ? <HomeGroupBar /> : <HomeNoneGroupBar />}
           <Calendar
             time={time}
             setTime={setTime}
