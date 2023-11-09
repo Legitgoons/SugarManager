@@ -1,27 +1,36 @@
 import Calendar from '@/components/organisms/Calendar';
+import ChanllengeCard from '@/components/molecules/ChallengeCard';
+import HomeInfoCard from '@/components/molecules/HomeInfoCard';
 import HomeGroupBar from '@/components/organisms/HomeGroupBar';
 import HomeHeader from '@/components/organisms/HomeHeader';
-import { rWidth } from '@/utils/style';
+import HomeNoneGroupBar from '@/components/organisms/HomeNoneGroupBar';
+import { selectUser } from '@/redux/slice/userSlice';
+import { rHeight } from '@/utils/style';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
+import { ScrollView } from 'react-native';
+import DailyInfoModal from '@/components/organisms/DailyInfoModal';
+import useRouter from '@/hooks/useRouter';
 
 const HomeContainer = styled.View`
-  width: ${rWidth(320)}px;
+  padding: ${rHeight(30)}px 0;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.background};
+  gap: ${rHeight(30)}px;
+`;
+const HomeCardBox = styled.View`
+  gap: ${rHeight(20)}px;
 `;
 
 export default function HomeScreen() {
-  // /api/v1/timeline/{nickname}/{year}/{month}
-  // const {} = useSuspenseQuery(['monthStatus'] queryFn : a});
-  /*
-    const [year, setYear] = useState(curDate.getFullYear());
-  const [month, setMonth] = useState(curDate.getMonth() + 1);
-  */
   const curDate = new Date();
+  const router = useRouter();
+  const { groupCode } = useSelector(selectUser);
   const [time, setTime] = useState<{
     year: number;
     month: number;
@@ -32,14 +41,54 @@ export default function HomeScreen() {
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
-  const handlePressDay = () => {
-    onClick;
-  };
   return (
-    <HomeContainer>
-      <HomeHeader />
-      <HomeGroupBar />
-      <Calendar time={time} setTime={setTime} open={openDailyInfo} />
-    </HomeContainer>
+    <>
+      <ScrollView style={{ flex: 1 }}>
+        <HomeContainer>
+          <HomeHeader />
+          {groupCode !== '' ? <HomeGroupBar /> : <HomeNoneGroupBar />}
+
+          <Calendar
+            time={time}
+            setTime={setTime}
+            onPress={() => {
+              setOpenDailyInfo((prev) => !prev);
+            }}
+          />
+          <HomeCardBox>
+            <HomeInfoCard
+              title="혈당 측정"
+              firstContent="오늘 총, 3회 측정 하였습니다."
+              secondContent="저녁 식사 후 측정이 필요합니다."
+              onPress={() => {
+                router.navigate('BloodSugarInfo');
+              }}
+            />
+            <ChanllengeCard
+              title="챌린지 - 오늘의 달성도"
+              leftNumeric="3개"
+              rightNumeric="5개"
+              button="view"
+              onPress={() => {
+                router.navigate('ChallengeInfo');
+              }}
+            />
+            <HomeInfoCard
+              title="식사 분석"
+              firstContent="오늘 총, 2회 측정 하였습니다."
+              secondContent="저녁 식사 측정이 필요합니다."
+              onPress={() => {
+                router.navigate('MealInfo');
+              }}
+            />
+          </HomeCardBox>
+        </HomeContainer>
+      </ScrollView>
+      <DailyInfoModal
+        isOpen={openDailyInfo}
+        handleClose={() => setOpenDailyInfo(false)}
+        time={time}
+      />
+    </>
   );
 }
