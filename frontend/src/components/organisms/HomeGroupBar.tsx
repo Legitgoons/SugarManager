@@ -7,18 +7,18 @@ import ProfileList from '../molecules/ProfileList';
 import ProfileButton from '../atoms/ProfileButton';
 
 const HomeGroupBarBox = styled.View`
-  width: 100%;
+  width: ${rWidth(320)}px;
   height: ${rHeight(80)}px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: ${rWidth(4)}px;
+  gap: ${rWidth(16)}px;
 `;
 
 const MidLine = styled.View`
   width: ${rWidth(2)}px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.secondary};
   height: ${rHeight(40)}px;
   border-radius: ${rHeight(20)}px;
 `;
