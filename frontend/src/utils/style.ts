@@ -1,5 +1,4 @@
 import {
-  responsiveScreenHeight,
   responsiveScreenWidth,
   responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
@@ -9,16 +8,14 @@ const basicDimensions = {
   height: 844,
 };
 
-const rWidth = (basicwidth: number): number => {
-  const percentage = (basicwidth / basicDimensions.width) * 100;
-
-  return responsiveScreenWidth(percentage);
+const rWidth = (basicWidth: number): number => {
+  const widthPercentage = (basicWidth / basicDimensions.width) * 100;
+  return responsiveScreenWidth(widthPercentage);
 };
 
-const rHeight = (basicheight: number): number => {
-  const percentage = (basicheight / basicDimensions.height) * 100;
-
-  return responsiveScreenHeight(percentage);
+const rHeight = (basicHeight: number): number => {
+  const heightPercentage = (basicHeight / basicDimensions.width) * 100;
+  return responsiveScreenWidth(heightPercentage);
 };
 
 const rFontSize = (basicsize: number): number => {
