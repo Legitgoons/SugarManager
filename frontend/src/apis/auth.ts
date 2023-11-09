@@ -1,7 +1,5 @@
-import { API_ENDPOINT } from '@env';
 import fetchWithAuth from '@/utils/fetchWithAuth';
 
-const AUTH_ENDPOINT = `${API_ENDPOINT}/auth`;
 interface SigninProps {
   access_token: string;
   fcm_token: string;
@@ -9,7 +7,7 @@ interface SigninProps {
 
 const postKakaoSignin = async (props: SigninProps) => {
   try {
-    const response = await fetch(`${AUTH_ENDPOINT}/kakao`, {
+    const response = await fetch(`/auth/kakao`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(props),
@@ -23,7 +21,7 @@ const postKakaoSignin = async (props: SigninProps) => {
 
 const postSignout = async () => {
   try {
-    const result = await fetchWithAuth(`${AUTH_ENDPOINT}/logout`);
+    const result = await fetchWithAuth(`/auth/logout`);
     return result;
   } catch (e) {
     return e;
