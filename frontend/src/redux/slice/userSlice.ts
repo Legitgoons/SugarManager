@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PURGE } from 'redux-persist';
 
-interface userSliceStateType {
+interface UserSliceStateType {
   isSignin: boolean;
   uid: string;
   name: string;
@@ -18,7 +18,7 @@ interface userSliceStateType {
   accessToken: string;
   refreshToken: string;
 }
-const initialState: userSliceStateType = {
+const initialState: UserSliceStateType = {
   isSignin: false,
   uid: '',
   name: '',
@@ -55,6 +55,19 @@ const userSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.kakaoAccessToken = action.payload.kakaoAccessToken;
       state.kakaoRefreshToken = action.payload.kakaoRefreshToken;
+    },
+    setProfile(state, action) {
+      state.isSignin = true;
+      state.uid = action.payload.uid;
+      state.name = action.payload.name;
+      state.nickname = action.payload.nickname;
+      state.email = action.payload.email;
+      state.gender = action.payload.gender;
+      state.birthday = action.payload.birthday;
+      state.height = action.payload.height;
+      state.weight = action.payload.weight;
+      state.profileImage = action.payload.profileImage;
+      state.groupCode = action.payload.groupCode;
     },
     setToken(state, action) {
       state.accessToken = action.payload.accessToken;
@@ -111,6 +124,7 @@ const userSlice = createSlice({
 
 export const {
   setUser,
+  setProfile,
   setToken,
   setKakaoToken,
   setIsSignin,
