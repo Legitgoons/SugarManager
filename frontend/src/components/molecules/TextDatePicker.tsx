@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { rWidth } from '@/utils/style';
 import styled from 'styled-components/native';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
@@ -17,16 +17,16 @@ const BlackArrowIcon = styled(BlackRightArrowIcon)``;
 interface TextDatePickerProps extends DatePickerProps {}
 
 /**
- * @returns {JSX.Element} 날짜와 시간을 표시해주는
+ * @returns {JSX.Element} 날짜와 시간을 표시해주는 Component
  */
 
 export default function TextDatePicker({
-  open,
-  setOpen,
   date,
   setDate,
   mode,
 }: TextDatePickerProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <TextDatePickerButton onPress={() => setOpen(true)}>
       <DatePickerFormat color="b4" date={date} mode={mode} typography="p2r" />

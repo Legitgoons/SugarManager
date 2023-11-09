@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import DefaultCalendarCard from '@/styles/Calendar';
 import { rHeight, rWidth } from '@/utils/style';
@@ -32,13 +32,13 @@ interface CalendarDatePickerProps extends DatePickerProps {
  */
 
 export default function CalendarDatePicker({
-  open,
-  setOpen,
   date,
   setDate,
   title,
   mode,
 }: CalendarDatePickerProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <CalendarCardBox size="sm">
       <CalendarDatePickerButton
