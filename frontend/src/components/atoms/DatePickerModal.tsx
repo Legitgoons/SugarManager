@@ -2,9 +2,14 @@ import React from 'react';
 import DatePicker from 'react-native-date-picker';
 import { DatePickerProps } from '@/types/datePicker';
 
-interface DatePickerModalProps extends DatePickerProps {}
+interface DatePickerModalProps extends DatePickerProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 /**
+ * @param {boolean} open Modal 열림 상태
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setOpen Modal 열림 setter
  * @returns {JSX.Element} DatePicker Modal
  */
 
