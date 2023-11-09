@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+/* eslint-disable global-require */
+import React from 'react';
 import DefaultPressable from '@/styles/Pressable';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
@@ -23,21 +24,18 @@ const ProfileImageWrapper = styled.Image`
   height: 100%;
 `;
 
-const defaultImage = require('@/assets/img/defaultProfile.jpg');
-
 export default function ProfileButton({
   imgUrl,
   onPress,
   isFocus,
 }: ProfileButtonProps) {
-  const [imageSource, setImageSource] = useState({ uri: imgUrl });
-  const handleError = useCallback(() => {
-    setImageSource(defaultImage);
-  }, []);
-
   return (
     <ProfileButtonWrapper onPress={onPress} isFocus={isFocus}>
-      <ProfileImageWrapper source={imageSource} onError={handleError} />
+      <ProfileImageWrapper
+        source={
+          !imgUrl ? require('@/assets/img/defaultProfile.jpg') : { uri: imgUrl }
+        }
+      />
     </ProfileButtonWrapper>
   );
 }
