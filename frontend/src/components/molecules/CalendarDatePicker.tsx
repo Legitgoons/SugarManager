@@ -3,8 +3,9 @@ import styled from 'styled-components/native';
 import DefaultCalendarCard from '@/styles/Calendar';
 import { rHeight, rWidth } from '@/utils/style';
 import DefaultPressable from '@/styles/Pressable';
-import DatePickerModal from '../atoms/DatePickerModal';
 import { DatePickerProps } from '@/types/datePicker';
+import DatePickerModal from '../atoms/DatePickerModal';
+import DatePickerFormat from '../atoms/DatePickerFormat';
 
 const CalendarCardBox = styled(DefaultCalendarCard)`
   padding: ${rHeight(10)}px ${rWidth(10)}px;
@@ -14,11 +15,6 @@ const CalendarDatePickerButton = styled(DefaultPressable)`
   width: ${rWidth(100)}px;
   height: ${rHeight(45)}px;
   flex-direction: column;
-`;
-
-const CalendarDatePickerTextWrapper = styled.Text`
-  ${({ theme }) => theme.typography.p2r}
-  color : black;
 `;
 
 const DatePickerButtonTextWrapper = styled.Text`
@@ -43,18 +39,18 @@ export default function CalendarDatePicker({
   title,
   mode,
 }: CalendarDatePickerProps) {
-  const formattedDate = `${date.getFullYear()}.${
-    date.getMonth() + 1
-  }.${date.getDate()}`;
   return (
     <CalendarCardBox size="sm">
       <CalendarDatePickerButton
         onPress={() => setOpen(true)}
         bgColor="tertiary"
       >
-        <CalendarDatePickerTextWrapper>
-          {formattedDate}
-        </CalendarDatePickerTextWrapper>
+        <DatePickerFormat
+          color="black"
+          date={date}
+          mode={mode}
+          typography="p2r"
+        />
         <DatePickerButtonTextWrapper>{title}</DatePickerButtonTextWrapper>
       </CalendarDatePickerButton>
       <DatePickerModal
