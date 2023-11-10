@@ -49,7 +49,7 @@ export default function BloodSugarInfoWriteContent({
       <InputLine
         onChangeText={setIssue}
         value={issue}
-        placeholder="특이사항을 입력해주세요"
+        placeholder="특이사항이 있다면 입력해주세요"
       />
       <DatePickerBox>
         <BoxTextWrapper>기록일시</BoxTextWrapper>
