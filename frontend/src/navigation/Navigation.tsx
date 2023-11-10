@@ -26,7 +26,13 @@ export default function Navigation({ Stack }: { Stack: any }) {
     <NavigationContainer>
       <Stack.Navigator>
         {isSignin ? (
-          <Stack.Screen name="Home" component={SuspenseHomeScreen} />
+          <Stack.Screen
+            name="Home"
+            component={SuspenseHomeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
         ) : (
           <Stack.Screen
             name="Signin"

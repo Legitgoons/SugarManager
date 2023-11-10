@@ -1,8 +1,12 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import getMonthObj from '@/utils/time';
 import { rWidth, rHeight } from '@/utils/style';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/redux/slice/userSlice';
+import { getTimelineState } from '@/apis/timeline';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
 import CalendarCard from '../molecules/CalendarCard';
@@ -25,44 +29,63 @@ const CalendarContentBox = styled.View`
 `;
 
 interface CalendarProps {
-  monthStatus: Record<string, boolean>;
+  time: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  setTime: React.Dispatch<
+    React.SetStateAction<{ year: number; month: number; day: number }>
+  >;
+  onPress: () => void;
 }
 
-export default function Calendar({ monthStatus }: CalendarProps) {
-  const curDate = new Date();
-  const [year, setYear] = useState(curDate.getFullYear());
-  const [month, setMonth] = useState(curDate.getMonth() + 1);
-  const currentMonthObj = useMemo(
-    () => getMonthObj({ year, month, monthStatus }),
-    [year, month, monthStatus]
-  );
+export default function Calendar({ time, setTime, onPress }: CalendarProps) {
+  const { nickname } = useSelector(selectUser);
+  const { isSuccess, data: timelineState } = useSuspenseQuery({
+    queryKey: ['getTimelineState', nickname],
+    queryFn: () =>
+      getTimelineState({ nickname, year: time.year, month: time.month }),
+    staleTime: 1000 * 60 * 100,
+    refetchOnWindowFocus: false,
+  });
+
+  const { response } = timelineState;
+  const { year, month } = time;
+  const currentMonthObj = getMonthObj({
+    year,
+    month,
+    monthStatus: isSuccess && response ? response : undefined,
+  });
+
   const handleMinusDate = () => {
     if (month - 1 === 0) {
-      setMonth(12);
-      setYear((prev) => prev - 1);
+      setTime((prev) => ({ ...prev, month: 12, year: prev.year - 1 }));
     } else {
-      setMonth((prev) => prev - 1);
+      setTime((prev) => ({ ...prev, month: prev.month - 1 }));
     }
   };
   const handleAddDate = () => {
     if (month + 1 === 13) {
-      setMonth(1);
-      setYear((prev) => prev + 1);
+      setTime((prev) => ({ ...prev, month: 1, year: prev.year + 1 }));
     } else {
-      setMonth((prev) => prev + 1);
+      setTime((prev) => ({ ...prev, month: prev.month + 1 }));
     }
   };
 
-  /*
-  일 클릭 시, 동작하는 함수
-  */
   const handleClickDay = (
     selectedYear: number,
     selectedMonth: number,
     selectedDay: number
   ) => {
     if (selectedYear === 0 || selectedMonth === 0 || selectedDay === 0) return;
-    console.log(selectedYear, selectedMonth, selectedDay);
+    onPress();
+    setTime((prev) => ({
+      ...prev,
+      year: selectedYear,
+      month: selectedMonth,
+      day: selectedDay,
+    }));
   };
 
   return (

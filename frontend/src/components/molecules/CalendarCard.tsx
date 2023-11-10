@@ -9,8 +9,8 @@ const CalendarCardBox = styled(DefaultCalendarCard)`
   justify-content: space-between;
   padding: ${rHeight(20)}px ${rWidth(10)}px;
 `;
-const CalendarCardText = styled.Text`
-  ${({ theme }) => theme.typography.h4r}
+const CalendarHeaderText = styled.Text`
+  ${({ theme }) => theme.typographys.h4r}
   color : black;
 `;
 const CalendarCardButton = styled.Pressable`
@@ -36,7 +36,7 @@ export default function CalendarCard({
       <CalendarCardButton onPress={onClickLeft}>
         <BlackLeftArrowIcon width={20} height={20} />
       </CalendarCardButton>
-      <CalendarCardText>{title}</CalendarCardText>
+      <CalendarHeaderText>{title}</CalendarHeaderText>
       <CalendarCardButton onPress={onClickRight}>
         <BlackRightArrowIcon width={20} height={20} />
       </CalendarCardButton>

@@ -9,7 +9,7 @@ interface SubTitleProps {
 
 const SubTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
   color: ${({ theme }) => theme.colors.secondary};
-  ${({ fontSize, theme }) => theme.typography[fontSize]};
+  ${({ fontSize, theme }) => theme.typographys[fontSize]};
 `;
 
 export default function SubTitle({ title, fontSize = 'h4r' }: SubTitleProps) {
