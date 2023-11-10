@@ -1,26 +1,34 @@
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components/native';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import Toggle from '@/components/molecules/Toggle';
-import BloodSugarInfoWriteContent from '@/components/organisms/BloodSugarInfoWriteContent';
-import React, { useState } from 'react';
-import styled from 'styled-components/native';
+import BloodSugarInfoWriteContent from '@/components/organisms/BloodSugarWriteContent';
 import { rHeight } from '@/utils/style';
 import DefaultScreenContainer from '@/styles/Container';
 
-const BloodSugarInfoWriteScreen = styled(DefaultScreenContainer)`
+const BloodSugarInfoWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
   gap: ${rHeight(36)}px;
 `;
 
-export default function BloodSugarInfoWrite() {
+export default function BloodSugarInfoWriteScreen() {
   const [beforeMeal, setBeforeMeal] = useState(false);
   const [bloodSugar, setBloodSugar] = useState('');
   const [issue, setIssue] = useState('');
   const [date, setDate] = useState(new Date());
-  const [buttonActive, setButtonActvie] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if (bloodSugar === '') {
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+    }
+  }, [bloodSugar]);
 
   return (
-    <BloodSugarInfoWriteScreen>
+    <BloodSugarInfoWriteContainer>
       <Toggle
         isLeft={beforeMeal}
         onPress={setBeforeMeal}
@@ -34,14 +42,14 @@ export default function BloodSugarInfoWrite() {
         setIssue={setIssue}
         date={date}
         setDate={setDate}
-        mode="time"
+        mode="datetime"
       />
       <MainFillButton
         title="등록"
-        bgColor="b4"
-        disabled={buttonActive}
+        bgColor={buttonDisabled ? 'b3' : 'b4'}
+        disabled={buttonDisabled}
         onPress={() => console.log('제출')}
       />
-    </BloodSugarInfoWriteScreen>
+    </BloodSugarInfoWriteContainer>
   );
 }
