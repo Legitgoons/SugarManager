@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Pressable, FlatList } from 'react-native';
 import styled from 'styled-components/native';
-import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
+import BlackDownArrow from '@/assets/icon/BlackDownArrowIcon.svg';
+import BlackUpArrow from '@/assets/icon/BlackUpArrowIcon.svg';
 import { rWidth, rHeight } from '@/utils/style';
 
 interface DropdownItem {
@@ -42,17 +43,12 @@ const DropdownText = styled.Text`
   ${({ theme }) => theme.typography.p2r};
 `;
 
-const BlackArrowIcon = styled(BlackRightArrowIcon)<{
-  dropdownVisible: boolean;
-}>`
+const ArrowIconWrapper = styled.View`
   justify-self: end;
-  transform: ${(props) => {
-    if (props.dropdownVisible === true) {
-      return 'rotate(270deg)';
-    }
-    return 'rotate(90deg)';
-  }};
 `;
+
+const BlackDownArrowIcon = styled(BlackDownArrow)``;
+const BlackUpArrowIcon = styled(BlackUpArrow)``;
 
 const DropdownListContainer = styled.View`
   position: absolute;
@@ -99,11 +95,9 @@ export default function Dropdown({
         <DropdownText>
           {selectItem ? selectItem.value : placeholder}
         </DropdownText>
-        <BlackArrowIcon
-          width={20}
-          height={20}
-          dropdownVisible={dropdownVisible}
-        />
+        <ArrowIconWrapper>
+          {dropdownVisible ? <BlackUpArrowIcon /> : <BlackDownArrowIcon />}
+        </ArrowIconWrapper>
       </DropdownButton>
       {dropdownVisible && (
         <DropdownListContainer>
