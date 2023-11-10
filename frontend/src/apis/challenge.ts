@@ -1,6 +1,13 @@
-import fetchWithAuth from '@/utils/fetchWithAuth';
+import { fetchWithAuth } from '@/utils';
 
 const getChallengeList = (nickname: string) =>
   fetchWithAuth(`/challenge/${nickname}`);
 
-export default getChallengeList;
+const postChallengeDelete = (challengePK: Array<string>) =>
+  fetchWithAuth(`/challenge/delete`, {
+    method: 'POST',
+    body: {
+      challenge_pk: challengePK,
+    },
+  });
+export { getChallengeList, postChallengeDelete };

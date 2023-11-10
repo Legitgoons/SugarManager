@@ -1,10 +1,8 @@
-import fetchWithAuth from '@/utils/fetchWithAuth';
+import PostMemberPokeProps from '@/types/api/request/member';
+import { fetchWithAuth } from '@/utils';
 
-const getMyProfile = async () => {
-  const response = await fetchWithAuth(`/member`, {
-    method: 'GET',
-  });
-  return response;
-};
+const getMyProfile = () => fetchWithAuth(`/member`, { method: 'GET' });
+const postMemberPoke = (props: PostMemberPokeProps) =>
+  fetchWithAuth('/member/poke', { method: 'POST', body: props });
 
-export default getMyProfile;
+export { getMyProfile, postMemberPoke };
