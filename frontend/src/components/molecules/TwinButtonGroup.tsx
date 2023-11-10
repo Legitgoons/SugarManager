@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { rWidth } from '@/utils/style';
+import { rWidth } from '@/utils';
 import SubOutlineButton from '../atoms/SubOutlineButton';
 import SubFillButton from '../atoms/SubFillButton';
 

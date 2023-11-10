@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { rHeight } from '@/utils/style';
+import { rHeight } from '@/utils';
 import DefaultButtonProps from '../types/pressable';
 
 const DefaultPressable = styled.Pressable<DefaultButtonProps>`

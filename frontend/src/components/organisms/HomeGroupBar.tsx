@@ -1,4 +1,4 @@
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';

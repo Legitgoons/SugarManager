@@ -1,5 +1,5 @@
 import theme from '@/styles/theme';
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 import React, { useRef, useEffect } from 'react';
 import { Animated, Pressable } from 'react-native';
 import styled from 'styled-components/native';

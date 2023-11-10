@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import styled from 'styled-components/native';
 import { HomeDropdownItem } from '@/types/homeDropdown';
 import HamburgerlineIcon from '@/assets/icon/HamburgerIcon.svg';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 import useRouter from '@/hooks/useRouter';
 import Line from '../atoms/Line';
 

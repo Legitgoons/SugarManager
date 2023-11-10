@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import DefaultInputProps from '@/types/input';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 import Input from '../atoms/Input';
 import Line from '../atoms/Line';
 

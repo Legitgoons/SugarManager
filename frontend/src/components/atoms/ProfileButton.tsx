@@ -1,9 +1,9 @@
 /* eslint-disable global-require */
 import React from 'react';
-import DefaultPressable from '@/styles/Pressable';
+import { DefaultPressable } from '@/styles';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 
 interface ProfileButtonProps extends DefaultPressableProps {
   imgUrl: string;
