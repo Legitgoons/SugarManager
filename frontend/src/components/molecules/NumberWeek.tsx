@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import styled from 'styled-components/native';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 import NumberDay from '../atoms/NumberDay';
 
 const NumberWeekWrapper = styled.View`

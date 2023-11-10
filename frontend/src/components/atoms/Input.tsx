@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import DefaultInputProps from '@/types/input';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 
 interface InputProps extends DefaultInputProps {}
 

@@ -1,7 +1,7 @@
-import DefaultText from '@/styles/Text';
+import { DefaultText } from '@/styles';
 import React from 'react';
 import styled from 'styled-components/native';
-import { rWidth } from '@/utils/style';
+import { rWidth } from '@/utils';
 import { HomeDropdownItem } from '@/types/homeDropdown';
 import { postSignout } from '@/apis/auth';
 import { persistor } from '@/redux/store/storeConfig';

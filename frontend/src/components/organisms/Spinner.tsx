@@ -1,4 +1,4 @@
-import Overlay from '@/styles/View';
+import { Overlay } from '@/styles';
 import theme from '@/styles/theme';
 import React from 'react';
 import { ActivityIndicator, Modal } from 'react-native';

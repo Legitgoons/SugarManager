@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Calendar from '@/components/organisms/Calendar';
 import ChanllengeCard from '@/components/molecules/ChallengeCard';
 import HomeInfoCard from '@/components/molecules/HomeInfoCard';
@@ -5,13 +6,16 @@ import HomeGroupBar from '@/components/organisms/HomeGroupBar';
 import HomeHeader from '@/components/organisms/HomeHeader';
 import HomeNoneGroupBar from '@/components/organisms/HomeNoneGroupBar';
 import { selectUser } from '@/redux/slice/userSlice';
-import { rHeight } from '@/utils/style';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { rHeight } from '@/utils';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import DailyInfoModal from '@/components/organisms/DailyInfoModal';
 import useRouter from '@/hooks/useRouter';
+import { selectNavigation, setNavigation } from '@/redux/slice/navigationSlice';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getChallengeList } from '@/apis';
 
 const HomeContainer = styled.View`
   padding: ${rHeight(30)}px 0;
@@ -28,9 +32,8 @@ const HomeCardBox = styled.View`
 `;
 
 export default function HomeScreen() {
-  const curDate = new Date();
   const router = useRouter();
-  const { groupCode } = useSelector(selectUser);
+  const curDate = new Date();
   const [time, setTime] = useState<{
     year: number;
     month: number;
@@ -41,13 +44,28 @@ export default function HomeScreen() {
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
+
+  const dispatch = useDispatch();
+  const { groupCode, nickname: myNickname } = useSelector(selectUser);
+  const { nickname } = useSelector(selectNavigation);
+
+  useSuspenseQuery({
+    queryKey: ['getChallengeList', nickname],
+    queryFn: () => getChallengeList(nickname),
+    staleTime: 1000 * 60 * 100,
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    dispatch(setNavigation({ isMine: true, myNickname }));
+  }, []);
+
   return (
     <>
       <ScrollView style={{ flex: 1 }}>
         <HomeContainer>
           <HomeHeader />
-          {groupCode !== '' ? <HomeGroupBar /> : <HomeNoneGroupBar />}
-
+          {groupCode ? <HomeGroupBar /> : <HomeNoneGroupBar />}
           <Calendar
             time={time}
             setTime={setTime}
@@ -68,7 +86,10 @@ export default function HomeScreen() {
               title="챌린지 - 오늘의 달성도"
               leftNumeric="3개"
               rightNumeric="5개"
-              button="view"
+              buttonType="view"
+              onPressButton={() => {
+                router.navigate('ChallengeInfo');
+              }}
               onPress={() => {
                 router.navigate('ChallengeInfo');
               }}

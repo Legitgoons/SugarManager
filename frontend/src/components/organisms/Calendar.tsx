@@ -1,8 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import styled from 'styled-components/native';
-import getMonthObj from '@/utils/time';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight, getMonthObj } from '@/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';

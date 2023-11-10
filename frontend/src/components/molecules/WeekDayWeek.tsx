@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import weekDayArr from '@/config/weekConfig';
-import { rWidth } from '@/utils/style';
+import { rWidth } from '@/utils';
 import WeekDay from '../atoms/WeekDay';
 
 const WeekDayWeekWrapper = styled.View`

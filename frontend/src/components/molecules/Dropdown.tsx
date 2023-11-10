@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Pressable, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 
 interface DropdownItem {
   id: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 
 const SquareBoxWrapper = styled.View<{ type: 'safety' | 'warning' | 'danger' }>`
   width: ${rWidth(44)}px;

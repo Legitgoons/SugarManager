@@ -1,8 +1,14 @@
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
+import {
+  NavigationSliceStateType,
+  setNavigation,
+} from '@/redux/slice/navigationSlice';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import getGroup from '@/apis/group';
 import ProfileList from '../molecules/ProfileList';
 import ProfileButton from '../atoms/ProfileButton';
 
@@ -24,14 +30,40 @@ const MidLine = styled.View`
 `;
 
 export default function HomeGroupBar() {
-  const { profileImg } = useSelector(selectUser);
+  const { data } = useSuspenseQuery({
+    queryKey: ['getGroupList'],
+    queryFn: () => getGroup(),
+    staleTime: 1000 * 60 * 100,
+    refetchOnWindowFocus: false,
+  });
+  const { response } = data;
+  const { profileImg, nickname: myNickname } = useSelector(selectUser);
   const [selectPerson, setSelectPerson] = useState<string>('');
+  const dispatch = useDispatch();
+  const handleClickProfile = ({
+    isMine,
+    nickname,
+  }: NavigationSliceStateType) => {
+    dispatch(
+      setNavigation({
+        nickname,
+        isMine,
+      })
+    );
+  };
   return (
     <HomeGroupBarBox>
-      <ProfileButton imgUrl={profileImg} onPress={() => {}} isFocus />
+      <ProfileButton
+        imgUrl={profileImg}
+        onPress={() =>
+          handleClickProfile({ isMine: true, nickname: myNickname })
+        }
+        isFocus={selectPerson === myNickname}
+      />
       <MidLine />
       <ProfileList
-        list={[]}
+        onPress={handleClickProfile}
+        list={response}
         person={selectPerson}
         setPerson={setSelectPerson}
       />

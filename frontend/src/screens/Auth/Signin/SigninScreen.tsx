@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import OAuthButton from '@/components/atoms/OAuthButton';
 import TitleHeader from '@/components/molecules/TitleHeader';
-import DefaultScreenContainer from '@/styles/Container';
+import { DefaultScreenContainer } from '@/styles';
 import React from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
@@ -10,8 +10,8 @@ import { postKakaoSignin } from '@/apis/auth';
 import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import showAlert from '@/utils/alert';
-import { rHeight } from '@/utils/style';
-import getMyProfile from '@/apis/member';
+import { rHeight } from '@/utils';
+import { getMyProfile } from '@/apis/member';
 import useRouter from '@/hooks/useRouter';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`

@@ -1,10 +1,10 @@
-import DefaultPressable from '@/styles/Pressable';
+import { DefaultPressable } from '@/styles';
 import DefaultPressableProps from '@/types/pressable';
 import React from 'react';
 import styled from 'styled-components/native';
 import { SvgProps } from 'react-native-svg';
 import { Text } from 'react-native';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 
 interface OAuthButtonProps extends DefaultPressableProps {
   OAuthIcon: React.FC<SvgProps>;

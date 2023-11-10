@@ -1,9 +1,8 @@
-import DefaultCard from '@/styles/Card';
-import DefaultText from '@/styles/Text';
+import { DefaultCard, DefaultText } from '@/styles';
 import React from 'react';
 import BlackRightArrowButton from '@/assets/icon/BlackRightArrowIcon.svg';
 import styled from 'styled-components/native';
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 import { View } from 'react-native';
 
 const HomeInfoCardContainer = styled(DefaultCard)`
