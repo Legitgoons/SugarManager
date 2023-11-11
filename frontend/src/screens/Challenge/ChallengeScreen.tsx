@@ -79,11 +79,11 @@ export default function ChallengeScreen() {
 
   const { response } = data;
   const totalNumericArr = checkChallengeProcess(response);
-
   const handleDeleteCard = async () => {
     mutation.mutate();
     setDeleteList(() => ({}));
   };
+
   return (
     <PageLayout>
       <ScrollView style={{ flex: 1 }}>
@@ -92,7 +92,6 @@ export default function ChallengeScreen() {
             title="챌린지-오늘의 달성도"
             leftNumeric={`${totalNumericArr[0]}회`}
             rightNumeric={`${totalNumericArr[1]}회`}
-            buttonType="record"
             onPress={() => {}}
             onPressButton={() => {}}
           />
@@ -121,55 +120,56 @@ export default function ChallengeScreen() {
                 ))}
             </ContentHeaderWrapper>
             {response ? (
-              response.map(
-                ({ challenge_pk: challengePK, title, count, goal }: any) => {
-                  if (isMine) {
-                    return mode === 'view' ? (
-                      <ChanllengeCard
-                        title={title}
-                        leftNumeric={`${count}회`}
-                        rightNumeric={`${goal}회`}
-                        buttonType="view"
-                        onPress={() => {
-                          router.navigate('ChallengeDetail');
-                        }}
-                        onPressButton={() => {
-                          router.navigate('ChallengeDetail');
-                        }}
-                      />
-                    ) : (
-                      <ChallengeCheckCard
-                        onPress={() => {
-                          setDeleteList((prev) => ({
-                            ...prev,
-                            [challengePK]: !prev[challengePK],
-                          }));
-                        }}
-                        state={deleteList}
-                        challengePK={challengePK}
-                        title={title}
-                      />
-                    );
-                  }
-                  // 남의 것
-                  return (
+              response.map(({ challengePk, title, count, goal }: any) => {
+                if (isMine) {
+                  return mode === 'view' ? (
                     <ChanllengeCard
+                      key={`C_MINE_VIEW_${challengePk}`}
                       title={title}
                       leftNumeric={`${count}회`}
                       rightNumeric={`${goal}회`}
-                      buttonType="otherAlarm"
-                      buttonTitle="콕!찌르기"
-                      onPressButton={() => {
-                        postMemberPoke({
-                          nickname,
-                          category: 'CHALLENGE',
-                          challengeId: challengePK,
-                        });
+                      buttonType="view"
+                      onPress={() => {
+                        router.navigate('ChallengeDetail');
                       }}
+                      onPressButton={() => {
+                        router.navigate('ChallengeDetail');
+                      }}
+                    />
+                  ) : (
+                    <ChallengeCheckCard
+                      key={`C_MINE_MODIFY_${challengePk}`}
+                      onPress={() => {
+                        setDeleteList((prev) => ({
+                          ...prev,
+                          [challengePk]: !prev[challengePk],
+                        }));
+                      }}
+                      state={deleteList}
+                      challengePK={challengePk}
+                      title={title}
                     />
                   );
                 }
-              )
+                // 남의 것
+                return (
+                  <ChanllengeCard
+                    key={`C_OTHER_VIEW_${challengePk}`}
+                    title={title}
+                    leftNumeric={`${count}회`}
+                    rightNumeric={`${goal}회`}
+                    buttonType="otherAlarm"
+                    buttonTitle="콕!찌르기"
+                    onPressButton={() => {
+                      postMemberPoke({
+                        nickname,
+                        category: 'CHALLENGE',
+                        challengeId: challengePk,
+                      });
+                    }}
+                  />
+                );
+              })
             ) : (
               <ContentNoneTextWrapper typography="h3r" color="secondary">
                 챌린지를 추가해보세요!
