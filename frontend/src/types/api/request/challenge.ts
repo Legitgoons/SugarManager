@@ -10,5 +10,6 @@ interface PostChallengeAddProps {
   hour: number;
   minute: number;
   days: Week[];
+  userPK: string;
 }
 export type { ChallengeTypeEnum, PostChallengeAddProps };

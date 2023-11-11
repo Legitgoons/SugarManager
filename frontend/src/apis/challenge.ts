@@ -1,4 +1,4 @@
-import PostChallengeAddProps from '@/types/api/request/challenge';
+import { PostChallengeAddProps } from '@/types/api/request/challenge';
 import { fetchWithAuth } from '@/utils';
 
 const getChallengeList = (nickname: string) =>
