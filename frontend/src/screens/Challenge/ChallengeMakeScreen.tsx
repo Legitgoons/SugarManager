@@ -157,7 +157,7 @@ export default function ChallengeMakeScreen() {
         hour: alarmHour ? extractNumber(alarmHour.id) : 0,
         minute: alarmMinute ? extractNumber(alarmMinute.id) : 0,
         days: getAlertWeekDays(),
-        userPK: uid,
+        userPk: uid,
       },
       {
         onSuccess() {

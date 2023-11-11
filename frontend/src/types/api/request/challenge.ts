@@ -1,4 +1,4 @@
-import { Week } from '@/types/week';
+import Week from '@/types/week';
 
 type ChallengeTypeEnum = 'CUSTOM' | 'WALK' | 'CHECK';
 
@@ -10,6 +10,6 @@ interface PostChallengeAddProps {
   hour: number;
   minute: number;
   days: Week[];
-  userPK: string;
+  userPk: string;
 }
 export type { ChallengeTypeEnum, PostChallengeAddProps };
