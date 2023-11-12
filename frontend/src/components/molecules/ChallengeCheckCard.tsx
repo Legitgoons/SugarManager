@@ -41,7 +41,10 @@ export default function ChallengeCheckCard({
       }}
     >
       <CardBox>
-        <CheckViewBox isChecked={state[challengePK]} />
+        <CheckViewBox
+          isChecked={state[challengePK]}
+          onPress={() => onPress(challengePK)}
+        />
         <CardTitleWrapper typography="h2r" color="black">
           {title}
         </CardTitleWrapper>

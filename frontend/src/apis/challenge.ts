@@ -1,14 +1,17 @@
-import { PostChallengeAddProps } from '@/types/api/request/challenge';
+import {
+  PostChallengeAddProps,
+  PostChallengeDeleteProps,
+} from '@/types/api/request/challenge';
 import { fetchWithAuth } from '@/utils';
 
 const getChallengeList = (nickname: string) =>
-  fetchWithAuth(`/challenge/${nickname}`);
+  fetchWithAuth(`/challenge/user/${nickname}`);
 
-const postChallengeDelete = (challengePK: Array<string>) =>
+const postChallengeDelete = (challengePKArr: Array<PostChallengeDeleteProps>) =>
   fetchWithAuth(`/challenge/delete`, {
     method: 'POST',
     body: {
-      challenge_pk: challengePK,
+      deleteList: challengePKArr,
     },
   });
 

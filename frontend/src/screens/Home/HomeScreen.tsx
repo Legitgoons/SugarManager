@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Calendar from '@/components/organisms/Calendar';
 import ChanllengeCard from '@/components/molecules/ChallengeCard';
 import HomeInfoCard from '@/components/molecules/HomeInfoCard';
@@ -7,13 +6,13 @@ import HomeHeader from '@/components/organisms/HomeHeader';
 import HomeNoneGroupBar from '@/components/organisms/HomeNoneGroupBar';
 import { selectUser } from '@/redux/slice/userSlice';
 import { rHeight } from '@/utils';
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import DailyInfoModal from '@/components/organisms/DailyInfoModal';
 import useRouter from '@/hooks/useRouter';
-import { selectNavigation, setNavigation } from '@/redux/slice/navigationSlice';
+import { selectNavigation } from '@/redux/slice/navigationSlice';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getChallengeList } from '@/apis';
 
@@ -45,18 +44,12 @@ export default function HomeScreen() {
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
 
-  const dispatch = useDispatch();
-  const { groupCode, nickname: myNickname } = useSelector(selectUser);
+  const { groupCode } = useSelector(selectUser);
   const { nickname } = useSelector(selectNavigation);
   useSuspenseQuery({
     queryKey: ['getChallengeList', nickname],
     queryFn: () => getChallengeList(nickname),
-    staleTime: 1000 * 60 * 100,
-    refetchOnWindowFocus: false,
   });
-  useEffect(() => {
-    dispatch(setNavigation({ isMine: true, nickname: myNickname }));
-  }, []);
 
   return (
     <>

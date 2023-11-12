@@ -8,8 +8,8 @@ const persistSetting = {
   key: 'root',
   storage: AsyncStorage,
   version: 0,
-  whitelist: ['user'],
-  blacklist: ['navigation'],
+  whitelist: ['user', 'navigation'],
+  blacklist: [],
 };
 const combinedReducers = combineReducers({
   user: userSliceReducer,

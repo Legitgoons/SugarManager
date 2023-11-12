@@ -11,14 +11,13 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postChallengeAdd } from '@/apis/challenge';
 import { useSelector } from 'react-redux';
+import useRouter from '@/hooks/useRouter';
+import InputLine from '@/components/molecules/InputLine';
+import { selectUser } from '@/redux/slice/userSlice';
 import {
   PostChallengeAddProps,
   ChallengeTypeEnum,
 } from '@/types/api/request/challenge';
-import useRouter from '@/hooks/useRouter';
-import InputLine from '@/components/molecules/InputLine';
-import { selectNavigation } from '@/redux/slice/navigationSlice';
-import { selectUser } from '@/redux/slice/userSlice';
 import extractNumber from '../../utils/number';
 
 const ChallengeMakeScreenContainer = styled(DefaultScreenContainer)`
@@ -64,10 +63,9 @@ interface DropdownItem {
   value: string;
 }
 export default function ChallengeMakeScreen() {
-  const { uid } = useSelector(selectUser);
+  const { uid, nickname } = useSelector(selectUser);
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { nickname } = useSelector(selectNavigation);
   const [challengeType, setChallengeType] = useState<{
     id: string;
     value: string;

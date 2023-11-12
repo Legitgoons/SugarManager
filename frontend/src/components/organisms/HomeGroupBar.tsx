@@ -37,17 +37,23 @@ export default function HomeGroupBar() {
     refetchOnWindowFocus: false,
   });
   const { response } = data;
-  const { profileImg, nickname: myNickname } = useSelector(selectUser);
+  const {
+    profileImg,
+    nickname: myNickname,
+    uid: myUid,
+  } = useSelector(selectUser);
   const [selectPerson, setSelectPerson] = useState<string>('');
   const dispatch = useDispatch();
   const handleClickProfile = ({
     isMine,
     nickname,
+    uid,
   }: NavigationSliceStateType) => {
     dispatch(
       setNavigation({
         nickname,
         isMine,
+        uid,
       })
     );
   };
@@ -56,7 +62,7 @@ export default function HomeGroupBar() {
       <ProfileButton
         imgUrl={profileImg}
         onPress={() =>
-          handleClickProfile({ isMine: true, nickname: myNickname })
+          handleClickProfile({ isMine: true, nickname: myNickname, uid: myUid })
         }
         isFocus={selectPerson === myNickname}
       />
