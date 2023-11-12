@@ -21,10 +21,11 @@ const CheckedViewIndicator = styled.View`
 
 interface CheckViewBoxProps {
   isChecked: boolean;
+  onPress: () => void;
 }
-function CheckViewBox({ isChecked }: CheckViewBoxProps) {
+function CheckViewBox({ isChecked, onPress }: CheckViewBoxProps) {
   return (
-    <CheckViewBoxContainer>
+    <CheckViewBoxContainer onPress={onPress}>
       {isChecked && <CheckedViewIndicator />}
     </CheckViewBoxContainer>
   );
