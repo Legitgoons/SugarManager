@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 
 export interface NavigationSliceStateType {
   uid: number;
@@ -19,6 +20,9 @@ const navigationSlice = createSlice({
       state.nickname = action.payload.nickname;
       state.isMine = action.payload.isMine;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState);
   },
 });
 
