@@ -16,7 +16,7 @@ const ToggleButtonWrapper = styled(DefaultPressable)<ToggleButtonProps>`
 `;
 
 const ButtonTitleWrapper = styled.Text<{ isActive: boolean }>`
-  ${({ theme }) => theme.typography.p2b}
+  ${({ theme }) => theme.typographys.p2b}
   color : ${({ isActive, theme }) =>
     isActive ? theme.colors.black : theme.colors.primary};
 `;

@@ -18,7 +18,7 @@ const DatePickerBox = styled.View`
 `;
 
 const BoxTextWrapper = styled.Text`
-  ${({ theme }) => theme.typography.p2r};
+  ${({ theme }) => theme.typographys.p2r};
   color: ${({ theme }) => theme.colors.primary};
 `;
 

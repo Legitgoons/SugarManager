@@ -8,7 +8,7 @@ interface DatePickerFormatWrapperProps {
 }
 
 const DatePickerFormatWrapper = styled.Text<DatePickerFormatWrapperProps>`
-  ${({ theme, typography }) => theme.typography[typography]}
+  ${({ theme, typography }) => theme.typographys[typography]}
   color : ${({ theme, color }) => theme.colors[color]};
 `;
 
