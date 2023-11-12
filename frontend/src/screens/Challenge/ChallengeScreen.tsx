@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import ChanllengeCard from '@/components/molecules/ChallengeCard';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import {
   NavigationSliceStateType,
@@ -14,7 +15,8 @@ import { DefaultText } from '@/styles';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import ChallengeCheckCard from '@/components/molecules/ChallengeCheckCard';
 import useRouter from '@/hooks/useRouter';
-import { postMemberPoke } from '@/apis';
+import { postChallengeDelete, postMemberPoke } from '@/apis';
+import { PostChallengeDeleteProps } from '@/types/api/request/challenge';
 
 const PageLayout = styled.View`
   flex: 1;
@@ -52,10 +54,10 @@ const DownButtonWrapper = styled.View`
 
 type ChallengeScreenMode = 'view' | 'modify';
 
-function checkChallengeProcess(response: any) {
-  if (response === undefined || response.length === 0) return [0, 0];
+function checkChallengeProcess(challengeList: any) {
+  if (challengeList === undefined || challengeList.length === 0) return [0, 0];
   const checkArr = [0, 0];
-  response.forEach(({ count, goal }: { count: number; goal: number }) => {
+  challengeList.forEach(({ count, goal }: { count: number; goal: number }) => {
     checkArr[1] += 1;
     checkArr[0] += count === goal ? 1 : 0;
   });
@@ -64,24 +66,42 @@ function checkChallengeProcess(response: any) {
 
 export default function ChallengeScreen() {
   const router = useRouter();
-  const mutation = {
-    mutate: () => {
-      return { response: 'success' };
-    },
-  };
+  const mutation = useMutation({
+    mutationFn: (lastDeleteList: Array<PostChallengeDeleteProps>) =>
+      postChallengeDelete(lastDeleteList),
+  });
   const [deleteList, setDeleteList] = useState<Record<string, boolean>>({});
-  const { uid, nickname, isMine }: NavigationSliceStateType =
+  const { nickname, isMine }: NavigationSliceStateType =
     useSelector(selectNavigation);
   const [mode, setMode] = useState<ChallengeScreenMode>('view');
 
   const queryClient = useQueryClient();
-  const data: any = queryClient.getQueryData(['getChallengeList', uid]);
+  const { response }: any = queryClient.getQueryData([
+    'getChallengeList',
+    nickname,
+  ]);
+  const challengeList = response.list;
+  const totalNumericArr = checkChallengeProcess(challengeList);
 
-  const { response } = data;
-  const totalNumericArr = checkChallengeProcess(response);
   const handleDeleteCard = async () => {
-    mutation.mutate();
-    setDeleteList(() => ({}));
+    const list = Object.entries(deleteList)
+      .filter(([_, v]) => v)
+      .map(([k, _]) => ({ challengePk: Number(k), nickname }));
+    mutation.mutate(list, {
+      onSuccess() {
+        queryClient.invalidateQueries({
+          queryKey: ['getChallengeList', nickname],
+        });
+        console.log(
+          queryClient.getQueryData({ queryKey: ['getChallengeList', nickname] })
+        );
+        setDeleteList(() => ({}));
+        setMode('view');
+      },
+      onError() {
+        console.log('에러!');
+      },
+    });
   };
 
   return (
@@ -100,29 +120,28 @@ export default function ChallengeScreen() {
               <ContentHeaderTextWrapper color="black" typography="h4r">
                 하루 챌린지 항목
               </ContentHeaderTextWrapper>
-              {isMine &&
-                (mode === 'view' ? (
-                  <SubOutlineButton
-                    borderColor="red"
-                    onPress={() => {
-                      setMode('modify');
-                    }}
-                    title="편집하기"
-                  />
-                ) : (
-                  <SubOutlineButton
-                    borderColor="b4"
-                    onPress={() => {
-                      setMode('view');
-                    }}
-                    title="조회하기"
-                  />
-                ))}
+              {mode === 'view' ? (
+                <SubOutlineButton
+                  borderColor="red"
+                  onPress={() => {
+                    setMode('modify');
+                  }}
+                  title="편집하기"
+                />
+              ) : (
+                <SubOutlineButton
+                  borderColor="b4"
+                  onPress={() => {
+                    setMode('view');
+                  }}
+                  title="조회하기"
+                />
+              )}
             </ContentHeaderWrapper>
-            {response ? (
-              response.map(({ challengePk, title, count, goal }: any) => {
-                if (isMine) {
-                  return mode === 'view' ? (
+            {response && challengeList ? (
+              challengeList.map(({ challengePk, title, count, goal }: any) => {
+                if (mode === 'view') {
+                  return isMine ? (
                     <ChanllengeCard
                       key={`C_MINE_VIEW_${challengePk}`}
                       title={title}
@@ -137,36 +156,36 @@ export default function ChallengeScreen() {
                       }}
                     />
                   ) : (
-                    <ChallengeCheckCard
-                      key={`C_MINE_MODIFY_${challengePk}`}
-                      onPress={() => {
-                        setDeleteList((prev) => ({
-                          ...prev,
-                          [challengePk]: !prev[challengePk],
-                        }));
-                      }}
-                      state={deleteList}
-                      challengePK={challengePk}
+                    <ChanllengeCard
+                      key={`C_OTHER_VIEW_${challengePk}`}
                       title={title}
+                      leftNumeric={`${count}회`}
+                      rightNumeric={`${goal}회`}
+                      buttonType="otherAlarm"
+                      buttonTitle="콕!찌르기"
+                      onPressButton={() => {
+                        postMemberPoke({
+                          nickname,
+                          category: 'CHALLENGE',
+                          challengeId: challengePk,
+                        });
+                      }}
                     />
                   );
                 }
-                // 남의 것
+
                 return (
-                  <ChanllengeCard
-                    key={`C_OTHER_VIEW_${challengePk}`}
-                    title={title}
-                    leftNumeric={`${count}회`}
-                    rightNumeric={`${goal}회`}
-                    buttonType="otherAlarm"
-                    buttonTitle="콕!찌르기"
-                    onPressButton={() => {
-                      postMemberPoke({
-                        nickname,
-                        category: 'CHALLENGE',
-                        challengeId: challengePk,
-                      });
+                  <ChallengeCheckCard
+                    key={`C_MINE_MODIFY_${challengePk}`}
+                    onPress={() => {
+                      setDeleteList((prev) => ({
+                        ...prev,
+                        [challengePk]: !prev[challengePk],
+                      }));
                     }}
+                    state={deleteList}
+                    challengePK={challengePk}
+                    title={title}
                   />
                 );
               })

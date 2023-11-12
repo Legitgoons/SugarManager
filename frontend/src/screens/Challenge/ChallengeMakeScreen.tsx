@@ -63,7 +63,7 @@ interface DropdownItem {
   value: string;
 }
 export default function ChallengeMakeScreen() {
-  const { uid } = useSelector(selectUser);
+  const { uid, nickname } = useSelector(selectUser);
   const queryClient = useQueryClient();
   const router = useRouter();
   const [challengeType, setChallengeType] = useState<{
@@ -160,7 +160,7 @@ export default function ChallengeMakeScreen() {
       {
         onSuccess() {
           queryClient.invalidateQueries({
-            queryKey: ['getChallengeList', uid],
+            queryKey: ['getChallengeList', nickname],
           });
           showAlert({
             title: '등록 성공',
