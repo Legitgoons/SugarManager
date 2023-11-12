@@ -13,6 +13,7 @@ import showAlert from '@/utils/alert';
 import { rHeight } from '@/utils';
 import { getMyProfile } from '@/apis/member';
 import useRouter from '@/hooks/useRouter';
+import { setNavigation } from '@/redux/slice/navigationSlice';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -57,6 +58,13 @@ export default function SigninScreen() {
       const myProfile = await getMyProfile();
       if (myProfile.error === null) {
         dispatch(setProfile({ ...myProfile.response }));
+        dispatch(
+          setNavigation({
+            isMine: true,
+            uid: myProfile.response.uid,
+            nickname: myProfile.response.nickname,
+          })
+        );
         router.navigate('Home');
       } else {
         showAlert({

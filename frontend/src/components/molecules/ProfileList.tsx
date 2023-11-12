@@ -27,7 +27,7 @@ export default function ProfileList({
           imgUrl={profileUrl}
           onPress={() => {
             setPerson(nickname);
-            onPress({ isMine: false, nickname });
+            onPress({ isMine: false, nickname, uid: Number(uid) });
           }}
           isFocus={person === nickname}
         />

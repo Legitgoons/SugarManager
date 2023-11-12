@@ -1,5 +1,5 @@
 import { getTimelineDetail } from '@/apis/timeline';
-import { selectUser } from '@/redux/slice/userSlice';
+import { selectNavigation } from '@/redux/slice/navigationSlice';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import {
@@ -34,11 +34,11 @@ interface DailyInfoModalProps {
   };
 }
 function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
-  const { nickname } = useSelector(selectUser);
+  const { uid } = useSelector(selectNavigation);
   const { year, month, day } = time;
   const { data, isLoading } = useQuery({
-    queryKey: ['getTimelineDetail', nickname, time],
-    queryFn: () => getTimelineDetail({ nickname, year, month, day }),
+    queryKey: ['getTimelineDetail', uid, time],
+    queryFn: () => getTimelineDetail({ userPk: uid, year, month, day }),
     enabled: day > 0 && isOpen,
     refetchOnWindowFocus: false,
   });

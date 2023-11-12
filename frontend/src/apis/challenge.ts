@@ -1,7 +1,7 @@
 import { fetchWithAuth } from '@/utils';
 
-const getChallengeList = (nickname: string) =>
-  fetchWithAuth(`/challenge/${nickname}`);
+const getChallengeList = (userPk: string) =>
+  fetchWithAuth(`/challenge/user/${userPk}`);
 
 const postChallengeDelete = (challengePK: Array<string>) =>
   fetchWithAuth(`/challenge/delete`, {
