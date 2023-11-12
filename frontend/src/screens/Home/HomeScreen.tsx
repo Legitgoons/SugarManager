@@ -48,16 +48,14 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const { groupCode, nickname: myNickname } = useSelector(selectUser);
   const { nickname } = useSelector(selectNavigation);
-
   useSuspenseQuery({
     queryKey: ['getChallengeList', nickname],
     queryFn: () => getChallengeList(nickname),
     staleTime: 1000 * 60 * 100,
     refetchOnWindowFocus: false,
   });
-
   useEffect(() => {
-    dispatch(setNavigation({ isMine: true, myNickname }));
+    dispatch(setNavigation({ isMine: true, nickname: myNickname }));
   }, []);
 
   return (

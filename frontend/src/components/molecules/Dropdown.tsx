@@ -60,6 +60,8 @@ const DropdownListContainer = styled.View`
   top: 100%;
   border-radius: 10px;
   overflow: hidden;
+  z-index: 1;
+  max-height: ${rHeight(80 * 3)}px;
 `;
 const ListItem = styled(Pressable)`
   width: ${rWidth(120)}px;
