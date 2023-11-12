@@ -12,4 +12,13 @@ interface PostChallengeAddProps {
   days: Week[];
   userPk: string;
 }
-export type { ChallengeTypeEnum, PostChallengeAddProps };
+
+interface PostChallengeDeleteProps {
+  nickname: string;
+  challengePk: number;
+}
+export type {
+  ChallengeTypeEnum,
+  PostChallengeAddProps,
+  PostChallengeDeleteProps,
+};
