@@ -45,12 +45,10 @@ export default function HomeScreen() {
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
 
   const { groupCode } = useSelector(selectUser);
-  const { uid } = useSelector(selectNavigation);
+  const { nickname } = useSelector(selectNavigation);
   useSuspenseQuery({
-    queryKey: ['getChallengeList', uid],
-    queryFn: () => getChallengeList(uid),
-    staleTime: 1000 * 60 * 100,
-    refetchOnWindowFocus: false,
+    queryKey: ['getChallengeList', nickname],
+    queryFn: () => getChallengeList(nickname),
   });
 
   return (
