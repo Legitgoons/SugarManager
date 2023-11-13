@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { rWidth } from '@/utils';
 import { HomeDropdownItem } from '@/types/homeDropdown';
-import { postSignout } from '@/apis/auth';
 import { persistor } from '@/redux/store/storeConfig';
 import useRouter from '@/hooks/useRouter';
 import HomeDropDown from '../molecules/HomeDropdown';
@@ -25,7 +24,6 @@ export default function HomeHeader() {
   ];
   const router = useRouter();
   const handleSignOut = async () => {
-    await postSignout();
     await persistor.purge();
     router.navigate('Signin');
   };

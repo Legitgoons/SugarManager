@@ -34,8 +34,10 @@ export default function Input<T extends string | number>({
   unit,
   maxLength,
   keyboardType,
+  editable,
 }: InputProps<T>) {
   const handleChange = (text: string) => {
+    if (!onChangeText) return;
     if (typeof value === 'number') {
       const numericValue = text === '' ? 0 : Number(text);
       onChangeText(numericValue as T);
@@ -43,7 +45,6 @@ export default function Input<T extends string | number>({
       onChangeText(text as T);
     }
   };
-
   return (
     <InputBox>
       <InputWrapper
@@ -52,6 +53,7 @@ export default function Input<T extends string | number>({
         onChangeText={handleChange}
         maxLength={maxLength}
         keyboardType={keyboardType || 'default'}
+        editable={editable}
       />
       {unit && <InputUnitWrapper>{unit}</InputUnitWrapper>}
     </InputBox>

@@ -8,13 +8,15 @@ import { KeyboardTypeOptions } from 'react-native';
  * @param {String} unit Input 우측에 보여줄 값
  * @param {number} maxLength Input text의 최대 길이
  * @param {KeyboardTypeOptions} keyboardType input text의 기본 타입
+ * @param {boolean} editable input 입력 가능 여부
  */
 
 export default interface DefaultInputProps<T extends string | number> {
   placeholder: string;
   value: T;
-  onChangeText: React.Dispatch<React.SetStateAction<T>>;
+  onChangeText?: React.Dispatch<React.SetStateAction<T>>;
   unit?: string;
   maxLength?: number;
   keyboardType?: KeyboardTypeOptions | undefined;
+  editable?: boolean;
 }

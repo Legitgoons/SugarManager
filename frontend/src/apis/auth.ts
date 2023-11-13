@@ -1,9 +1,8 @@
-import { fetchWithAuth } from '@/utils';
 import { API_ENDPOINT } from '@env';
 
 interface SigninProps {
-  access_token: string;
-  fcm_token: string;
+  accessToken: string;
+  fcmToken: string;
 }
 
 const postKakaoSignin = async (props: SigninProps) => {
@@ -20,6 +19,4 @@ const postKakaoSignin = async (props: SigninProps) => {
   }
 };
 
-const postSignout = () => fetchWithAuth(`/auth/logout`);
-
-export { postKakaoSignin, postSignout };
+export default postKakaoSignin;

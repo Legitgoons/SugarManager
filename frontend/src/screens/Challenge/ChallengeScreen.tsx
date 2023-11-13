@@ -92,9 +92,6 @@ export default function ChallengeScreen() {
         queryClient.invalidateQueries({
           queryKey: ['getChallengeList', nickname],
         });
-        console.log(
-          queryClient.getQueryData({ queryKey: ['getChallengeList', nickname] })
-        );
         setDeleteList(() => ({}));
         setMode('view');
       },
@@ -149,10 +146,10 @@ export default function ChallengeScreen() {
                       rightNumeric={`${goal}회`}
                       buttonType="view"
                       onPress={() => {
-                        router.navigate('ChallengeDetail');
+                        router.navigate('ChallengeDetail', { challengePk });
                       }}
                       onPressButton={() => {
-                        router.navigate('ChallengeDetail');
+                        router.navigate('ChallengeDetail', { challengePk });
                       }}
                     />
                   ) : (

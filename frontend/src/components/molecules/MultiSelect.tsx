@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Week } from '@/types/week';
+import Week from '@/types/week';
 import { rWidth } from '@/utils';
 import TextButton from '../atoms/TextButton';
 
 interface MultiSelectProps<T extends string | number | symbol | Week> {
   subject: string;
   items: Record<T, boolean>;
-  setItems: React.Dispatch<React.SetStateAction<Record<T, boolean>>>;
+  setItems?: React.Dispatch<React.SetStateAction<Record<T, boolean>>>;
 }
 
 const MultiSelectContainer = styled.View`
@@ -22,6 +22,7 @@ function MultiSelect<T extends string | number | symbol | Week>({
   setItems,
 }: MultiSelectProps<T>) {
   const handleClickText = (item: T) => {
+    if (!setItems) return;
     setItems((prev) => ({ ...prev, [item]: !prev[item] }));
   };
 
