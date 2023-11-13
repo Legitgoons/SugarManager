@@ -15,7 +15,7 @@ const InputBox = styled.View`
 `;
 
 const InputWrapper = styled.TextInput`
-  width: ${rWidth(280)}px;
+  width: ${rWidth(240)}px;
   height: ${rHeight(40)}px;
 `;
 
