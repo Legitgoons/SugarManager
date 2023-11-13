@@ -12,13 +12,13 @@ const CalendarCardBox = styled(DefaultCalendarCard)`
 `;
 
 const CalendarDatePickerButton = styled(DefaultPressable)`
-  width: ${rWidth(100)}px;
-  height: ${rHeight(45)}px;
+  width: ${rWidth(152)}px;
+  height: ${rHeight(60)}px;
   flex-direction: column;
 `;
 
 const DatePickerButtonTextWrapper = styled.Text`
-  ${({ theme }) => theme.typography.captionr}
+  ${({ theme }) => theme.typographys.captionr}
   color : ${({ theme }) => theme.colors.primary};
 `;
 
@@ -41,10 +41,7 @@ export default function CalendarDatePicker({
 
   return (
     <CalendarCardBox size="sm">
-      <CalendarDatePickerButton
-        onPress={() => setOpen(true)}
-        bgColor="tertiary"
-      >
+      <CalendarDatePickerButton onPress={() => setOpen(true)} bgColor="white">
         <DatePickerFormat
           color="black"
           date={date}
