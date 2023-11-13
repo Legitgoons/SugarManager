@@ -4,4 +4,10 @@ interface PostMemberPokeProps {
   challengeId: string;
 }
 
-export default PostMemberPokeProps;
+interface PostAlarmSaveProps {
+  category: string;
+  status: boolean;
+  hour: number | null;
+}
+
+export type { PostMemberPokeProps, PostAlarmSaveProps };
