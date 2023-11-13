@@ -18,15 +18,17 @@ const ButtonTitleWrapper = styled.Text`
 interface MainFillButtonProps extends DefaultPressableProps {
   title: string;
   bgColor: keyof ColorType;
+  disabled?: boolean;
 }
 
 export default function MainFillButton({
   title,
   bgColor,
   onPress,
+  disabled = false,
 }: MainFillButtonProps) {
   return (
-    <MainFillButtonBox bgColor={bgColor} onPress={onPress}>
+    <MainFillButtonBox bgColor={bgColor} onPress={onPress} disabled={disabled}>
       <ButtonTitleWrapper>{title}</ButtonTitleWrapper>
     </MainFillButtonBox>
   );

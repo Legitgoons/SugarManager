@@ -2,7 +2,8 @@ export type RootStackParam = {
   Home: undefined;
   Signin: undefined;
   ChallengeInfo: undefined;
-  BloodSugarInfo: undefined;
+  BloodSugar: undefined;
+  BloodSugarWrite: undefined;
   MealInfo: undefined;
   ChallengeDetail: undefined;
   ChallengeMake: undefined;

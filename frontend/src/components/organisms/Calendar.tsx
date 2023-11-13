@@ -8,7 +8,7 @@ import { getTimelineState } from '@/apis/timeline';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
-import CalendarHeader from '../molecules/CalendarHeader';
+import CalendarCard from '../molecules/CalendarCard';
 
 const CalendarContainer = styled.View`
   display: flex;
@@ -93,7 +93,7 @@ export default function Calendar({ time, setTime, onPress }: CalendarProps) {
 
   return (
     <CalendarContainer>
-      <CalendarHeader
+      <CalendarCard
         onClickLeft={handleMinusDate}
         onClickRight={handleAddDate}
         title={`${year}.${month}`}

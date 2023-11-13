@@ -37,7 +37,7 @@ const ModalBox = styled.View`
 
 const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
   color: ${({ theme }) => theme.colors.black};
-  ${({ fontSize, theme }) => theme.typography[fontSize]};
+  ${({ fontSize, theme }) => theme.typographys[fontSize]};
   width: 100%;
   height: ${rHeight(32)}px;
   background-color: white;
