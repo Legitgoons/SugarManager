@@ -107,7 +107,7 @@ export default function Navigation({ Stack }: { Stack: any }) {
               options={{ title: '챌린지 생성', headerTitleAlign: 'center' }}
             />
             <Stack.Screen
-              name="AlarmSetting"
+              name="Alarm"
               component={SuspenseAlarmSettingScreen}
               options={{ title: '알람 설정', headerTitleAlign: 'center' }}
             />
