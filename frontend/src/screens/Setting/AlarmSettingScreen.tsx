@@ -3,17 +3,21 @@ import MainSwitch from '@/components/atoms/MainSwitch';
 import Dropdown from '@/components/molecules/Dropdown';
 import { DefaultScreenContainer, DefaultText } from '@/styles';
 import { rHeight, rWidth, showAlert } from '@/utils';
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components/native';
 import DropdownItem from '@/types/dropdown';
-import debounce from '@/utils/debounce';
 import { PostAlarmSaveProps } from '@/types/api/request/member';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { Text } from 'react-native';
 import extractNumber from '../../utils/number';
 
 const AlarmSettingScreenContainer = styled(DefaultScreenContainer)`
+  padding-top: ${rHeight(60)}px;
   background-color: ${({ theme }) => theme.colors.background};
   gap: ${rHeight(60)}px;
 `;
@@ -24,6 +28,12 @@ const AlarmContentBox = styled.View`
   justify-content: center;
   align-items: center;
   gap: ${rHeight(20)}px;
+`;
+
+const DownButtonWrapper = styled.View`
+  position: absolute;
+  bottom: ${rHeight(30)}px;
+  align-items: center;
 `;
 
 const AlarmContentWrapper = styled.View`
@@ -37,6 +47,7 @@ const AlarmContentWrapper = styled.View`
 const AlarmContentHeaderTitle = styled(DefaultText)``;
 
 export default function AlarmSettingScreen() {
+  const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
     queryKey: ['getMyAlarm'],
     queryFn: () => getMyAlarm(),
@@ -46,16 +57,18 @@ export default function AlarmSettingScreen() {
   const { response } = data;
 
   const [challengeStatus, setChallengeStatus] = useState<boolean>(
-    response.alarms.CHALLENGE
+    response.alarms.find((cur: any) => cur.category === 'CHALLENGE').status
   );
   const [bloodSugarStatus, setBloodSugarStatus] = useState<boolean>(
-    response.alarms.BLOODSUGAR
+    response.alarms.find((cur: any) => cur.category === 'BLOOD').status
   );
-  const [bloodSugarHour, setBloodSugarHour] = useState<DropdownItem>({
-    id: `${response.bloodHour}시`,
-    value: `${response.bloodHour}시`,
+  const [bloodSugarHour, setBloodSugarHour] = useState<DropdownItem | null>({
+    id: `${response.bloodSugarHour}시`,
+    value: `${response.bloodSugarHour}시`,
   });
-  const [pokeStatus, setPokeStatus] = useState<boolean>(response.alarms.POKE);
+  const [pokeStatus, setPokeStatus] = useState<boolean>(
+    response.alarms.find((cur: any) => cur.category === 'POKE').status
+  );
   const [isUsable, setIsUsable] = useState(false);
 
   const { mutateAsync } = useMutation({
@@ -70,8 +83,9 @@ export default function AlarmSettingScreen() {
     [response.alarms]
   );
 
-  const handleSaveModifiedAlarm = () => {
+  const handleSaveModifiedAlarm = async () => {
     const queryArr = [];
+    if (bloodSugarHour === null) return;
     const curBloodHour = extractNumber(bloodSugarHour.id);
     if (findAlarmStatus('CHALLENGE') !== challengeStatus) {
       queryArr.push(
@@ -90,41 +104,49 @@ export default function AlarmSettingScreen() {
       });
     }
     if (
-      findAlarmStatus('BLOODSUGAR') !== bloodSugarStatus ||
+      findAlarmStatus('BLOOD') !== bloodSugarStatus ||
       curBloodHour !== response.bloodHour
     ) {
       mutateAsync({
-        category: 'BLOODSUGAR',
+        category: 'BLOOD',
         status: bloodSugarStatus,
         hour: curBloodHour,
       });
     }
-    Promise.allSettled(queryArr);
-    showAlert({
-      title: '수정 성공',
-      content: '수정 내용을 저장했습니다.',
-      onOk: () => {},
-    });
+    const results = await Promise.allSettled(queryArr);
+    const allSuccess = results.every((result) => result.status === 'fulfilled');
+    if (allSuccess) {
+      showAlert({
+        title: '수정 성공',
+        content: '수정 내용을 저장했습니다.',
+        onOk: () => {},
+      });
+      queryClient.invalidateQueries({ queryKey: ['getMyAlarm'] });
+    } else {
+      showAlert({
+        title: '수정 실패',
+        content: '다시 시도해주세요!',
+        onOk: () => {},
+      });
+    }
   };
 
   useEffect(() => {
-    debounce(() => {
-      setIsUsable(
-        findAlarmStatus('CHALLENGE') !== challengeStatus ||
-          findAlarmStatus('POKE') !== pokeStatus ||
-          findAlarmStatus('BLOODSUGAR') !== bloodSugarStatus ||
-          Number(response.bloodHour) !== extractNumber(bloodSugarHour.id)
-      );
-    }, 1000);
+    setIsUsable(
+      findAlarmStatus('CHALLENGE') !== challengeStatus ||
+        findAlarmStatus('POKE') !== pokeStatus ||
+        findAlarmStatus('BLOOD') !== bloodSugarStatus ||
+        Number(response.bloodSugarHour) !==
+          extractNumber((bloodSugarHour as DropdownItem).id)
+    );
   }, [
     challengeStatus,
     bloodSugarStatus,
     bloodSugarHour,
     pokeStatus,
     findAlarmStatus,
-    response.bloodHour,
+    response.bloodSugarHour,
   ]);
-
   if (!response || response === null) return <Text>네트워크 에러!</Text>;
 
   return (
@@ -148,7 +170,7 @@ export default function AlarmSettingScreen() {
           <MainSwitch isOn={bloodSugarStatus} setIsOn={setBloodSugarStatus} />
         </AlarmContentWrapper>
         {bloodSugarStatus && (
-          <>
+          <AlarmContentWrapper>
             <DefaultText color="black" typography="h4r">
               시간 설정
             </DefaultText>
@@ -161,7 +183,7 @@ export default function AlarmSettingScreen() {
               selectItem={bloodSugarHour}
               setSelectItem={setBloodSugarHour}
             />
-          </>
+          </AlarmContentWrapper>
         )}
       </AlarmContentBox>
       <AlarmContentBox>
@@ -172,11 +194,14 @@ export default function AlarmSettingScreen() {
           <MainSwitch isOn={pokeStatus} setIsOn={setPokeStatus} />
         </AlarmContentWrapper>
       </AlarmContentBox>
-      <MainFillButton
-        title="저장하기"
-        bgColor="b4"
-        onPress={isUsable ? handleSaveModifiedAlarm : undefined}
-      />
+      <DownButtonWrapper>
+        <MainFillButton
+          title="저장하기"
+          bgColor="b4"
+          disabled={!isUsable}
+          onPress={handleSaveModifiedAlarm}
+        />
+      </DownButtonWrapper>
     </AlarmSettingScreenContainer>
   );
 }
