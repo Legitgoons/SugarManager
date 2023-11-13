@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import OAuthButton from '@/components/atoms/OAuthButton';
 import TitleHeader from '@/components/molecules/TitleHeader';
 import { DefaultScreenContainer } from '@/styles';
@@ -6,7 +5,7 @@ import React from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
 import { login } from '@react-native-seoul/kakao-login';
-import { postKakaoSignin } from '@/apis/auth';
+import postKakaoSignin from '@/apis/auth';
 import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import showAlert from '@/utils/alert';
@@ -36,15 +35,15 @@ export default function SigninScreen() {
       );
 
       const apiRes: any = await postKakaoSignin({
-        access_token: kakaoAccessToken,
-        fcm_token: '1234',
+        accessToken: kakaoAccessToken,
+        fcmToken: '1234',
       });
       if (apiRes.error === null) {
-        const { access_token, refresh_token } = apiRes.response;
+        const { accessToken, refreshToken } = apiRes.response;
         dispatch(
           setToken({
-            accessToken: access_token,
-            refreshToken: refresh_token,
+            accessToken,
+            refreshToken,
           })
         );
       } else {
@@ -76,7 +75,6 @@ export default function SigninScreen() {
 
       return null;
     } catch (e) {
-      console.log(e);
       showAlert({
         title: '로그인 실패',
         content: '네트워크 상태를 다시 확인해주세요!',

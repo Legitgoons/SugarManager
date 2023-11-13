@@ -7,9 +7,7 @@ import Line from '../atoms/Line';
 
 // maxLength 속성 추가
 interface InputLineProps<T extends string | number>
-  extends DefaultInputProps<T> {
-  maxLength?: number;
-}
+  extends DefaultInputProps<T> {}
 
 const InputLineBox = styled.View`
   display: flex;
@@ -28,6 +26,7 @@ export default function InputLine<T extends string | number>({
   unit,
   maxLength,
   keyboardType,
+  editable,
 }: InputLineProps<T>) {
   return (
     <InputLineBox>
@@ -38,6 +37,7 @@ export default function InputLine<T extends string | number>({
         unit={unit}
         maxLength={maxLength} // maxLength 전달
         keyboardType={keyboardType}
+        editable={editable}
       />
 
       <Line />
