@@ -1,4 +1,4 @@
-import postKakaoSignin from './auth';
+import { postKakaoSignin, postTokenRefresh } from './auth';
 import {
   getChallengeList,
   postChallengeDelete,
@@ -16,6 +16,7 @@ import { getTimelineState, getTimelineDetail } from './timeline';
 
 export {
   postKakaoSignin,
+  postTokenRefresh,
   getChallengeList,
   postChallengeDelete,
   postChallengeAdd,
