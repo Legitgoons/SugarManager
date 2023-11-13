@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components/native';
+import { useMutation } from '@tanstack/react-query';
+import { rHeight } from '@/utils/style';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import Toggle from '@/components/molecules/Toggle';
 import BloodSugarInfoWriteContent from '@/components/organisms/BloodSugarWriteContent';
-import { rHeight } from '@/utils/style';
 import DefaultScreenContainer from '@/styles/Container';
+import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
+import saveBloodSugar from '@/apis/bloodSugar';
 
 const BloodSugarInfoWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
   gap: ${rHeight(36)}px;
+`;
+
+const MainFillButtonWrapper = styled.View`
+  justify-self: end;
 `;
 
 export default function BloodSugarInfoWriteScreen() {
@@ -27,6 +34,36 @@ export default function BloodSugarInfoWriteScreen() {
     }
   }, [bloodSugar]);
 
+  const setDateSafe = useCallback((newDate: Date) => {
+    if (newDate > new Date()) {
+      setDate(new Date());
+    } else {
+      setDate(newDate);
+    }
+  }, []);
+
+  const mutation = useMutation({
+    mutationFn: (data: BloodSugarWriteData) => saveBloodSugar(data),
+  });
+
+  const handleSubmit = () => {
+    mutation.mutate(
+      {
+        category: beforeMeal ? 'BEFORE' : 'AFTER',
+        level: Number(bloodSugar),
+        content: issue,
+      },
+      {
+        onSuccess() {
+          console.log('성공');
+        },
+        onError() {
+          console.log('실패');
+        },
+      }
+    );
+  };
+
   return (
     <BloodSugarInfoWriteContainer>
       <Toggle
@@ -41,15 +78,17 @@ export default function BloodSugarInfoWriteScreen() {
         issue={issue}
         setIssue={setIssue}
         date={date}
-        setDate={setDate}
+        setDate={setDateSafe}
         mode="datetime"
       />
-      <MainFillButton
-        title="등록"
-        bgColor={buttonDisabled ? 'b3' : 'b4'}
-        disabled={buttonDisabled}
-        onPress={() => console.log('제출')}
-      />
+      <MainFillButtonWrapper>
+        <MainFillButton
+          title="등록"
+          bgColor={buttonDisabled ? 'b3' : 'b4'}
+          disabled={buttonDisabled}
+          onPress={handleSubmit}
+        />
+      </MainFillButtonWrapper>
     </BloodSugarInfoWriteContainer>
   );
 }
