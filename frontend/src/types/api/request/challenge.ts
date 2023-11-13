@@ -17,8 +17,15 @@ interface PostChallengeDeleteProps {
   nickname: string;
   challengePk: number;
 }
+
+interface GetChallengeDetailProps {
+  nickname: string;
+  challengePk: number;
+}
+
 export type {
   ChallengeTypeEnum,
   PostChallengeAddProps,
   PostChallengeDeleteProps,
+  GetChallengeDetailProps,
 };
