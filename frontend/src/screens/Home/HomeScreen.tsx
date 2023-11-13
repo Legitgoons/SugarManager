@@ -70,7 +70,7 @@ export default function HomeScreen() {
               firstContent="오늘 총, 3회 측정 하였습니다."
               secondContent="저녁 식사 후 측정이 필요합니다."
               onPress={() => {
-                router.navigate('BloodSugarInfo');
+                router.navigate('BloodSugar');
               }}
             />
             <ChanllengeCard
