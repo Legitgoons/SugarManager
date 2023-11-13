@@ -6,7 +6,12 @@ import {
   getChallengeDetail,
 } from './challenge';
 import getGroup from './group';
-import { getMyProfile, postMemberPoke } from './member';
+import {
+  getMyProfile,
+  postMemberPoke,
+  getMyAlarm,
+  postAlarmSave,
+} from './member';
 import { getTimelineState, getTimelineDetail } from './timeline';
 
 export {
@@ -20,4 +25,6 @@ export {
   postMemberPoke,
   getTimelineState,
   getTimelineDetail,
+  getMyAlarm,
+  postAlarmSave,
 };
