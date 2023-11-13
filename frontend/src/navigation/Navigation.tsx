@@ -1,12 +1,15 @@
 import React, { Suspense } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { HomeScreen, SigninScreen } from '@/screens';
+import {
+  HomeScreen,
+  SigninScreen,
+  ChallengeScreen,
+  ChallengeDetailScreen,
+  ChallengeMakeScreen,
+} from '@/screens';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import Spinner from '@/components/organisms/Spinner';
-import ChallengeScreen from '@/screens/Challenge/ChallengeScreen';
-import ChallengeDetailScreen from '@/screens/Challenge/ChallengeDetailScreen';
-import ChallengeMakeScreen from '@/screens/Challenge/ChallengeMakeScreen';
 
 function SuspenseSigninScreen() {
   return (
