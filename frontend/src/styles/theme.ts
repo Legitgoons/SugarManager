@@ -1,4 +1,4 @@
-import { rFontSize } from '@/utils/style';
+import { rFontSize } from '@/utils';
 import { DefaultTheme, css } from 'styled-components/native';
 
 const fonts = {

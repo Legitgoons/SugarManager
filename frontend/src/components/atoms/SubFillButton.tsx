@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import DefaultPressable from '@/styles/Pressable';
+import { DefaultPressable } from '@/styles';
 import DefaultPressableProps from '@/types/pressable';
 import { ColorType } from '@/styles/theme';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 
 interface SubFillButtonProps extends DefaultPressableProps {
   bgColor: keyof ColorType;

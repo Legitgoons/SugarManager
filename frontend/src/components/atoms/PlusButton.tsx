@@ -1,7 +1,7 @@
 import React from 'react';
 import DefaultPressableProps from '@/types/pressable';
 import styled from 'styled-components/native';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight } from '@/utils';
 
 interface PlusButtonProps extends DefaultPressableProps {}
 

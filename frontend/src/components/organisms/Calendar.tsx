@@ -1,12 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import styled from 'styled-components/native';
-import getMonthObj from '@/utils/time';
-import { rWidth, rHeight } from '@/utils/style';
+import { rWidth, rHeight, getMonthObj } from '@/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { selectUser } from '@/redux/slice/userSlice';
 import { getTimelineState } from '@/apis/timeline';
+import { selectNavigation } from '@/redux/slice/navigationSlice';
 import WeekDayWeek from '../molecules/WeekDayWeek';
 import NumberWeek from '../molecules/NumberWeek';
 import CalendarCard from '../molecules/CalendarCard';
@@ -41,11 +40,15 @@ interface CalendarProps {
 }
 
 export default function Calendar({ time, setTime, onPress }: CalendarProps) {
-  const { nickname } = useSelector(selectUser);
+  const { uid } = useSelector(selectNavigation);
   const { isSuccess, data: timelineState } = useSuspenseQuery({
-    queryKey: ['getTimelineState', nickname],
+    queryKey: ['getTimelineState', uid],
     queryFn: () =>
-      getTimelineState({ nickname, year: time.year, month: time.month }),
+      getTimelineState({
+        userPk: Number(uid),
+        year: time.year,
+        month: time.month,
+      }),
     staleTime: 1000 * 60 * 100,
     refetchOnWindowFocus: false,
   });

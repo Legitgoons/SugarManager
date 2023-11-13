@@ -1,7 +1,7 @@
 import React from 'react';
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 import styled from 'styled-components/native';
-import DefaultText from '@/styles/Text';
+import { DefaultText } from '@/styles';
 import TwinButtonGroup from '../molecules/TwinButtonGroup';
 
 const HomeNoneGroupBarBox = styled.View`

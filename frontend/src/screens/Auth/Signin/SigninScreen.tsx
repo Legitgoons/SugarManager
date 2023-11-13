@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import OAuthButton from '@/components/atoms/OAuthButton';
 import TitleHeader from '@/components/molecules/TitleHeader';
-import DefaultScreenContainer from '@/styles/Container';
+import { DefaultScreenContainer } from '@/styles';
 import React from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
@@ -10,9 +10,10 @@ import { postKakaoSignin } from '@/apis/auth';
 import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import showAlert from '@/utils/alert';
-import { rHeight } from '@/utils/style';
-import getMyProfile from '@/apis/member';
+import { rHeight } from '@/utils';
+import { getMyProfile } from '@/apis/member';
 import useRouter from '@/hooks/useRouter';
+import { setNavigation } from '@/redux/slice/navigationSlice';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -57,6 +58,13 @@ export default function SigninScreen() {
       const myProfile = await getMyProfile();
       if (myProfile.error === null) {
         dispatch(setProfile({ ...myProfile.response }));
+        dispatch(
+          setNavigation({
+            isMine: true,
+            uid: myProfile.response.uid,
+            nickname: myProfile.response.nickname,
+          })
+        );
         router.navigate('Home');
       } else {
         showAlert({

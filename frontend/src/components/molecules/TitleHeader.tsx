@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { rWidth } from '@/utils/style';
+import { rWidth } from '@/utils';
 import MainTitle from '../atoms/MainTitle';
 import SubTitle from '../atoms/SubTitle';
 

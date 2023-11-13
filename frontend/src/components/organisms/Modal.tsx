@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal } from 'react-native';
 import styled from 'styled-components/native';
-import { rWidth, rHeight } from '@/utils/style';
-import Overlay from '@/styles/View';
+import { rWidth, rHeight } from '@/utils';
+import { Overlay } from '@/styles';
 import { TypographyType } from '@/styles/theme';
 import TwinButtonGroup from '../molecules/TwinButtonGroup';
 

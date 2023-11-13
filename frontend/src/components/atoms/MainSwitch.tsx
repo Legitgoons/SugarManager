@@ -1,6 +1,6 @@
 import theme from '@/styles/theme';
-import { rHeight, rWidth } from '@/utils/style';
-import React, { useRef, useEffect } from 'react';
+import { rHeight, rWidth } from '@/utils';
+import React from 'react';
 import { Animated, Pressable } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -26,32 +26,11 @@ interface MainSwitchProps {
 }
 
 function MainSwitch({ isOn, setIsOn }: MainSwitchProps) {
-  const animatedValue = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: isOn ? 1 : 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [isOn, animatedValue]);
-
-  const circleLeft = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [2, 26],
-  });
-
-  const backgroundColor = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [theme.colors.tertiary, theme.colors.b4],
-  });
+  const circleLeft = isOn ? 26 : 2; // 켜졌을 때와 꺼졌을 때의 위치
+  const backgroundColor = isOn ? theme.colors.b4 : theme.colors.tertiary; // 켜졌을 때와 꺼졌을 때의 배경색
 
   return (
-    <Pressable
-      onPress={() => {
-        setIsOn((prev) => !prev);
-      }}
-    >
+    <Pressable onPress={() => setIsOn((prev) => !prev)}>
       <BackgroundWrapper style={{ backgroundColor }} isOn={isOn}>
         <Circle style={{ left: circleLeft }} />
       </BackgroundWrapper>

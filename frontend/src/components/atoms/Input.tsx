@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import DefaultInputProps from '@/types/input';
 import { rWidth, rHeight } from '@/utils/style';
 
-interface InputProps extends DefaultInputProps {}
+interface InputProps<T extends string | number> extends DefaultInputProps<T> {}
 
 const InputBox = styled.View`
   display: flex;
@@ -27,18 +27,31 @@ const InputUnitWrapper = styled.Text`
  * @returns {JSX.Element} 입력받는 Input Component
  */
 
-export default function Input({
+export default function Input<T extends string | number>({
   placeholder,
   value,
   onChangeText,
   unit,
-}: InputProps) {
+  maxLength,
+  keyboardType,
+}: InputProps<T>) {
+  const handleChange = (text: string) => {
+    if (typeof value === 'number') {
+      const numericValue = text === '' ? 0 : Number(text);
+      onChangeText(numericValue as T);
+    } else {
+      onChangeText(text as T);
+    }
+  };
+
   return (
     <InputBox>
       <InputWrapper
         placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
+        value={value.toString()}
+        onChangeText={handleChange}
+        maxLength={maxLength}
+        keyboardType={keyboardType || 'default'}
       />
       {unit && <InputUnitWrapper>{unit}</InputUnitWrapper>}
     </InputBox>

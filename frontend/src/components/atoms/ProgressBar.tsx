@@ -1,5 +1,4 @@
-import extractNumber from '@/utils/number';
-import { rHeight } from '@/utils/style';
+import { rHeight, extractNumber } from '@/utils';
 import React from 'react';
 import styled from 'styled-components/native';
 

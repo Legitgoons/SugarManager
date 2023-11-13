@@ -5,13 +5,16 @@ import HomeGroupBar from '@/components/organisms/HomeGroupBar';
 import HomeHeader from '@/components/organisms/HomeHeader';
 import HomeNoneGroupBar from '@/components/organisms/HomeNoneGroupBar';
 import { selectUser } from '@/redux/slice/userSlice';
-import { rHeight } from '@/utils/style';
+import { rHeight } from '@/utils';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import DailyInfoModal from '@/components/organisms/DailyInfoModal';
 import useRouter from '@/hooks/useRouter';
+import { selectNavigation } from '@/redux/slice/navigationSlice';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getChallengeList } from '@/apis';
 
 const HomeContainer = styled.View`
   padding: ${rHeight(30)}px 0;
@@ -28,9 +31,8 @@ const HomeCardBox = styled.View`
 `;
 
 export default function HomeScreen() {
-  const curDate = new Date();
   const router = useRouter();
-  const { groupCode } = useSelector(selectUser);
+  const curDate = new Date();
   const [time, setTime] = useState<{
     year: number;
     month: number;
@@ -41,13 +43,20 @@ export default function HomeScreen() {
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
+
+  const { groupCode } = useSelector(selectUser);
+  const { nickname } = useSelector(selectNavigation);
+  useSuspenseQuery({
+    queryKey: ['getChallengeList', nickname],
+    queryFn: () => getChallengeList(nickname),
+  });
+
   return (
     <>
       <ScrollView style={{ flex: 1 }}>
         <HomeContainer>
           <HomeHeader />
-          {groupCode !== '' ? <HomeGroupBar /> : <HomeNoneGroupBar />}
-
+          {groupCode ? <HomeGroupBar /> : <HomeNoneGroupBar />}
           <Calendar
             time={time}
             setTime={setTime}
@@ -68,7 +77,10 @@ export default function HomeScreen() {
               title="챌린지 - 오늘의 달성도"
               leftNumeric="3개"
               rightNumeric="5개"
-              button="view"
+              buttonType="view"
+              onPressButton={() => {
+                router.navigate('ChallengeInfo');
+              }}
               onPress={() => {
                 router.navigate('ChallengeInfo');
               }}

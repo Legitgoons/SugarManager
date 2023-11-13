@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components/native';
 import BlackLeftArrowIcon from '@/assets/icon/BlackLeftArrowIcon.svg';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
-import DefaultCalendarCard from '@/styles/Calendar';
-import { rHeight, rWidth } from '@/utils/style';
+import { DefaultCalendarCard } from '@/styles';
+import { rHeight, rWidth } from '@/utils';
 
 const CalendarCardBox = styled(DefaultCalendarCard)`
   justify-content: space-between;

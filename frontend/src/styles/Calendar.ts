@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 
 const DefaultCalendarCard = styled.View<{ size: 'lg' | 'sm' }>`
   width: ${({ size }) => {

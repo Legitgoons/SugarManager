@@ -1,10 +1,10 @@
 import React from 'react';
-import DefaultCard from '@/styles/Card';
-import DefaultText from '@/styles/Text';
+import { DefaultCard, DefaultText } from '@/styles';
 import styled from 'styled-components/native';
 import BlackRightArrowButton from '@/assets/icon/BlackRightArrowIcon.svg';
-import { rHeight, rWidth } from '@/utils/style';
+import { rHeight, rWidth } from '@/utils';
 import ProgressBar from '../atoms/ProgressBar';
+import SubFillButton from '../atoms/SubFillButton';
 
 const ChallengeCardContainer = styled(DefaultCard)`
   display: flex;
@@ -33,19 +33,23 @@ interface ChallengeCardProps {
   title: string;
   leftNumeric: string;
   rightNumeric: string;
-  button: string;
-  onPress: () => void;
+  buttonType?: 'view' | 'otherAlarm' | 'record';
+  buttonTitle?: string;
+  onPress?: () => void;
+  onPressButton?: () => void;
 }
 
 export default function ChanllengeCard({
   title,
   leftNumeric,
   rightNumeric,
-  button,
+  buttonType,
+  buttonTitle,
   onPress,
+  onPressButton,
 }: ChallengeCardProps) {
   return (
-    <ChallengeCardContainer size="lg">
+    <ChallengeCardContainer size="lg" onPress={onPress}>
       <CardTitleWrapper typography="captionr" color="secondary">
         {title}
       </CardTitleWrapper>
@@ -58,20 +62,30 @@ export default function ChanllengeCard({
             / {rightNumeric}
           </RightNumericWrapper>
         </NumericTextWrapper>
-        {button &&
-          (button === 'view' ? (
-            <BlackRightArrowButton
-              width={rWidth(20)}
-              height={rHeight(20)}
-              onPress={onPress}
-            />
-          ) : (
-            <BlackRightArrowButton
-              width={rWidth(20)}
-              height={rHeight(20)}
-              onPress={onPress}
-            />
-          ))}
+        {buttonType &&
+          (() => {
+            switch (buttonType) {
+              case 'view':
+                return (
+                  <BlackRightArrowButton
+                    width={rWidth(20)}
+                    height={rHeight(20)}
+                    onPress={onPressButton}
+                  />
+                );
+              case 'otherAlarm':
+              case 'record':
+                return (
+                  <SubFillButton
+                    bgColor="b4"
+                    title={buttonTitle as string}
+                    onPress={onPressButton}
+                  />
+                );
+              default:
+                return null;
+            }
+          })()}
       </ChallengeContentBox>
       <ProgressBar current={leftNumeric} goal={rightNumeric} />
     </ChallengeCardContainer>

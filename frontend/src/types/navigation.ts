@@ -4,6 +4,8 @@ export type RootStackParam = {
   ChallengeInfo: undefined;
   BloodSugarInfo: undefined;
   MealInfo: undefined;
+  ChallengeDetail: undefined;
+  ChallengeMake: undefined;
 };
 
 export type HomeDropdownParam = {

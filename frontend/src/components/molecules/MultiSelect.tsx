@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import Week from '@/types/week';
-import { rWidth } from '@/utils/style';
+import { Week } from '@/types/week';
+import { rWidth } from '@/utils';
 import TextButton from '../atoms/TextButton';
 
 interface MultiSelectProps<T extends string | number | symbol | Week> {

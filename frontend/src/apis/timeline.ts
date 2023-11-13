@@ -1,26 +1,17 @@
 import TimelineRequestProps from '@/types/api/request/timeline';
-import fetchWithAuth from '@/utils/fetchWithAuth';
+import { fetchWithAuth } from '@/utils';
 
-export const getTimelineState = async ({
-  nickname,
+export const getTimelineState = ({
+  userPk,
   year,
   month,
-}: TimelineRequestProps): Promise<any> => {
-  const result = await fetchWithAuth(`/timeline/${nickname}/${year}/${month}`);
-  return result;
-};
+}: TimelineRequestProps) =>
+  fetchWithAuth(`/timeline/${userPk}/${year}/${month}`);
+
 export const getTimelineDetail = async ({
-  nickname,
+  userPk,
   year,
   month,
   day,
-}: TimelineRequestProps) => {
-  try {
-    const result = await fetchWithAuth(
-      `/timeline/${nickname}/${year}/${month}/${day}`
-    );
-    return result;
-  } catch (e) {
-    return e;
-  }
-};
+}: TimelineRequestProps) =>
+  fetchWithAuth(`/timeline/${userPk}/${year}/${month}/${day}`);
