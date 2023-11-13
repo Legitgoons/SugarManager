@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import { rHeight, rWidth } from '@/utils/style';
@@ -12,9 +13,9 @@ const DatePickerControllerBox = styled.View`
 
 interface DatePickerControllerProps {
   startDate: Date;
-  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  setStartDate: (date: Date) => void;
   endDate: Date;
-  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
+  setEndDate: (date: Date) => void;
 }
 
 export default function DatePickerController({
