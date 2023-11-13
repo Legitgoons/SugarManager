@@ -19,6 +19,7 @@ import {
   ChallengeTypeEnum,
 } from '@/types/api/request/challenge';
 import extractNumber from '../../utils/number';
+import DropdownItem from '../../types/dropdown';
 
 const ChallengeMakeScreenContainer = styled(DefaultScreenContainer)`
   background-color: ${({ theme }) => theme.colors.background};
@@ -58,10 +59,6 @@ const ChallengeAlramTimeWrapper = styled.View`
   justify-content: space-between;
   align-items: center;
 `;
-interface DropdownItem {
-  id: string;
-  value: string;
-}
 export default function ChallengeMakeScreen() {
   const { uid, nickname } = useSelector(selectUser);
   const queryClient = useQueryClient();

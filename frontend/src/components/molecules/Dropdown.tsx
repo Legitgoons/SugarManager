@@ -3,11 +3,7 @@ import { Pressable, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import { rWidth, rHeight } from '@/utils';
-
-interface DropdownItem {
-  id: string;
-  value: string;
-}
+import DropdownItem from '../../types/dropdown';
 
 interface DropdownProps {
   placeholder: string;
