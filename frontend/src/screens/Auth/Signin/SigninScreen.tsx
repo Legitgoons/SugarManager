@@ -5,7 +5,7 @@ import React from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
 import { login } from '@react-native-seoul/kakao-login';
-import postKakaoSignin from '@/apis/auth';
+import { postKakaoSignin } from '@/apis/auth';
 import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import showAlert from '@/utils/alert';
