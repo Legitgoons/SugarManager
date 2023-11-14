@@ -7,7 +7,8 @@ import Toggle from '@/components/molecules/Toggle';
 import BloodSugarInfoWriteContent from '@/components/organisms/BloodSugarWriteContent';
 import DefaultScreenContainer from '@/styles/Container';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
-import saveBloodSugar from '@/apis/bloodSugar';
+import { saveBloodSugar } from '@/apis/bloodSugar';
+import { showAlert } from '@/utils';
 
 const BloodSugarInfoWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -25,6 +26,8 @@ export default function BloodSugarInfoWriteScreen() {
   const [issue, setIssue] = useState('');
   const [date, setDate] = useState(new Date());
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const title = '경고';
+  const onOk = () => {};
 
   useEffect(() => {
     if (bloodSugar === '') {
@@ -47,18 +50,32 @@ export default function BloodSugarInfoWriteScreen() {
   });
 
   const handleSubmit = () => {
+    const bloodSugarNum = Number(bloodSugar);
+    if (Number.isNaN(bloodSugarNum)) {
+      const content = '혈당 수치는 숫자여야 합니다.';
+      showAlert({ title, content, onOk });
+      return;
+    }
+    // eslint-disable-next-line yoda
+    if (bloodSugarNum < 10 || 9999 < bloodSugarNum) {
+      const content = '혈당 수치가 정상적이지 않습니다.';
+      showAlert({ title, content, onOk });
+      return;
+    }
     mutation.mutate(
       {
         category: beforeMeal ? 'BEFORE' : 'AFTER',
-        level: Number(bloodSugar),
+        level: bloodSugarNum,
         content: issue,
       },
       {
         onSuccess() {
-          console.log('성공');
+          setBloodSugar('');
+          setIssue('');
         },
         onError() {
-          console.log('실패');
+          const content = '혈당이 등록되지 않았습니다. 다시 시도해주세요.';
+          showAlert({ title, content, onOk });
         },
       }
     );
