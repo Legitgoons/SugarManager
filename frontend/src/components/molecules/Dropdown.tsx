@@ -10,7 +10,7 @@ interface DropdownItem {
   value: string;
 }
 
-interface DropdownProps {
+export interface DropdownProps {
   placeholder: string;
   list: Array<DropdownItem>;
   selectItem: DropdownItem | null;
