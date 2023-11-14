@@ -13,6 +13,7 @@ import {
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import Spinner from '@/components/organisms/Spinner';
+import AlarmSettingScreen from '@/screens/Setting/AlarmSettingScreen';
 
 function SuspenseSigninScreen() {
   return (
@@ -49,6 +50,14 @@ function SuspenseChallengeMakeScreen() {
   return (
     <Suspense fallback={<Spinner />}>
       <ChallengeMakeScreen />
+    </Suspense>
+  );
+}
+
+function SuspenseAlarmSettingScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <AlarmSettingScreen />
     </Suspense>
   );
 }
@@ -105,6 +114,11 @@ export default function Navigation({ Stack }: { Stack: any }) {
               name="ChallengeMake"
               component={SuspenseChallengeMakeScreen}
               options={{ title: '챌린지 생성', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="Alarm"
+              component={SuspenseAlarmSettingScreen}
+              options={{ title: '알람 설정', headerTitleAlign: 'center' }}
             />
             <Stack.Screen
               name="BloodSugar"
