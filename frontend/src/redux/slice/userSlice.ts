@@ -11,6 +11,8 @@ interface UserSliceStateType {
   birthday: string;
   height: number;
   weight: number;
+  bloodSugarMin: number;
+  bloodSugarMax: number;
   profileImage: string;
   groupCode: string;
   kakaoAccessToken: string;
@@ -28,6 +30,8 @@ const initialState: UserSliceStateType = {
   birthday: '',
   height: -1,
   weight: -1,
+  bloodSugarMax: -1,
+  bloodSugarMin: -1,
   profileImage: '',
   groupCode: '',
   kakaoAccessToken: '',
@@ -49,6 +53,8 @@ const userSlice = createSlice({
       state.birthday = action.payload.birthday;
       state.height = action.payload.height;
       state.weight = action.payload.weight;
+      state.bloodSugarMax = action.payload.bloodSugarMax;
+      state.bloodSugarMin = action.payload.bloodSugarMin;
       state.profileImage = action.payload.profileImage;
       state.groupCode = action.payload.groupCode;
       state.accessToken = action.payload.accessToken;
@@ -66,8 +72,18 @@ const userSlice = createSlice({
       state.birthday = action.payload.birthday;
       state.height = action.payload.height;
       state.weight = action.payload.weight;
+      state.bloodSugarMax = action.payload.bloodSugarMax;
+      state.bloodSugarMin = action.payload.bloodSugarMin;
       state.profileImage = action.payload.profileImage;
       state.groupCode = action.payload.groupCode;
+    },
+    setProfileSetting(state, action) {
+      state.nickname = action.payload.nickname;
+      state.height = action.payload.height;
+      state.weight = action.payload.weight;
+      state.gender = action.payload.gender;
+      state.bloodSugarMax = action.payload.bloodSugarMax;
+      state.bloodSugarMin = action.payload.bloodSugarMin;
     },
     setToken(state, action) {
       state.accessToken = action.payload.accessToken;
@@ -98,6 +114,12 @@ const userSlice = createSlice({
     setWeight(state, action) {
       state.weight = action.payload;
     },
+    setBloodSugarMin(state, action) {
+      state.bloodSugarMin = action.payload;
+    },
+    setBloodSugarMax(state, action) {
+      state.bloodSugarMax = action.payload;
+    },
     setGroupCode(state, action) {
       state.groupCode = action.payload;
     },
@@ -125,6 +147,7 @@ const userSlice = createSlice({
 export const {
   setUser,
   setProfile,
+  setProfileSetting,
   setToken,
   setKakaoToken,
   setIsSignin,
@@ -134,6 +157,8 @@ export const {
   setBirthday,
   setHeight,
   setWeight,
+  setBloodSugarMax,
+  setBloodSugarMin,
   setGroupCode,
   setAccessToken,
   setRefreshToken,

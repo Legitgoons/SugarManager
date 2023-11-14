@@ -1,5 +1,6 @@
 export default interface TimelineRequestProps {
-  userPk: number;
+  uid: number;
+  nickname: string;
   year: number;
   month: number;
   day?: number;

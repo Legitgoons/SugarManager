@@ -34,11 +34,11 @@ interface DailyInfoModalProps {
   };
 }
 function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
-  const { uid } = useSelector(selectNavigation);
+  const { nickname } = useSelector(selectNavigation);
   const { year, month, day } = time;
   const { data, isLoading } = useQuery({
-    queryKey: ['getTimelineDetail', uid, time],
-    queryFn: () => getTimelineDetail({ userPk: uid, year, month, day }),
+    queryKey: ['getTimelineDetail', nickname, time],
+    queryFn: () => getTimelineDetail({ nickname, year, month, day }),
     enabled: day > 0 && isOpen,
     refetchOnWindowFocus: false,
   });

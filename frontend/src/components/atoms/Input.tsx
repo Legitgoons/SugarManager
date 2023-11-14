@@ -14,9 +14,12 @@ const InputBox = styled.View`
   height: ${rHeight(40)}px;
 `;
 
-const InputWrapper = styled.TextInput`
-  width: ${rWidth(240)}px;
-  height: ${rHeight(40)}px;
+const InputWrapper = styled.TextInput<{
+  width: number | undefined;
+  height: number | undefined;
+}>`
+  width: ${({ width }) => rWidth(width ? width : 320)}px;
+  height: ${({ height }) => rHeight(height ? height : 40)}px;
 `;
 
 const InputUnitWrapper = styled.Text`
@@ -35,6 +38,8 @@ export default function Input<T extends string | number>({
   maxLength,
   keyboardType,
   editable,
+  width,
+  height,
 }: InputProps<T>) {
   const handleChange = (text: string) => {
     if (!onChangeText) return;
@@ -46,7 +51,7 @@ export default function Input<T extends string | number>({
     }
   };
   return (
-    <InputBox>
+    <InputBox pointerEvents={!editable ? 'none' : undefined}>
       <InputWrapper
         placeholder={placeholder}
         value={value.toString()}
@@ -54,6 +59,8 @@ export default function Input<T extends string | number>({
         maxLength={maxLength}
         keyboardType={keyboardType || 'default'}
         editable={editable}
+        width={width}
+        height={height}
       />
       {unit && <InputUnitWrapper>{unit}</InputUnitWrapper>}
     </InputBox>

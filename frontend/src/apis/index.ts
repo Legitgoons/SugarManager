@@ -11,6 +11,7 @@ import {
   postMemberPoke,
   getMyAlarm,
   postAlarmSave,
+  postProfileEdit,
 } from './member';
 import { getTimelineState, getTimelineDetail } from './timeline';
 
@@ -28,4 +29,5 @@ export {
   getTimelineDetail,
   getMyAlarm,
   postAlarmSave,
+  postProfileEdit,
 };

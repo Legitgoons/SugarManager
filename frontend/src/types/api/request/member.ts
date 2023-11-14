@@ -10,4 +10,15 @@ interface PostAlarmSaveProps {
   hour: number | null;
 }
 
-export type { PostMemberPokeProps, PostAlarmSaveProps };
+interface PostProfileEditProps {
+  name: string;
+  gender: 'male' | 'female' | null;
+  birthday: string;
+  nickname: string;
+  height: number;
+  weight: number;
+  bloodSugarMin: number;
+  bloodSugarMax: number;
+}
+
+export type { PostMemberPokeProps, PostAlarmSaveProps, PostProfileEditProps };

@@ -5,14 +5,16 @@ import { rWidth, rHeight } from '@/utils';
 import Input from '../atoms/Input';
 import Line from '../atoms/Line';
 
-// maxLength 속성 추가
 interface InputLineProps<T extends string | number>
   extends DefaultInputProps<T> {}
 
-const InputLineBox = styled.View`
+const InputLineBox = styled.View<{
+  width: number | undefined;
+  height: number | undefined;
+}>`
   display: flex;
-  width: ${rWidth(320)}px;
-  height: ${rHeight(40)}px;
+  width: ${({ width }) => rWidth(width ? width : 320)}px;
+  height: ${({ height }) => rHeight(height ? height : 40)}px;
 `;
 
 /**
@@ -27,9 +29,11 @@ export default function InputLine<T extends string | number>({
   maxLength,
   keyboardType,
   editable,
+  width,
+  height,
 }: InputLineProps<T>) {
   return (
-    <InputLineBox>
+    <InputLineBox width={width} height={height}>
       <Input
         placeholder={placeholder}
         value={value}
@@ -38,8 +42,9 @@ export default function InputLine<T extends string | number>({
         maxLength={maxLength} // maxLength 전달
         keyboardType={keyboardType}
         editable={editable}
+        width={width}
+        height={height}
       />
-
       <Line />
     </InputLineBox>
   );

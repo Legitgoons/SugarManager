@@ -6,7 +6,7 @@ import BlackUpArrow from '@/assets/icon/BlackUpArrowIcon.svg';
 import { rWidth, rHeight } from '@/utils';
 import DropdownItem from '../../types/dropdown';
 
-interface DropdownProps {
+export interface DropdownProps {
   placeholder: string;
   list: Array<DropdownItem>;
   selectItem: DropdownItem | null;
