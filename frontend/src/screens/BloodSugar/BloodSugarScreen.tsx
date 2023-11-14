@@ -9,7 +9,6 @@ import useRouter from '@/hooks/useRouter';
 import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
-import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -44,6 +43,7 @@ export default function BloodSugarScreen() {
   >([]);
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
   const setStartDateSafe = (date: Date) => {
     if (date > endDate) {
@@ -65,14 +65,27 @@ export default function BloodSugarScreen() {
   };
 
   const fetchBloodSugarData = useCallback(async () => {
+    console.log(page);
     const data = await periodBloodSugar({
       nickname,
       startDate,
       endDate,
       page,
     });
-    setBloodSugarData((prevData) => [...prevData, ...data.response]);
+    if (data.response.length === 0) {
+      console.log('끗');
+      setIsEnd(true);
+    } else {
+      setBloodSugarData((prevData) => [...prevData, ...data.response]);
+    }
   }, [nickname, startDate, endDate, page]);
+
+  useEffect(() => {
+    setBloodSugarData([]);
+    setPage(0);
+    setIsEnd(false);
+    console.log('다시');
+  }, [nickname, startDate, endDate]);
 
   useEffect(() => {
     fetchBloodSugarData();
@@ -83,9 +96,10 @@ export default function BloodSugarScreen() {
     const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
     const isScrolledToTop = contentOffset.y === 0;
     const isScrolledToBottom =
-      contentOffset.y + layoutMeasurement.height >= contentSize.height;
+      Math.round(contentOffset.y + layoutMeasurement.height) >=
+      Math.round(contentSize.height);
     setIsTop(isScrolledToTop);
-    if (isScrolledToBottom) {
+    if (isScrolledToBottom && !isEnd) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -93,7 +107,6 @@ export default function BloodSugarScreen() {
   return (
     <BloodSugarContainer>
       <ScrollView onScroll={handleScroll}>
-        <TwinLineGraph />
         <DatePickerControllerWrapper>
           <DatePickerController
             startDate={startDate}
@@ -112,9 +125,9 @@ export default function BloodSugarScreen() {
                   date={item.time}
                   count={item.count}
                   beforeNum={item.bloodSugarBefore}
-                  beforeType="warning"
+                  beforeType={item.bloodSugarBeforeStatus}
                   afterNum={item.bloodSugarAfter}
-                  afterType="safety"
+                  afterType={item.bloodSugarAfterStatus}
                 />
               </BloodSugarContentCardWrapper>
             )
