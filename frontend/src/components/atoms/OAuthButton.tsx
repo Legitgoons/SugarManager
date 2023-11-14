@@ -15,8 +15,6 @@ const OAuthButtonBox = styled(DefaultPressable)`
   height: ${rHeight(100)}px;
   justify-content: space-between;
   padding: ${rHeight(20)}px ${rWidth(20)}px;
-  border-color: black;
-  border-width: 1px;
 `;
 
 const OAuthTitleWrapper = styled.Text`

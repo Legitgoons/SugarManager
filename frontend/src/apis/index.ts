@@ -1,4 +1,9 @@
-import { postKakaoSignin, postTokenRefresh } from './auth';
+import {
+  postKakaoSignin,
+  postTokenRefresh,
+  PostSignup,
+  PostSignin,
+} from './auth';
 import {
   getChallengeList,
   postChallengeDelete,
@@ -30,4 +35,6 @@ export {
   getMyAlarm,
   postAlarmSave,
   postProfileEdit,
+  PostSignup,
+  PostSignin,
 };
