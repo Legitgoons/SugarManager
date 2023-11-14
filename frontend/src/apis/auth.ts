@@ -1,3 +1,5 @@
+import { RootState, store } from '@/redux/store/storeConfig';
+import { fetchWithAuth } from '@/utils';
 import { API_ENDPOINT } from '@env';
 
 interface SigninProps {
@@ -19,4 +21,16 @@ const postKakaoSignin = async (props: SigninProps) => {
   }
 };
 
-export default postKakaoSignin;
+const postTokenRefresh = async () => {
+  const state: RootState = store.getState();
+  const { refreshToken } = state.user;
+
+  const response = await fetchWithAuth('/auth/refresh', {
+    method: 'POST',
+    body: { refreshToken },
+    wasRefreshing: true,
+  });
+  const data = await response.json();
+  return data;
+};
+export { postKakaoSignin, postTokenRefresh };

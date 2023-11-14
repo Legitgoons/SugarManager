@@ -1,16 +1,20 @@
+/* eslint-disable no-underscore-dangle */
 import { API_ENDPOINT } from '@env';
-import { store, RootState } from '@/redux/store/storeConfig';
+import { store, RootState, persistor } from '@/redux/store/storeConfig';
 import { navigate } from '@/navigation/NavigationService';
+import { postTokenRefresh } from '@/apis';
+import { setAccessToken } from '@/redux/slice/userSlice';
 
 interface FetchOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: Record<string, any>;
   headers?: Record<string, string>;
+  wasRefreshing?: boolean;
 }
 
 const fetchWithAuth = async (
   url: string,
-  options: FetchOptions = {}
+  options: FetchOptions = { wasRefreshing: false }
 ): Promise<any> => {
   const state: RootState = store.getState();
   const { accessToken } = state.user;
@@ -40,23 +44,30 @@ const fetchWithAuth = async (
     if (!response.ok) {
       throw response;
     }
-
     const data: any = await response.json();
-    if (data.error !== null) {
-      switch (data.error.code) {
-        case 'U003':
-          console.log('need TokenRefreshing');
-          break;
-        case 'U001' || 'U002':
-          navigate('Signin');
-          break;
-        default:
-          break;
-      }
-    }
-
     return data;
   } catch (error) {
+    const { code } = JSON.parse((error as any)._bodyText).error;
+    switch (code) {
+      case 'U003':
+        if (options.wasRefreshing) break;
+        try {
+          const refreshResponse = await postTokenRefresh();
+          const data = await refreshResponse.json();
+          store.dispatch(setAccessToken(data.response.accessToken));
+          return fetchWithAuth(url, {
+            ...options,
+            wasRefreshing: true,
+          });
+        } catch (e) {
+          await persistor.purge();
+          navigate('Signin');
+          return e;
+        }
+      default:
+        break;
+    }
+    console.log('에러발생!', error);
     return error;
   }
 };

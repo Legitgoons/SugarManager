@@ -5,6 +5,7 @@ interface DefaultPressableProps {
   borderColor?: keyof ColorType;
   onPress?: () => void;
   title?: string | number;
+  disabled?: boolean;
 }
 
 export default DefaultPressableProps;
