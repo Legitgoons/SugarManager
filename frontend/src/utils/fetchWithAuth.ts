@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { API_ENDPOINT } from '@env';
 import { store, RootState, persistor } from '@/redux/store/storeConfig';
 import { navigate } from '@/navigation/NavigationService';
@@ -47,8 +46,13 @@ const fetchWithAuth = async (
     const data: any = await response.json();
     return data;
   } catch (error) {
-    const { code } = JSON.parse((error as any)._bodyText).error;
-    switch (code) {
+    const errorResponse = await (error as any).json();
+    if (errorResponse === undefined) {
+      await persistor.purge();
+      navigate('Signin');
+      return error;
+    }
+    switch (errorResponse.error.code) {
       case 'U003':
         if (options.wasRefreshing) break;
         try {
@@ -67,7 +71,6 @@ const fetchWithAuth = async (
       default:
         break;
     }
-    console.log('에러발생!', error);
     return error;
   }
 };

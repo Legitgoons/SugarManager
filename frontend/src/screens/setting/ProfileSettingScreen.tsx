@@ -1,15 +1,10 @@
 import { postProfileEdit } from '@/apis';
 import ProfileButton from '@/components/atoms/ProfileButton';
-import ImageUploadButton from '@/components/molecules/ImageUploadButton';
 import LabelledInput from '@/components/molecules/LabelledInput';
 import TextList from '@/components/molecules/TextList';
 import TwinButtonGroup from '@/components/molecules/TwinButtonGroup';
 import useRouter from '@/hooks/useRouter';
-import {
-  selectUser,
-  setBloodSugarMin,
-  setProfileSetting,
-} from '@/redux/slice/userSlice';
+import { selectUser, setProfileSetting } from '@/redux/slice/userSlice';
 import { DefaultScreenContainer } from '@/styles';
 import DropdownItem from '@/types/dropdown';
 import { rHeight, rWidth, showAlert } from '@/utils';
@@ -18,6 +13,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
+
+const DownButtonWrapper = styled.View`
+  position: absolute;
+  bottom: ${rHeight(30)}px;
+  align-items: center;
+`;
 
 const ProfileSettingScreenContainer = styled(DefaultScreenContainer)`
   padding-top: ${rHeight(20)}px;
@@ -130,29 +131,7 @@ export default function ProfileSettingScreen() {
   });
 
   const handleEditProfile = () => {
-    console.log(
-      'redux값은 이거임',
-      name,
-      email,
-      nickname,
-      gender,
-      height,
-      weight,
-      groupCode,
-      profileImage,
-      birthday,
-      bloodSugarMin,
-      bloodSugarMax
-    );
-    console.log(
-      '지금 상태는 이거임',
-      userNickname,
-      userGender,
-      userHeight,
-      userWeight,
-      userBloodSugarMin,
-      userBloodSugarMax
-    );
+    mutate();
   };
   return (
     <ScrollView>
@@ -223,7 +202,7 @@ export default function ProfileSettingScreen() {
             inputProps={{
               placeholder: '입력해주세요',
               value: userBloodSugarMin,
-              onChangeText: setBloodSugarMin,
+              onChangeText: setUserBloodSugarMin,
               keyboardType: 'numeric',
               width: 200,
             }}
@@ -250,14 +229,14 @@ export default function ProfileSettingScreen() {
             }}
           />
         </ContentBox>
-        <TwinButtonGroup
-          leftTitle="뒤로가기"
-          rightTitle="저장하기"
-          onLeftPress={() => router.pop()}
-          onRightPress={() => {
-            // 저장 버튼 클릭 시 로직
-          }}
-        />
+        <DownButtonWrapper>
+          <TwinButtonGroup
+            leftTitle="뒤로가기"
+            rightTitle="저장하기"
+            onLeftPress={() => router.pop()}
+            onRightPress={handleEditProfile}
+          />
+        </DownButtonWrapper>
       </ProfileSettingScreenContainer>
     </ScrollView>
   );
