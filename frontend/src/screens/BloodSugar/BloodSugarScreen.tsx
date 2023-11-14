@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { rHeight } from '@/utils';
 import { periodBloodSugar } from '@/apis/bloodSugar';
 import { BloodSugarResponseData } from '@/types/api/request/bloodSugar';
 import { useSelector } from 'react-redux';
@@ -12,11 +11,19 @@ import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
 
 const BloodSugarContainer = styled.View`
-  width: 100%;
   height: 100%;
-  justify-content: center;
-  gap: ${rHeight(30)}px;
+  width: 100%;
+  justify-content: flex-start;
   align-items: center;
+  padding-top: 10%;
+`;
+
+const DatePickerControllerWrapper = styled.View`
+  padding: 5%;
+`;
+
+const BloodSugarContentCardWrapper = styled.View`
+  padding: 5%;
 `;
 
 const FillButtonWrapper = styled.View`
@@ -36,6 +43,7 @@ export default function BloodSugarScreen() {
   >([]);
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
   const setStartDateSafe = (date: Date) => {
     if (date > endDate) {
@@ -57,14 +65,27 @@ export default function BloodSugarScreen() {
   };
 
   const fetchBloodSugarData = useCallback(async () => {
+    console.log(page);
     const data = await periodBloodSugar({
       nickname,
       startDate,
       endDate,
       page,
     });
-    setBloodSugarData((prevData) => [...prevData, ...data.response]);
+    if (data.response.length === 0) {
+      console.log('끗');
+      setIsEnd(true);
+    } else {
+      setBloodSugarData((prevData) => [...prevData, ...data.response]);
+    }
   }, [nickname, startDate, endDate, page]);
+
+  useEffect(() => {
+    setBloodSugarData([]);
+    setPage(0);
+    setIsEnd(false);
+    console.log('다시');
+  }, [nickname, startDate, endDate]);
 
   useEffect(() => {
     fetchBloodSugarData();
@@ -75,9 +96,10 @@ export default function BloodSugarScreen() {
     const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
     const isScrolledToTop = contentOffset.y === 0;
     const isScrolledToBottom =
-      contentOffset.y + layoutMeasurement.height >= contentSize.height;
+      Math.round(contentOffset.y + layoutMeasurement.height) >=
+      Math.round(contentSize.height);
     setIsTop(isScrolledToTop);
-    if (isScrolledToBottom) {
+    if (isScrolledToBottom && !isEnd) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -85,25 +107,29 @@ export default function BloodSugarScreen() {
   return (
     <BloodSugarContainer>
       <ScrollView onScroll={handleScroll}>
-        <DatePickerController
-          startDate={startDate}
-          setStartDate={setStartDateSafe}
-          endDate={endDate}
-          setEndDate={setEndDateSafe}
-        />
+        <DatePickerControllerWrapper>
+          <DatePickerController
+            startDate={startDate}
+            setStartDate={setStartDateSafe}
+            endDate={endDate}
+            setEndDate={setEndDateSafe}
+          />
+        </DatePickerControllerWrapper>
         {bloodSugarData.map(
           (item) =>
             item.bloodSugarBefore != null &&
             item.bloodSugarAfter != null && (
-              <BloodSugarContentCard
-                key={item.time}
-                date={item.time}
-                count={item.count}
-                beforeNum={item.bloodSugarBefore}
-                beforeType="warning"
-                afterNum={item.bloodSugarAfter}
-                afterType="safety"
-              />
+              <BloodSugarContentCardWrapper>
+                <BloodSugarContentCard
+                  key={item.time}
+                  date={item.time}
+                  count={item.count}
+                  beforeNum={item.bloodSugarBefore}
+                  beforeType={item.bloodSugarBeforeStatus}
+                  afterNum={item.bloodSugarAfter}
+                  afterType={item.bloodSugarAfterStatus}
+                />
+              </BloodSugarContentCardWrapper>
             )
         )}
       </ScrollView>

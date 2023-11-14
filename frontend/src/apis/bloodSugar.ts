@@ -15,12 +15,14 @@ export async function periodBloodSugar({
   const state: RootState = store.getState();
   const { accessToken } = state.user;
 
-  const start = `${startDate.getFullYear()}-${
-    startDate.getMonth() + 1
-  }-${startDate.getDate()}`;
-  const end = `${endDate.getFullYear()}-${
-    endDate.getMonth() + 1
-  }-${endDate.getDate()}`;
+  const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+  const startDay = startDate.getDate().toString().padStart(2, '0');
+
+  const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
+  const endDay = endDate.getDate().toString().padStart(2, '0');
+
+  const start = `${startDate.getFullYear()}-${startMonth}-${startDay}`;
+  const end = `${endDate.getFullYear()}-${endMonth}-${endDay}`;
 
   const response = await fetch(
     `${API_ENDPOINT}/bloodsugar/period/${nickname}/${start}/${end}/${page}`,
