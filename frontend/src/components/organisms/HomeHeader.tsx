@@ -25,7 +25,10 @@ export default function HomeHeader() {
   const router = useRouter();
   const handleSignOut = async () => {
     await persistor.purge();
-    router.navigate('Signin');
+    router.reset({
+      index: 0,
+      routes: [{ name: 'Signin' }],
+    });
   };
   return (
     <HomeHeaderBox>
