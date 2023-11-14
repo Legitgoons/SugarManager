@@ -87,11 +87,9 @@ export default function HomeScreen() {
             />
             <HomeInfoCard
               title="식사 분석"
-              firstContent="오늘 총, 2회 측정 하였습니다."
-              secondContent="저녁 식사 측정이 필요합니다."
-              onPress={() => {
-                router.navigate('MealInfo');
-              }}
+              firstContent="기능 추가 예정입니다."
+              secondContent="빠른 시일 내 추가 예정입니다."
+              onPress={() => {}}
             />
           </HomeCardBox>
         </HomeContainer>
