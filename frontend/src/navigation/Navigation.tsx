@@ -8,6 +8,7 @@ import {
   ChallengeMakeScreen,
   BloodSugarScreen,
   BloodSugarWriteScreen,
+  ProfileSettingScreen,
 } from '@/screens';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
@@ -68,6 +69,14 @@ function SuspenseBloodSugarWriteScreen() {
   );
 }
 
+function SuspenseProfileSettingScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <ProfileSettingScreen />
+    </Suspense>
+  );
+}
+
 export default function Navigation({ Stack }: { Stack: any }) {
   const { isSignin } = useSelector(selectUser);
   return (
@@ -106,6 +115,11 @@ export default function Navigation({ Stack }: { Stack: any }) {
               name="BloodSugarWrite"
               component={SuspenseBloodSugarWriteScreen}
               options={{ title: '혈당 정보 작성 ', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={SuspenseProfileSettingScreen}
+              options={{ title: '계정 설정', headerTitleAlign: 'center' }}
             />
           </>
         ) : (

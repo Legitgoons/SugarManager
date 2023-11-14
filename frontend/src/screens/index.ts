@@ -5,6 +5,7 @@ import ChallengeMakeScreen from './Challenge/ChallengeMakeScreen';
 import ChallengeScreen from './Challenge/ChallengeScreen';
 import BloodSugarScreen from './BloodSugar/BloodSugarScreen';
 import BloodSugarWriteScreen from './BloodSugar/BloodSugarWriteScreen';
+import ProfileSettingScreen from './setting/ProfileSettingScreen';
 
 export {
   HomeScreen,
@@ -14,4 +15,5 @@ export {
   ChallengeScreen,
   BloodSugarScreen,
   BloodSugarWriteScreen,
+  ProfileSettingScreen,
 };

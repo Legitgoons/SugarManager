@@ -1,5 +1,6 @@
 export type RootStackParam = {
   Home: undefined;
+  Profile: undefined;
   Signin: undefined;
   ChallengeInfo: undefined;
   BloodSugar: undefined;
