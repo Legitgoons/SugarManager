@@ -88,7 +88,7 @@ export default function HomeScreen() {
             <HomeInfoCard
               title="식사 분석"
               firstContent="기능 추가 예정입니다."
-              secondContent="빠른 시일 내 추가 예정입니다."
+              secondContent="빠른 시일 내 추가하겠습니다."
               onPress={() => {}}
             />
           </HomeCardBox>
