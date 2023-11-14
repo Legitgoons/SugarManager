@@ -57,7 +57,7 @@ export default function BloodSugarInfoWriteScreen() {
       return;
     }
     // eslint-disable-next-line yoda
-    if (bloodSugarNum < 10 || 9999 < bloodSugarNum) {
+    if (bloodSugarNum < 0 || 999 < bloodSugarNum) {
       const content = '혈당 수치가 정상적이지 않습니다.';
       showAlert({ title, content, onOk });
       return;
