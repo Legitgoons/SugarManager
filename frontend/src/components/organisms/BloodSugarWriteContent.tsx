@@ -22,14 +22,14 @@ const BoxTextWrapper = styled.Text`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-interface BloodSugarInfoWriteContentProps extends DatePickerProps {
+interface BloodSugarWriteContentProps extends DatePickerProps {
   bloodSugar: string;
   setBloodSugar: React.Dispatch<React.SetStateAction<string>>;
   issue: string;
   setIssue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function BloodSugarInfoWriteContent({
+export default function BloodSugarWriteContent({
   bloodSugar,
   setBloodSugar,
   issue,
@@ -37,7 +37,7 @@ export default function BloodSugarInfoWriteContent({
   date,
   setDate,
   mode,
-}: BloodSugarInfoWriteContentProps) {
+}: BloodSugarWriteContentProps) {
   return (
     <WriteContentBox>
       <InputLine

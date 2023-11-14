@@ -65,7 +65,6 @@ export default function BloodSugarScreen() {
   };
 
   const fetchBloodSugarData = useCallback(async () => {
-    console.log(page);
     const data = await periodBloodSugar({
       nickname,
       startDate,
@@ -73,7 +72,6 @@ export default function BloodSugarScreen() {
       page,
     });
     if (data.response.length === 0) {
-      console.log('끗');
       setIsEnd(true);
     } else {
       setBloodSugarData((prevData) => [...prevData, ...data.response]);
@@ -84,7 +82,6 @@ export default function BloodSugarScreen() {
     setBloodSugarData([]);
     setPage(0);
     setIsEnd(false);
-    console.log('다시');
   }, [nickname, startDate, endDate]);
 
   useEffect(() => {
