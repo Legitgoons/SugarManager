@@ -122,11 +122,18 @@ export default function BloodSugarScreen() {
               <BloodSugarContentCardWrapper>
                 <BloodSugarContentCard
                   key={item.time}
-                  date={item.time}
+                  date={(() => {
+                    const date = new Date(item.time);
+                    const month = date.getMonth() + 1;
+                    const day = date.getDate();
+                    return `${month.toString().padStart(2, '0')}/${day
+                      .toString()
+                      .padStart(2, '0')}`;
+                  })()}
                   count={item.count}
-                  beforeNum={item.bloodSugarBefore}
+                  beforeNum={Math.round(item.bloodSugarBefore)}
                   beforeType={item.bloodSugarBeforeStatus}
-                  afterNum={item.bloodSugarAfter}
+                  afterNum={Math.round(item.bloodSugarAfter)}
                   afterType={item.bloodSugarAfterStatus}
                 />
               </BloodSugarContentCardWrapper>
