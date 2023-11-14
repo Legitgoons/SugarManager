@@ -4,13 +4,13 @@ import { useMutation } from '@tanstack/react-query';
 import { rHeight } from '@/utils/style';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import Toggle from '@/components/molecules/Toggle';
-import BloodSugarInfoWriteContent from '@/components/organisms/BloodSugarWriteContent';
+import BloodSugarWriteContent from '@/components/organisms/BloodSugarWriteContent';
 import DefaultScreenContainer from '@/styles/Container';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
 import { saveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
 
-const BloodSugarInfoWriteContainer = styled(DefaultScreenContainer)`
+const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
   gap: ${rHeight(36)}px;
@@ -20,7 +20,7 @@ const MainFillButtonWrapper = styled.View`
   justify-self: end;
 `;
 
-export default function BloodSugarInfoWriteScreen() {
+export default function BloodSugarWriteScreen() {
   const [beforeMeal, setBeforeMeal] = useState(false);
   const [bloodSugar, setBloodSugar] = useState('');
   const [issue, setIssue] = useState('');
@@ -82,14 +82,14 @@ export default function BloodSugarInfoWriteScreen() {
   };
 
   return (
-    <BloodSugarInfoWriteContainer>
+    <BloodSugarWriteContainer>
       <Toggle
         isLeft={beforeMeal}
         onPress={setBeforeMeal}
         leftTitle="식전"
         rightTitle="식후"
       />
-      <BloodSugarInfoWriteContent
+      <BloodSugarWriteContent
         bloodSugar={bloodSugar}
         setBloodSugar={setBloodSugar}
         issue={issue}
@@ -106,6 +106,6 @@ export default function BloodSugarInfoWriteScreen() {
           onPress={handleSubmit}
         />
       </MainFillButtonWrapper>
-    </BloodSugarInfoWriteContainer>
+    </BloodSugarWriteContainer>
   );
 }
