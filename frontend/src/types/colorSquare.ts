@@ -1,4 +1,4 @@
-export type colorSquareType = 'safety' | 'warning' | 'danger';
+export type colorSquareType = 'SAFETY' | 'WARNING' | 'DANGER';
 
 export interface ColorSquareProps {
   num: number;
