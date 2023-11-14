@@ -13,7 +13,7 @@ interface DefaultModalProps {
   children: React.ReactNode;
   leftBtnTitle: string;
   onLeftPress: () => void;
-  rightBntTitle: string;
+  rightBtnTitle: string;
   onRightPress: () => void;
 }
 
@@ -52,7 +52,7 @@ const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
  * @param {React.ReactNode} children 모달 내부 내용
  * @param {String} leftBtnTitle 모달 좌측 버튼 Title
  * @param {() => void} onLeftPress 모달 좌측 버튼 callback함수
- * @param {String} rightBntTitle 모달 우측 버튼 Title
+ * @param {String} rightBtnTitle 모달 우측 버튼 Title
  * @param {() => void} onRightPress 모달 우측 버튼 callback함수
  * @returns {JSX.Element} Modal Component 반환
  */
@@ -64,7 +64,7 @@ export default function DefaultModal({
   children,
   leftBtnTitle,
   onLeftPress,
-  rightBntTitle,
+  rightBtnTitle,
   onRightPress,
 }: DefaultModalProps) {
   return (
@@ -82,7 +82,7 @@ export default function DefaultModal({
             <TwinButtonGroup
               leftTitle={leftBtnTitle}
               onLeftPress={onLeftPress}
-              rightTitle={rightBntTitle}
+              rightTitle={rightBtnTitle}
               onRightPress={onRightPress}
             />
           </ModalBox>
