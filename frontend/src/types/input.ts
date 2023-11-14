@@ -19,4 +19,6 @@ export default interface DefaultInputProps<T extends string | number> {
   maxLength?: number;
   keyboardType?: KeyboardTypeOptions | undefined;
   editable?: boolean;
+  width?: number;
+  height?: number;
 }

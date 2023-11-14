@@ -40,12 +40,12 @@ interface CalendarProps {
 }
 
 export default function Calendar({ time, setTime, onPress }: CalendarProps) {
-  const { uid } = useSelector(selectNavigation);
+  const { nickname } = useSelector(selectNavigation);
   const { isSuccess, data: timelineState } = useSuspenseQuery({
-    queryKey: ['getTimelineState', uid],
+    queryKey: ['getTimelineState', nickname],
     queryFn: () =>
       getTimelineState({
-        userPk: Number(uid),
+        nickname,
         year: time.year,
         month: time.month,
       }),

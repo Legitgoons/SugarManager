@@ -9,11 +9,11 @@ import {
   BloodSugarScreen,
   BloodSugarWriteScreen,
   ProfileSettingScreen,
+  AlarmSettingScreen,
 } from '@/screens';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import Spinner from '@/components/organisms/Spinner';
-import AlarmSettingScreen from '@/screens/Setting/AlarmSettingScreen';
 
 function SuspenseSigninScreen() {
   return (

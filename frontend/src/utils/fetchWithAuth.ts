@@ -17,10 +17,10 @@ const fetchWithAuth = async (
   options: FetchOptions = { wasRefreshing: false }
 ): Promise<any> => {
   const state: RootState = store.getState();
-  const { accessToken } = state.user;
-
+  const { accessToken, uid } = state.user;
   const headers = new Headers({
     'Content-Type': 'application/json',
+    'X-Authrization-Id': uid.toString(),
     ...options.headers,
   });
 
