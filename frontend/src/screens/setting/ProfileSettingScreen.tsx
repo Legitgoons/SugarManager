@@ -127,7 +127,7 @@ export default function ProfileSettingScreen() {
           setOpen={setOpenMemberDeleteModal}
         />
       )}
-      {groupCode.length > 0 && openGroupLeaveModal && (
+      {groupCode && groupCode.length > 0 && openGroupLeaveModal && (
         <GroupLeaveModal
           open={openGroupLeaveModal}
           setOpen={setOpenGroupLeaveModal}
