@@ -68,30 +68,6 @@ export default function ProfileSettingScreen() {
   const [userBloodSugarMax, setUserBloodSugarMax] = useState(bloodSugarMax);
   const dispatch = useDispatch();
 
-  console.log(
-    'redux값은 이거임',
-    name,
-    email,
-    nickname,
-    gender,
-    height,
-    weight,
-    groupCode,
-    profileImage,
-    birthday,
-    bloodSugarMin,
-    bloodSugarMax
-  );
-  console.log(
-    '지금 상태는 이거임',
-    userNickname,
-    userGender,
-    userHeight,
-    userWeight,
-    userBloodSugarMin,
-    userBloodSugarMax
-  );
-
   const { mutate } = useMutation({
     mutationFn: () =>
       postProfileEdit({
