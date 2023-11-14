@@ -34,7 +34,7 @@ export default function HomeInfoCard({
   onPress,
 }: HomeInfoCardProps) {
   return (
-    <HomeInfoCardContainer size="lg">
+    <HomeInfoCardContainer size="lg" onPress={onPress}>
       <CardTitleWrapper typography="captionr" color="secondary">
         {title}
       </CardTitleWrapper>

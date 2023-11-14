@@ -1,3 +1,5 @@
+import { colorSquareType } from '@/types/colorSquare';
+
 /**
  * @property {number} count 해당 날짜의 측정 횟수
  * @property {string} time 측정 날짜
@@ -10,6 +12,8 @@ export interface BloodSugarResponseData {
   time: string;
   bloodSugarBefore: number | null;
   bloodSugarAfter: number | null;
+  bloodSugarBeforeStatus: colorSquareType;
+  bloodSugarAfterStatus: colorSquareType;
 }
 
 /**
