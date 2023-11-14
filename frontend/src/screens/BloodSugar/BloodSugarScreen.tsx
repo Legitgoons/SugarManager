@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { rHeight } from '@/utils';
 import { periodBloodSugar } from '@/apis/bloodSugar';
 import { BloodSugarResponseData } from '@/types/api/request/bloodSugar';
 import { useSelector } from 'react-redux';
@@ -10,13 +9,22 @@ import useRouter from '@/hooks/useRouter';
 import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
+import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 
 const BloodSugarContainer = styled.View`
-  width: 100%;
   height: 100%;
-  justify-content: center;
-  gap: ${rHeight(30)}px;
+  width: 100%;
+  justify-content: flex-start;
   align-items: center;
+  padding-top: 10%;
+`;
+
+const DatePickerControllerWrapper = styled.View`
+  padding: 5%;
+`;
+
+const BloodSugarContentCardWrapper = styled.View`
+  padding: 5%;
 `;
 
 const FillButtonWrapper = styled.View`
@@ -85,25 +93,30 @@ export default function BloodSugarScreen() {
   return (
     <BloodSugarContainer>
       <ScrollView onScroll={handleScroll}>
-        <DatePickerController
-          startDate={startDate}
-          setStartDate={setStartDateSafe}
-          endDate={endDate}
-          setEndDate={setEndDateSafe}
-        />
+        <TwinLineGraph />
+        <DatePickerControllerWrapper>
+          <DatePickerController
+            startDate={startDate}
+            setStartDate={setStartDateSafe}
+            endDate={endDate}
+            setEndDate={setEndDateSafe}
+          />
+        </DatePickerControllerWrapper>
         {bloodSugarData.map(
           (item) =>
             item.bloodSugarBefore != null &&
             item.bloodSugarAfter != null && (
-              <BloodSugarContentCard
-                key={item.time}
-                date={item.time}
-                count={item.count}
-                beforeNum={item.bloodSugarBefore}
-                beforeType="warning"
-                afterNum={item.bloodSugarAfter}
-                afterType="safety"
-              />
+              <BloodSugarContentCardWrapper>
+                <BloodSugarContentCard
+                  key={item.time}
+                  date={item.time}
+                  count={item.count}
+                  beforeNum={item.bloodSugarBefore}
+                  beforeType="warning"
+                  afterNum={item.bloodSugarAfter}
+                  afterType="safety"
+                />
+              </BloodSugarContentCardWrapper>
             )
         )}
       </ScrollView>
