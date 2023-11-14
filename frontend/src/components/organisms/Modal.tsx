@@ -39,8 +39,6 @@ const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
   color: ${({ theme }) => theme.colors.black};
   ${({ fontSize, theme }) => theme.typographys[fontSize]};
   width: 100%;
-  height: ${rHeight(32)}px;
-  background-color: white;
   justify-content: center;
   align-items: center;
 `;
