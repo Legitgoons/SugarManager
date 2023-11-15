@@ -1,15 +1,23 @@
+/* eslint-disable react/no-unused-prop-types */
 import { getTimelineDetail } from '@/apis/timeline';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
+import { DefaultScreenContainer, DefaultText } from '@/styles';
+import { rHeight, rWidth } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import {
   Modal,
   ScrollView,
   TouchableWithoutFeedback,
-  Text,
+  View,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
+import HeartIcon from '@/assets/img/heart.svg';
+import CrownIcon from '@/assets/img/crown.svg';
+import EyedropperIcon from '@/assets/img/eyedropper.svg';
+import IconText from '../atoms/IconText';
+import DailyInfoContentCard from '../molecules/DailyInfoContentCard';
 
 const ModalOverlay = styled.View`
   flex: 1;
@@ -24,6 +32,19 @@ const ModalContent = styled.View`
   overflow: hidden;
 `;
 
+const ContentContainer = styled(DefaultScreenContainer)`
+  padding-top: ${rHeight(20)}px;
+  justify-content: center;
+  gap: ${rHeight(16)}px;
+`;
+const IconTextGroup = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: ${rWidth(8)}px;
+  justify-content: center;
+`;
+
 interface DailyInfoModalProps {
   isOpen: boolean;
   handleClose: () => void;
@@ -33,6 +54,7 @@ interface DailyInfoModalProps {
     day: number;
   };
 }
+
 function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
   const { nickname } = useSelector(selectNavigation);
   const { year, month, day } = time;
@@ -43,8 +65,8 @@ function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) return null;
-  console.log(data);
+  if (isLoading || !data) return null;
+  const { response } = data;
 
   return (
     <Modal
@@ -58,7 +80,38 @@ function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
           <TouchableWithoutFeedback>
             <ModalContent>
               <ScrollView>
-                <Text>12345</Text>
+                <ContentContainer>
+                  <View>
+                    <IconTextGroup>
+                      <IconText Icon={HeartIcon} text="혈당 측정" />
+                      <IconText Icon={EyedropperIcon} text="식사 분석" />
+                      <IconText Icon={CrownIcon} text="챌린지" />
+                    </IconTextGroup>
+                    <DefaultText typography="captionr" color="secondary">
+                      기록을 누르면 상세 페이지로 이동 할 수 있어요!
+                    </DefaultText>
+                  </View>
+                  {response.map(
+                    ({
+                      hour,
+                      minute,
+                      category,
+                      content,
+                    }: {
+                      hour: number;
+                      minute: number;
+                      category: string;
+                      content: string;
+                    }) => (
+                      <DailyInfoContentCard
+                        hour={hour}
+                        minute={minute}
+                        category={category}
+                        content={content}
+                      />
+                    )
+                  )}
+                </ContentContainer>
               </ScrollView>
             </ModalContent>
           </TouchableWithoutFeedback>
