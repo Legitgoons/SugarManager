@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { DefaultText } from '@/styles';
-import { rHeight, showAlert } from '@/utils';
+import { rHeight, rWidth, showAlert } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
 import { postGroupLeave } from '@/apis';
 import { useDispatch } from 'react-redux';
@@ -76,6 +76,7 @@ export default function GroupJoinModal({ open, setOpen }: GroupJoinModalProps) {
           value={inputGroupCode}
           onChangeText={setInputGroupCode}
           placeholder="그룹 코드"
+          width={rWidth(320)}
         />
       </ContentBox>
     </DefaultModal>

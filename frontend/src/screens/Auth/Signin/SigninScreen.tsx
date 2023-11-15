@@ -9,7 +9,7 @@ import { postKakaoSignin } from '@/apis/auth';
 import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
 import { useDispatch } from 'react-redux';
 import showAlert from '@/utils/alert';
-import { rHeight, validationId, validationPw } from '@/utils';
+import { rHeight, rWidth, validationId, validationPw } from '@/utils';
 import { getMyProfile } from '@/apis/member';
 import useRouter from '@/hooks/useRouter';
 import { setNavigation } from '@/redux/slice/navigationSlice';
@@ -183,11 +183,13 @@ export default function SigninScreen() {
           value={id}
           onChangeText={setId}
           placeholder="아이디를 입력하세요"
+          width={rWidth(320)}
         />
         <InputLine
           value={pw}
           onChangeText={setPw}
           placeholder="비밀번호를 입력하세요"
+          width={rWidth(320)}
         />
         <MainFillButton title="로그인 하기" bgColor="b4" onPress={signIn} />
       </SigninBox>

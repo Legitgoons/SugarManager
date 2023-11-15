@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unused-prop-types */
 import { getTimelineDetail } from '@/apis/timeline';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
@@ -92,18 +93,22 @@ function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
                     </DefaultText>
                   </View>
                   {response.map(
-                    ({
-                      hour,
-                      minute,
-                      category,
-                      content,
-                    }: {
-                      hour: number;
-                      minute: number;
-                      category: string;
-                      content: string;
-                    }) => (
+                    (
+                      {
+                        hour,
+                        minute,
+                        category,
+                        content,
+                      }: {
+                        hour: number;
+                        minute: number;
+                        category: string;
+                        content: string;
+                      },
+                      idx: number
+                    ) => (
                       <DailyInfoContentCard
+                        key={`${hour}${minute}${category}${content}${idx}`}
                         hour={hour}
                         minute={minute}
                         category={category}
