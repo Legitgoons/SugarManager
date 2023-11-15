@@ -11,88 +11,97 @@ import {
   BloodSugarWriteScreen,
   ProfileSettingScreen,
   AlarmSettingScreen,
+  ErrorScreen,
 } from '@/screens';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import Spinner from '@/components/organisms/Spinner';
+import ErrorBoundary from 'react-native-error-boundary';
 
+function BoundaryWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
+      <Suspense fallback={<Spinner />}>{children}</Suspense>
+    </ErrorBoundary>
+  );
+}
 function SuspenseSigninScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <SigninScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseSignupScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <SignupScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseHomeScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <HomeScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseChallengeScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ChallengeScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseChallengeDetailScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ChallengeDetailScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseChallengeMakeScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ChallengeMakeScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseAlarmSettingScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <AlarmSettingScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseBloodSugarScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <BloodSugarScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseBloodSugarWriteScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <BloodSugarWriteScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseProfileSettingScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ProfileSettingScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
@@ -138,7 +147,10 @@ export default function Navigation({ Stack }: { Stack: any }) {
             <Stack.Screen
               name="BloodSugarWrite"
               component={SuspenseBloodSugarWriteScreen}
-              options={{ title: '혈당 정보 작성 ', headerTitleAlign: 'center' }}
+              options={{
+                title: '혈당 정보 작성 ',
+                headerTitleAlign: 'center',
+              }}
             />
             <Stack.Screen
               name="Profile"
