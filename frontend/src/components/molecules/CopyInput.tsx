@@ -32,7 +32,6 @@ export default function CopyInput<T extends string | number>(
   props: CopyInputProps<T>
 ) {
   const { value, width, height } = props;
-
   const copyToClipboard = () => {
     if (value !== null && value !== undefined) {
       Clipboard.setString(value.toString());

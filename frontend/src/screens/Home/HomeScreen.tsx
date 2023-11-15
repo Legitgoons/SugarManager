@@ -15,6 +15,8 @@ import useRouter from '@/hooks/useRouter';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getChallengeList } from '@/apis';
+import GroupJoinModal from '@/components/organisms/GroupJoinModal';
+import GroupCreateModal from '@/components/organisms/GroupCreateModal';
 
 const HomeContainer = styled.View`
   padding: ${rHeight(30)}px 0;
@@ -33,6 +35,8 @@ const HomeCardBox = styled.View`
 export default function HomeScreen() {
   const router = useRouter();
   const curDate = new Date();
+  const [openGroupJoinModal, setOpenGroupJoinModal] = useState(false);
+  const [openGroupCreateModal, setOpenGroupCreateModal] = useState(false);
   const [time, setTime] = useState<{
     year: number;
     month: number;
@@ -54,10 +58,29 @@ export default function HomeScreen() {
 
   return (
     <>
+      {openGroupCreateModal && (
+        <GroupCreateModal
+          open={openGroupCreateModal}
+          setOpen={setOpenGroupCreateModal}
+        />
+      )}
+      {openGroupJoinModal && (
+        <GroupJoinModal
+          open={openGroupJoinModal}
+          setOpen={setOpenGroupJoinModal}
+        />
+      )}
       <ScrollView style={{ flex: 1 }}>
         <HomeContainer>
           <HomeHeader />
-          {groupCode ? <HomeGroupBar /> : <HomeNoneGroupBar />}
+          {groupCode ? (
+            <HomeGroupBar />
+          ) : (
+            <HomeNoneGroupBar
+              setOpenGroupJoinModal={setOpenGroupJoinModal}
+              setOpenGroupCreateModal={setOpenGroupCreateModal}
+            />
+          )}
           <Calendar
             time={time}
             setTime={setTime}
@@ -76,7 +99,7 @@ export default function HomeScreen() {
             />
             <ChanllengeCard
               title="챌린지 - 오늘의 달성도"
-              leftNumeric="3개"
+              leftNumeric="0개"
               rightNumeric="5개"
               buttonType="view"
               onPressButton={() => {

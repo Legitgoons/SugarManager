@@ -24,3 +24,12 @@ export function push(name: keyof RootStackParam) {
     navigationRef.dispatch(action);
   }
 }
+
+export function reset(name: keyof RootStackParam) {
+  if (navigationRef.isReady()) {
+    navigationRef.reset({
+      index: 0,
+      routes: [{ name }],
+    });
+  }
+}

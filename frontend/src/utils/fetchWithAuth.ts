@@ -1,6 +1,6 @@
 import { API_ENDPOINT } from '@env';
 import { store, RootState, persistor } from '@/redux/store/storeConfig';
-import { navigate } from '@/navigation/NavigationService';
+import { reset } from '@/navigation/NavigationService';
 import { postTokenRefresh } from '@/apis';
 import { setAccessToken } from '@/redux/slice/userSlice';
 
@@ -49,7 +49,7 @@ const fetchWithAuth = async (
     const errorResponse = await (error as any).json();
     if (errorResponse === undefined) {
       await persistor.purge();
-      navigate('Signin');
+      reset('Signin');
       return error;
     }
     switch (errorResponse.error.code) {
@@ -65,7 +65,7 @@ const fetchWithAuth = async (
           });
         } catch (e) {
           await persistor.purge();
-          navigate('Signin');
+          reset('Signin');
           return e;
         }
       default:

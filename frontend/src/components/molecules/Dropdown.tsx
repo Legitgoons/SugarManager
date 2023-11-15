@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, FlatList } from 'react-native';
+import { Pressable } from 'react-native';
 import styled from 'styled-components/native';
 import BlackDownArrow from '@/assets/icon/BlackDownArrowIcon.svg';
 import BlackUpArrow from '@/assets/icon/BlackUpArrowIcon.svg';
@@ -67,7 +67,6 @@ const ListItem = styled(Pressable)`
 const ListItemText = styled.Text`
   ${({ theme }) => theme.typographys.p2r};
 `;
-
 export default function Dropdown({
   placeholder,
   list,
@@ -75,17 +74,6 @@ export default function Dropdown({
   setSelectItem,
 }: DropdownProps) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
-  const renderItem = ({ item }: { item: DropdownItem }) => (
-    <ListItem
-      onPress={() => {
-        setSelectItem(item);
-        setDropdownVisible(false);
-      }}
-    >
-      <ListItemText>{item.value}</ListItemText>
-    </ListItem>
-  );
 
   return (
     <DropdownContainer>
@@ -99,11 +87,17 @@ export default function Dropdown({
       </DropdownButton>
       {dropdownVisible && (
         <DropdownListContainer>
-          <FlatList
-            data={list}
-            renderItem={renderItem}
-            keyExtractor={(item: DropdownItem) => item.id}
-          />
+          {list.map((item: DropdownItem) => (
+            <ListItem
+              key={item.id}
+              onPress={() => {
+                setSelectItem(item);
+                setDropdownVisible(false);
+              }}
+            >
+              <ListItemText>{item.value}</ListItemText>
+            </ListItem>
+          ))}
         </DropdownListContainer>
       )}
     </DropdownContainer>
