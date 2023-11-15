@@ -1,4 +1,5 @@
 import { fetchWithAuth } from '@/utils';
 
 const getGroup = () => fetchWithAuth(`/group`);
-export default getGroup;
+const postGroupLeave = () => fetchWithAuth('/group/leave');
+export { getGroup, postGroupLeave };

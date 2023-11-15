@@ -10,13 +10,14 @@ import {
   postChallengeAdd,
   getChallengeDetail,
 } from './challenge';
-import getGroup from './group';
+import { getGroup, postGroupLeave } from './group';
 import {
   getMyProfile,
   postMemberPoke,
   getMyAlarm,
   postAlarmSave,
   postProfileEdit,
+  postMemberDelete,
 } from './member';
 import { getTimelineState, getTimelineDetail } from './timeline';
 
@@ -37,4 +38,6 @@ export {
   postProfileEdit,
   PostSignup,
   PostSignin,
+  postMemberDelete,
+  postGroupLeave,
 };
