@@ -84,6 +84,7 @@ export default function MemberDeleteModal({
           value={inputNickname}
           onChangeText={setInputNickname}
           placeholder="닉네임"
+          width={rWidth(320)}
         />
       </ContentBox>
     </DefaultModal>
