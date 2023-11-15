@@ -17,7 +17,7 @@ export default function TextList({ list, typography, color }: TextListProps) {
   return (
     <TextListBox>
       {list.map((cur) => (
-        <DefaultText typography={typography} color={color}>
+        <DefaultText key={cur} typography={typography} color={color}>
           {cur}
         </DefaultText>
       ))}
