@@ -18,7 +18,7 @@ const InputWrapper = styled.TextInput<{
   width: number | undefined;
   height: number | undefined;
 }>`
-  width: ${({ width }) => rWidth(width || 320)}px;
+  width: ${({ width }) => (width ? `${rWidth(width)}px` : `${rWidth(240)}px`)};
   height: ${({ height }) => rHeight(height || 40)}px;
 `;
 
