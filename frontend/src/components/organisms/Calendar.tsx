@@ -41,8 +41,9 @@ interface CalendarProps {
 
 export default function Calendar({ time, setTime, onPress }: CalendarProps) {
   const { nickname } = useSelector(selectNavigation);
+
   const { isSuccess, data: timelineState } = useSuspenseQuery({
-    queryKey: ['getTimelineState', nickname],
+    queryKey: ['getTimelineState', nickname, time.year, time.month],
     queryFn: () =>
       getTimelineState({
         nickname,
@@ -75,7 +76,6 @@ export default function Calendar({ time, setTime, onPress }: CalendarProps) {
       setTime((prev) => ({ ...prev, month: prev.month + 1 }));
     }
   };
-
   const handleClickDay = (
     selectedYear: number,
     selectedMonth: number,
