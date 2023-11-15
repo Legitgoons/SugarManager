@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import {
   HomeScreen,
   SigninScreen,
+  SignupScreen,
   ChallengeScreen,
   ChallengeDetailScreen,
   ChallengeMakeScreen,
@@ -24,6 +25,15 @@ function SuspenseSigninScreen() {
     </Suspense>
   );
 }
+
+function SuspenseSignupScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SignupScreen />
+    </Suspense>
+  );
+}
+
 function SuspenseHomeScreen() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -165,13 +175,20 @@ export default function Navigation({ Stack }: { Stack: any }) {
             />
           </>
         ) : (
-          <Stack.Screen
-            name="Signin"
-            component={SuspenseSigninScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="Signin"
+              component={SuspenseSigninScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={SuspenseSignupScreen}
+              options={{ title: '회원가입', headerTitleAlign: 'center' }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

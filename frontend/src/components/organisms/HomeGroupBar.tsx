@@ -8,7 +8,7 @@ import {
   setNavigation,
 } from '@/redux/slice/navigationSlice';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import getGroup from '@/apis/group';
+import { getGroup } from '@/apis/group';
 import ProfileList from '../molecules/ProfileList';
 import ProfileButton from '../atoms/ProfileButton';
 

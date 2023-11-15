@@ -9,10 +9,12 @@ import ProfileSettingScreen from './Setting/ProfileSettingScreen';
 import AlarmSettingScreen from './Setting/AlarmSettingScreen';
 import MealScreen from './Meal/MealScreen';
 import MealWriteScreen from './Meal/MealWriteScreen';
+import SignupScreen from './Auth/Signup/SignupScreen';
 
 export {
   HomeScreen,
   SigninScreen,
+  SignupScreen,
   ChallengeDetailScreen,
   ChallengeMakeScreen,
   ChallengeScreen,

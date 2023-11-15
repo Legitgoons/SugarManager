@@ -19,8 +19,8 @@ const ProfileButtonWrapper = styled(DefaultPressable)<{
 }>`
   border-radius: ${({ height }) => rHeight(height ? height / 2 : 40)}px;
   overflow: hidden;
-  width: ${({ width }) => rWidth(width ? width : 80)}px;
-  height: ${({ height }) => rHeight(height ? height : 80)}px;
+  width: ${({ width }) => rWidth(width || 80)}px;
+  height: ${({ height }) => rHeight(height || 80)}px;
   border-width: ${({ isFocus }) => (isFocus ? '4px' : '0px')};
   border-color: ${({ theme }) => theme.colors.b3};
 `;
@@ -46,7 +46,9 @@ export default function ProfileButton({
     >
       <ProfileImageWrapper
         source={
-          !imgUrl ? require('@/assets/img/defaultProfile.jpg') : { uri: imgUrl }
+          !imgUrl || imgUrl === null
+            ? require('@/assets/img/defaultProfile.jpg')
+            : { uri: imgUrl }
         }
       />
     </ProfileButtonWrapper>

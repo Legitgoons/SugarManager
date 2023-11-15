@@ -29,6 +29,7 @@ const colors = {
   red: '#FF6B6B',
   yellow: '#FFD382',
   green: '#AED581',
+  kakao: '#fee500',
 } as const;
 const typographys = {
   h1b: css`

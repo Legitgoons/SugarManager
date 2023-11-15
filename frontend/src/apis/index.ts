@@ -1,17 +1,23 @@
-import { postKakaoSignin, postTokenRefresh } from './auth';
+import {
+  postKakaoSignin,
+  postTokenRefresh,
+  PostSignup,
+  PostSignin,
+} from './auth';
 import {
   getChallengeList,
   postChallengeDelete,
   postChallengeAdd,
   getChallengeDetail,
 } from './challenge';
-import getGroup from './group';
+import { getGroup, postGroupLeave } from './group';
 import {
   getMyProfile,
   postMemberPoke,
   getMyAlarm,
   postAlarmSave,
   postProfileEdit,
+  postMemberDelete,
 } from './member';
 import { getTimelineState, getTimelineDetail } from './timeline';
 
@@ -30,4 +36,8 @@ export {
   getMyAlarm,
   postAlarmSave,
   postProfileEdit,
+  PostSignup,
+  PostSignin,
+  postMemberDelete,
+  postGroupLeave,
 };

@@ -18,8 +18,8 @@ const InputWrapper = styled.TextInput<{
   width: number | undefined;
   height: number | undefined;
 }>`
-  width: ${({ width }) => rWidth(width ? width : 320)}px;
-  height: ${({ height }) => rHeight(height ? height : 40)}px;
+  width: ${({ width }) => rWidth(width || 320)}px;
+  height: ${({ height }) => rHeight(height || 40)}px;
 `;
 
 const InputUnitWrapper = styled.Text`
@@ -37,7 +37,7 @@ export default function Input<T extends string | number>({
   unit,
   maxLength,
   keyboardType,
-  editable,
+  editable = true,
   width,
   height,
 }: InputProps<T>) {
