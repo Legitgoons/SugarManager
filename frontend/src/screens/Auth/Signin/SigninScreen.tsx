@@ -176,7 +176,7 @@ export default function SigninScreen() {
         onPress={signInWithKakao}
       />
       <LineWrapper>
-        <Line />
+        <Line color="tertiary" />
       </LineWrapper>
       <SigninBox>
         <InputLine
