@@ -13,7 +13,8 @@ const InputLineBox = styled.View<{
   height: number | undefined;
 }>`
   display: flex;
-  width: ${({ width }) => rWidth(width || 320)}px;
+  width: ${({ width }) =>
+    width && typeof width === 'number' ? `${rWidth(width)}px` : `100%`};
   height: ${({ height }) => rHeight(height || 40)}px;
 `;
 
@@ -28,9 +29,9 @@ export default function InputLine<T extends string | number>({
   unit,
   maxLength,
   keyboardType,
-  editable = true,
   width,
   height,
+  editable = true,
 }: InputLineProps<T>) {
   return (
     <InputLineBox width={width} height={height}>
@@ -39,7 +40,7 @@ export default function InputLine<T extends string | number>({
         value={value}
         onChangeText={onChangeText}
         unit={unit}
-        maxLength={maxLength} // maxLength 전달
+        maxLength={maxLength}
         keyboardType={keyboardType}
         editable={editable}
         width={width}

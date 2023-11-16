@@ -43,13 +43,14 @@ export default function HomeScreen() {
     day: number;
   }>({
     year: curDate.getFullYear(),
-    month: curDate.getMonth(),
+    month: curDate.getMonth() + 1,
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
 
   const { groupCode } = useSelector(selectUser);
   const { nickname } = useSelector(selectNavigation);
+
   useSuspenseQuery({
     queryKey: ['getChallengeList', nickname],
     queryFn: () => getChallengeList(nickname),

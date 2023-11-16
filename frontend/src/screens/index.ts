@@ -8,6 +8,7 @@ import BloodSugarWriteScreen from './BloodSugar/BloodSugarWriteScreen';
 import ProfileSettingScreen from './Setting/ProfileSettingScreen';
 import AlarmSettingScreen from './Setting/AlarmSettingScreen';
 import SignupScreen from './Auth/Signup/SignupScreen';
+import ErrorScreen from './Exception/ErrorScreen';
 
 export {
   HomeScreen,
@@ -20,4 +21,5 @@ export {
   BloodSugarWriteScreen,
   ProfileSettingScreen,
   AlarmSettingScreen,
+  ErrorScreen,
 };
