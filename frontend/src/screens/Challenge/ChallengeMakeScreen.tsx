@@ -143,6 +143,7 @@ export default function ChallengeMakeScreen() {
 
     mutation.mutate(
       {
+        nickname,
         title: challengeTitle,
         goal: challengeCount,
         type: challengeType
