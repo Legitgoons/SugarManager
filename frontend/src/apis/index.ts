@@ -10,7 +10,12 @@ import {
   postChallengeAdd,
   getChallengeDetail,
 } from './challenge';
-import { getGroup, postGroupLeave } from './group';
+import {
+  getGroup,
+  postGroupLeave,
+  postGroupCraete,
+  postGroupJoin,
+} from './group';
 import {
   getMyProfile,
   postMemberPoke,
@@ -40,4 +45,6 @@ export {
   PostSignin,
   postMemberDelete,
   postGroupLeave,
+  postGroupCraete,
+  postGroupJoin,
 };
