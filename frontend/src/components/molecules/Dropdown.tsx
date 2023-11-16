@@ -23,7 +23,7 @@ const DropdownButton = styled(Pressable)`
   width: ${rWidth(120)}px;
   height: ${rHeight(40)}px;
   border-color: ${(props) => props.theme.colors.secondary};
-  border-radius: 10px;
+  border-radius: ${rHeight(10)}px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -102,7 +102,9 @@ export default function Dropdown({
                 >
                   <ListItemText>{item.value}</ListItemText>
                 </ListItem>
-                {idx < list.length - 1 && <Line color="tertiary" />}
+                {idx < list.length - 1 && (
+                  <Line color="tertiary" key={`line-${item.id}`} />
+                )}
               </>
             ))}
           </DropdownListScrollView>
