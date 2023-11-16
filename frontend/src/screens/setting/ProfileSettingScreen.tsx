@@ -68,7 +68,7 @@ export default function ProfileSettingScreen() {
       ? null
       : {
           id: `${gender}`,
-          value: `${gender === 'male' ? '남자' : '여자'}`,
+          value: `${gender === 'MALE' ? '남자' : '여자'}`,
         }
   );
   const [userHeight, setUserHeight] = useState(height === null ? 0 : height);
@@ -88,24 +88,31 @@ export default function ProfileSettingScreen() {
         height: userHeight,
         weight: userWeight,
         nickname: userNickname,
-        gender: (userGender as DropdownItem).id as 'male' | 'female',
+        gender: (userGender as DropdownItem).id as 'MALE' | 'FEMALE',
         bloodSugarMax: userBloodSugarMax,
         bloodSugarMin: userBloodSugarMin,
       }),
-    onSuccess: () => {
-      dispatch(
-        setProfileSetting({
-          height: userHeight,
-          weight: userWeight,
-          nickname: userNickname,
-          gender: (userGender as DropdownItem).id as 'male' | 'female',
-          bloodSugarMax: userBloodSugarMax,
-          bloodSugarMin: userBloodSugarMin,
-        })
-      );
+    onSuccess: (data) => {
+      if (data.success) {
+        dispatch(
+          setProfileSetting({
+            height: userHeight,
+            weight: userWeight,
+            nickname: userNickname,
+            gender: (userGender as DropdownItem).id as 'MALE' | 'FEMALE',
+            bloodSugarMax: userBloodSugarMax,
+            bloodSugarMin: userBloodSugarMin,
+          })
+        );
+        showAlert({
+          title: '수정 성공',
+          content: '수정사항을 저장했습니다.',
+          onOk: () => {},
+        });
+      }
       showAlert({
-        title: '수정 성공',
-        content: '수정사항을 저장했습니다.',
+        title: '수정 실패',
+        content: '네트워크 상태를 확인해주세요',
         onOk: () => {},
       });
     },
@@ -165,8 +172,8 @@ export default function ProfileSettingScreen() {
             DropdownProps={{
               placeholder: '입력해주세요',
               list: [
-                { id: 'male', value: '남자' },
-                { id: 'female', value: '여자' },
+                { id: 'MALE', value: '남자' },
+                { id: 'FEMALE', value: '여자' },
               ],
               selectItem: userGender,
               setSelectItem: setUserGender,

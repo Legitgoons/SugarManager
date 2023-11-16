@@ -12,7 +12,7 @@ interface PostAlarmSaveProps {
 
 interface PostProfileEditProps {
   name: string;
-  gender: 'male' | 'female' | null;
+  gender: 'MALE' | 'FEMALE' | null;
   birthday: string;
   nickname: string;
   height: number;
