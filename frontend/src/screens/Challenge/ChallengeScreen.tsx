@@ -3,19 +3,28 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import ChanllengeCard from '@/components/molecules/ChallengeCard';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import {
   NavigationSliceStateType,
   selectNavigation,
 } from '@/redux/slice/navigationSlice';
-import { rHeight, rWidth } from '@/utils';
+import { rHeight, rWidth, showAlert } from '@/utils';
 import SubOutlineButton from '@/components/atoms/SubOutlineButton';
 import { DefaultText } from '@/styles';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import ChallengeCheckCard from '@/components/molecules/ChallengeCheckCard';
 import useRouter from '@/hooks/useRouter';
-import { postChallengeDelete, postMemberPoke } from '@/apis';
+import {
+  getChallengeList,
+  postChallengeClaim,
+  postChallengeDelete,
+  postMemberPoke,
+} from '@/apis';
 import { PostChallengeDeleteProps } from '@/types/api/request/challenge';
 
 const PageLayout = styled.View`
@@ -66,21 +75,45 @@ function checkChallengeProcess(challengeList: any) {
 
 export default function ChallengeScreen() {
   let challengeList = [];
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const mutation = useMutation({
-    mutationFn: (lastDeleteList: Array<PostChallengeDeleteProps>) =>
-      postChallengeDelete(lastDeleteList),
-  });
   const [deleteList, setDeleteList] = useState<Record<string, boolean>>({});
   const { nickname, isMine }: NavigationSliceStateType =
     useSelector(selectNavigation);
   const [mode, setMode] = useState<ChallengeScreenMode>('view');
+  const mutation = useMutation({
+    mutationFn: (lastDeleteList: Array<PostChallengeDeleteProps>) =>
+      postChallengeDelete(lastDeleteList),
+  });
+  const claimMutation = useMutation({
+    mutationFn: (challengePk: number) => postChallengeClaim(challengePk),
+    onSuccess(data) {
+      if (data.success) {
+        queryClient.invalidateQueries({
+          queryKey: ['getChallengeList', nickname],
+        });
+      } else {
+        showAlert({
+          title: '증가 실패',
+          content: '다시 시도해주세요',
+          onOk: () => {},
+        });
+      }
+    },
+    onError() {
+      showAlert({
+        title: '증가 실패',
+        content: '다시 시도해주세요',
+        onOk: () => {},
+      });
+    },
+  });
 
-  const queryClient = useQueryClient();
-  const { success, response }: any = queryClient.getQueryData([
-    'getChallengeList',
-    nickname,
-  ]);
+  const { data } = useSuspenseQuery({
+    queryKey: ['getChallengeList', nickname],
+    queryFn: () => getChallengeList(nickname),
+  });
+  const { success, response } = data;
 
   if (success && response && response?.list) {
     challengeList = response.list;
@@ -104,8 +137,6 @@ export default function ChallengeScreen() {
       },
     });
   };
-
-  console.log(isMine);
 
   return (
     <PageLayout>
@@ -150,12 +181,12 @@ export default function ChallengeScreen() {
                       title={title}
                       leftNumeric={`${count}회`}
                       rightNumeric={`${goal}회`}
-                      buttonType="view"
+                      buttonType="claim"
                       onPress={() => {
                         router.navigate('ChallengeDetail', { challengePk });
                       }}
                       onPressButton={() => {
-                        router.navigate('ChallengeDetail', { challengePk });
+                        claimMutation.mutate(challengePk);
                       }}
                     />
                   ) : (
