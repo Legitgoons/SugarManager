@@ -109,6 +109,7 @@ export default function ProfileSettingScreen() {
           content: '수정사항을 저장했습니다.',
           onOk: () => {},
         });
+        return;
       }
       showAlert({
         title: '수정 실패',
