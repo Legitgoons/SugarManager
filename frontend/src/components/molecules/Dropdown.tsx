@@ -46,15 +46,6 @@ const ArrowIconWrapper = styled.View`
 const BlackDownArrowIcon = styled(BlackDownArrow)``;
 const BlackUpArrowIcon = styled(BlackUpArrow)``;
 
-const DropdownListContainer = styled.View`
-  position: absolute;
-  width: ${rWidth(120)}px;
-  top: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  z-index: 1;
-  max-height: ${rHeight(80 * 3)}px;
-`;
 const ListItem = styled(Pressable)`
   width: ${rWidth(120)}px;
   height: ${rHeight(80)}px;
@@ -67,6 +58,16 @@ const ListItem = styled(Pressable)`
 const ListItemText = styled.Text`
   ${({ theme }) => theme.typographys.p2r};
 `;
+const DropdownListScrollView = styled.ScrollView`
+  position: absolute;
+  width: ${rWidth(120)}px;
+  top: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1;
+  max-height: ${rHeight(80 * 3)}px;
+`;
+
 export default function Dropdown({
   placeholder,
   list,
@@ -86,7 +87,7 @@ export default function Dropdown({
         </ArrowIconWrapper>
       </DropdownButton>
       {dropdownVisible && (
-        <DropdownListContainer>
+        <DropdownListScrollView>
           {list.map((item: DropdownItem) => (
             <ListItem
               key={item.id}
@@ -98,7 +99,7 @@ export default function Dropdown({
               <ListItemText>{item.value}</ListItemText>
             </ListItem>
           ))}
-        </DropdownListContainer>
+        </DropdownListScrollView>
       )}
     </DropdownContainer>
   );
