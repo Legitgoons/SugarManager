@@ -38,7 +38,7 @@ export default function HomeGroupBar() {
     uid: myUid,
     groupCode,
   } = useSelector(selectUser);
-  const { navigationNickname } = useSelector(selectNavigation);
+  const { nickname: navigationNickname } = useSelector(selectNavigation);
   const dispatch = useDispatch();
   const { data, isSuccess } = useSuspenseQuery({
     queryKey: ['getGroupList', groupCode],
@@ -60,6 +60,7 @@ export default function HomeGroupBar() {
       })
     );
   };
+
   if (isSuccess && data.success && response.users) {
     currentGroupList = response.users.filter(
       (cur: any) => Number(cur.uid) !== Number(myUid)
