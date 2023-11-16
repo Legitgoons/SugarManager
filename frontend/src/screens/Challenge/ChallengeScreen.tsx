@@ -65,6 +65,7 @@ function checkChallengeProcess(challengeList: any) {
 }
 
 export default function ChallengeScreen() {
+  let challengeList = [];
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: (lastDeleteList: Array<PostChallengeDeleteProps>) =>
@@ -76,11 +77,14 @@ export default function ChallengeScreen() {
   const [mode, setMode] = useState<ChallengeScreenMode>('view');
 
   const queryClient = useQueryClient();
-  const { response }: any = queryClient.getQueryData([
+  const { success, response }: any = queryClient.getQueryData([
     'getChallengeList',
     nickname,
   ]);
-  const challengeList = response.list;
+
+  if (success && response && response?.list) {
+    challengeList = response.list;
+  }
   const totalNumericArr = checkChallengeProcess(challengeList);
 
   const handleDeleteCard = async () => {
@@ -100,6 +104,8 @@ export default function ChallengeScreen() {
       },
     });
   };
+
+  console.log(isMine);
 
   return (
     <PageLayout>

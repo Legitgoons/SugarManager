@@ -204,12 +204,14 @@ export default function ChallengeMakeScreen() {
             placeholder="챌린지의 제목을 작성해주세요!"
             value={challengeTitle}
             onChangeText={setChallengeTitle}
+            width={rWidth(320)}
           />
           <InputLine
             placeholder="목표 횟수를 작성해주세요!"
             value={challengeCount}
             onChangeText={setChallengeCount}
             keyboardType="numeric"
+            width={rWidth(320)}
           />
           <ChallengeAlarmOpenWrapper>
             <ChallengeAlarmTitle typography="h4r" color="black">
