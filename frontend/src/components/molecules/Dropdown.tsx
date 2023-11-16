@@ -5,6 +5,7 @@ import BlackDownArrow from '@/assets/icon/BlackDownArrowIcon.svg';
 import BlackUpArrow from '@/assets/icon/BlackUpArrowIcon.svg';
 import { rWidth, rHeight } from '@/utils';
 import DropdownItem from '../../types/dropdown';
+import Line from '../atoms/Line';
 
 export interface DropdownProps {
   placeholder: string;
@@ -13,16 +14,10 @@ export interface DropdownProps {
   setSelectItem: React.Dispatch<React.SetStateAction<DropdownItem | null>>;
 }
 
-/** 공통 Dropdown Component
-@param {String} placeholder : Dropdown의 값 미선택 시 나오는 placeholder 지정
-@param {Array<DropdownItem>} list : 드롭다운 클릭 시 나오는 선택 가능한 리스트들. id는 key를 대응하며, value는 실제 보이는 값
-@param {DropdownItem | null} selectItem : 현재 선택된 값. null 가능성 존재
-@param {React.Dispatch<React.SetStateAction<DropdownItem | null>>} setSelectItem selectItem의 상태를 변경해주는 함수
-@returns {JSX.Element} 컴포넌트 반환 */
-
 const DropdownContainer = styled.View`
   position: relative;
 `;
+
 const DropdownButton = styled(Pressable)`
   border-width: 1px;
   width: ${rWidth(120)}px;
@@ -33,6 +28,7 @@ const DropdownButton = styled(Pressable)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: ${rHeight(8)}px;
 `;
 
 const DropdownText = styled.Text`
@@ -46,9 +42,9 @@ const ArrowIconWrapper = styled.View`
 const BlackDownArrowIcon = styled(BlackDownArrow)``;
 const BlackUpArrowIcon = styled(BlackUpArrow)``;
 
-const ListItem = styled(Pressable)`
+const ListItem = styled(Pressable)<{ isFirst: boolean; isLast: boolean }>`
   width: ${rWidth(120)}px;
-  height: ${rHeight(80)}px;
+  height: ${rHeight(60)}px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,15 +54,19 @@ const ListItem = styled(Pressable)`
 const ListItemText = styled.Text`
   ${({ theme }) => theme.typographys.p2r};
 `;
-const DropdownListScrollView = styled.ScrollView`
+
+const DropdownListContainer = styled.View`
+  border-radius: ${rHeight(10)}px;
+  overflow: hidden;
+  max-height: ${rHeight(60 * 3)}px;
+  top: 100%;
+  z-index: 1;
   position: absolute;
   width: ${rWidth(120)}px;
-  top: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  z-index: 1;
-  max-height: ${rHeight(80 * 3)}px;
+  elevation: 3;
 `;
+
+const DropdownListScrollView = styled.ScrollView``;
 
 export default function Dropdown({
   placeholder,
@@ -87,19 +87,26 @@ export default function Dropdown({
         </ArrowIconWrapper>
       </DropdownButton>
       {dropdownVisible && (
-        <DropdownListScrollView>
-          {list.map((item: DropdownItem) => (
-            <ListItem
-              key={item.id}
-              onPress={() => {
-                setSelectItem(item);
-                setDropdownVisible(false);
-              }}
-            >
-              <ListItemText>{item.value}</ListItemText>
-            </ListItem>
-          ))}
-        </DropdownListScrollView>
+        <DropdownListContainer>
+          <DropdownListScrollView>
+            {list.map((item: DropdownItem, idx) => (
+              <>
+                <ListItem
+                  key={item.id}
+                  onPress={() => {
+                    setSelectItem(item);
+                    setDropdownVisible(false);
+                  }}
+                  isFirst={idx === 0}
+                  isLast={idx === list.length - 1}
+                >
+                  <ListItemText>{item.value}</ListItemText>
+                </ListItem>
+                {idx < list.length - 1 && <Line color="tertiary" />}
+              </>
+            ))}
+          </DropdownListScrollView>
+        </DropdownListContainer>
       )}
     </DropdownContainer>
   );
