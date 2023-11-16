@@ -18,6 +18,7 @@ import InputLine from '@/components/molecules/InputLine';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { PostSignin } from '@/apis';
 import Line from '@/components/atoms/Line';
+import { API_ENDPOINT } from '@env';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -92,7 +93,7 @@ export default function SigninScreen() {
     } catch (e) {
       showAlert({
         title: '로그인 실패',
-        content: '네트워크 상태를 다시 확인해주세요!',
+        content: `${API_ENDPOINT} 맞는데여? ${e}`,
         onOk: () => {},
       });
       return e;
@@ -160,7 +161,7 @@ export default function SigninScreen() {
     } catch (e) {
       showAlert({
         title: '로그인 실패',
-        content: '네트워크 상태를 다시 확인해주세요!',
+        content: `네트워크 상태를 다시 확인해주세요!`,
         onOk: () => {},
       });
     }
