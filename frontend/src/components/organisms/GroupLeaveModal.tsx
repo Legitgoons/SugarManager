@@ -69,7 +69,7 @@ export default function GroupLeaveModal({
       onLeftPress={() => {
         setOpen(false);
       }}
-      rightBtnTitle="변경하기"
+      rightBtnTitle="탈퇴하기"
       onRightPress={handleLeaveGroup}
     >
       <ContentBox>
