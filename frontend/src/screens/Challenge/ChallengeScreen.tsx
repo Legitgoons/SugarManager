@@ -200,7 +200,7 @@ export default function ChallengeScreen() {
                       onPressButton={() => {
                         postMemberPoke({
                           nickname,
-                          category: 'CHALLENGE',
+                          type: 'CHALLENGE',
                           challengeId: challengePk,
                         });
                       }}

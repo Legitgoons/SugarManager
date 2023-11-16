@@ -1,6 +1,6 @@
 interface PostMemberPokeProps {
   nickname: string;
-  category: 'CHALLENGE' | 'BLOODSUGAR';
+  type: 'CHALLENGE' | 'BLOODSUGAR';
   challengeId: string;
 }
 
