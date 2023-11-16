@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.frontend">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="kr.co.sugarmanager">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

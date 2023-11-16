@@ -1,4 +1,4 @@
-package com.frontend;
+package kr.co.sugarmanager;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

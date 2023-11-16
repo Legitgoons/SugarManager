@@ -5,7 +5,8 @@ import styled from 'styled-components/native';
 const LineWrapper = styled.View<{ color: keyof ColorType }>`
   width: 100%;
   height: 1px;
-  border: 1px solid ${({ theme, color }) => theme.colors[color]};
+  background-color: ${({ theme, color }) =>
+    color ? theme.colors[color] : theme.colors.secondary};
 `;
 
 /**

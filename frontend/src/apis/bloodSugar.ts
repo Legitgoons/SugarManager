@@ -5,6 +5,7 @@ import {
   periodBloodSugarProps,
   BloodSugarApiResponse,
 } from '@/types/api/request/bloodSugar';
+import { fetchWithAuth } from '@/utils';
 
 export async function periodBloodSugar({
   nickname,
@@ -41,20 +42,5 @@ export async function periodBloodSugar({
   return data;
 }
 
-export async function saveBloodSugar(data: BloodSugarWriteData) {
-  const state: RootState = store.getState();
-  const { accessToken } = state.user;
-
-  const response = await fetch(`${API_ENDPOINT}/bloodsugar/save`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-}
+export const saveBloodSugar = (data: BloodSugarWriteData) =>
+  fetchWithAuth('/bloodsugar/save', { body: data, method: 'POST' });

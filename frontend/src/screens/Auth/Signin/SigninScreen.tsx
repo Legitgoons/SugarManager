@@ -1,23 +1,22 @@
+import React, { useState } from 'react';
 import OAuthButton from '@/components/atoms/OAuthButton';
 import TitleHeader from '@/components/molecules/TitleHeader';
 import { DefaultScreenContainer } from '@/styles';
-import React, { useState } from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
-import { login } from '@react-native-seoul/kakao-login';
-import { postKakaoSignin } from '@/apis/auth';
-import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
-import { useDispatch } from 'react-redux';
-import showAlert from '@/utils/alert';
-import { rHeight, rWidth, validationId, validationPw } from '@/utils';
-import { getMyProfile } from '@/apis/member';
-import useRouter from '@/hooks/useRouter';
-import { setNavigation } from '@/redux/slice/navigationSlice';
+import {
+  rHeight,
+  rWidth,
+  showAlert,
+  validationId,
+  validationPw,
+} from '@/utils';
 import TextButton from '@/components/atoms/TextButton';
 import InputLine from '@/components/molecules/InputLine';
 import MainFillButton from '@/components/atoms/MainFillButton';
-import { PostSignin } from '@/apis';
 import Line from '@/components/atoms/Line';
+import useRouter from '@/hooks/useRouter';
+import useAuth from '@/hooks/useSignin';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -34,72 +33,12 @@ const LineWrapper = styled.View`
 `;
 
 export default function SigninScreen() {
-  const dispatch = useDispatch();
   const router = useRouter();
+  const { signInWithKakao, signIn } = useAuth();
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
-  const signInWithKakao = async () => {
-    try {
-      const { accessToken: kakaoAccessToken, refreshToken: kakaoRefreshToken } =
-        await login();
-      dispatch(
-        setKakaoToken({
-          kakaoAccessToken,
-          kakaoRefreshToken,
-        })
-      );
 
-      const apiRes: any = await postKakaoSignin({
-        accessToken: kakaoAccessToken,
-        fcmToken: '1234',
-      });
-      if (apiRes.error === null) {
-        const { accessToken, refreshToken } = apiRes.response;
-        dispatch(
-          setToken({
-            accessToken,
-            refreshToken,
-          })
-        );
-      } else {
-        showAlert({
-          title: '로그인 실패',
-          content: apiRes.error.message,
-          onOk: () => {},
-        });
-      }
-
-      const myProfile = await getMyProfile();
-      if (myProfile.error === null) {
-        dispatch(setProfile({ ...myProfile.response }));
-        dispatch(
-          setNavigation({
-            isMine: true,
-            uid: myProfile.response.uid,
-            nickname: myProfile.response.nickname,
-          })
-        );
-        router.navigate('Home');
-      } else {
-        showAlert({
-          title: '로그인 실패',
-          content: myProfile.error.message,
-          onOk: () => {},
-        });
-      }
-
-      return null;
-    } catch (e) {
-      showAlert({
-        title: '로그인 실패',
-        content: '네트워크 상태를 다시 확인해주세요!',
-        onOk: () => {},
-      });
-      return e;
-    }
-  };
-
-  const signIn = async () => {
+  const handleSignIn = async () => {
     if (!validationId(id)) {
       showAlert({
         title: '아이디 입력 오류',
@@ -118,52 +57,7 @@ export default function SigninScreen() {
       });
       return;
     }
-    try {
-      const apiRes: any = await PostSignin({
-        id,
-        pw,
-      });
-      if (apiRes.error === null) {
-        const { accessToken, refreshToken } = apiRes.response;
-        dispatch(
-          setToken({
-            accessToken,
-            refreshToken,
-          })
-        );
-      } else {
-        showAlert({
-          title: '로그인 실패',
-          content: apiRes.error.message,
-          onOk: () => {},
-        });
-      }
-
-      const myProfile = await getMyProfile();
-      if (myProfile.error === null) {
-        dispatch(setProfile({ ...myProfile.response }));
-        dispatch(
-          setNavigation({
-            isMine: true,
-            uid: myProfile.response.uid,
-            nickname: myProfile.response.nickname,
-          })
-        );
-        router.navigate('Home');
-      } else {
-        showAlert({
-          title: '로그인 실패',
-          content: myProfile.error.message,
-          onOk: () => {},
-        });
-      }
-    } catch (e) {
-      showAlert({
-        title: '로그인 실패',
-        content: '네트워크 상태를 다시 확인해주세요!',
-        onOk: () => {},
-      });
-    }
+    await signIn(id, pw);
   };
 
   return (
@@ -191,14 +85,18 @@ export default function SigninScreen() {
           placeholder="비밀번호를 입력하세요"
           width={rWidth(320)}
         />
-        <MainFillButton title="로그인 하기" bgColor="b4" onPress={signIn} />
+        <MainFillButton
+          title="로그인 하기"
+          bgColor="b4"
+          onPress={handleSignIn}
+        />
       </SigninBox>
       <TextButton
         title="회원가입 하러가기"
         isSelected
-        onPress={() => {
-          router.navigate('Signup');
-        }}
+        mode="toggle"
+        onPress={() => router.navigate('Signup')}
+        typography="captionr"
       />
     </SigninScreenContainer>
   );

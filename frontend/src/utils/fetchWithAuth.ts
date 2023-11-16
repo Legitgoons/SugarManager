@@ -19,7 +19,7 @@ const fetchWithAuth = async (
   const { accessToken, uid } = state.user;
   const headers = new Headers({
     'Content-Type': 'application/json',
-    'X-Authrization-Id': uid.toString(),
+    'X-Authorization-Id': uid.toString(),
     ...options.headers,
   });
 

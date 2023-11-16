@@ -7,10 +7,10 @@ import CrownIcon from '@/assets/img/crown.svg';
 import EyedropperIcon from '@/assets/img/eyedropper.svg';
 
 const DailyInfoContentCardWrapper = styled(DefaultCard)`
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding-left: ${rWidth(8)}px;
-  padding-right: ${rWidth(8)}px;
+  padding-left: ${rWidth(12)}px;
+  padding-right: ${rWidth(12)}px;
   gap: ${rWidth(32)}px;
   flex-direction: row;
 `;
@@ -44,6 +44,10 @@ function getUnit(category: string) {
   }
 }
 
+const ContentText = styled(DefaultText)`
+  flex: 1;
+`;
+
 export default function DailyInfoContentCard({
   hour,
   minute,
@@ -58,10 +62,15 @@ export default function DailyInfoContentCard({
         {getTimeSecondText(hour, minute)}
       </DefaultText>
       {get3DIcon(category)}
-      <DefaultText typography="h4r" color="black">
+      <ContentText
+        typography="h4r"
+        color="black"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
         {content}
         {unit}
-      </DefaultText>
+      </ContentText>
     </DailyInfoContentCardWrapper>
   );
 }

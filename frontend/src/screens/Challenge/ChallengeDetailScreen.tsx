@@ -58,22 +58,26 @@ const ChallengeAlramTimeWrapper = styled.View`
 `;
 
 export default function ChallengeDetailScreen() {
+  let daysObj = {};
   const route =
     useRoute<RouteProp<{ params: { challengePk: number } }, 'params'>>();
   const { challengePk } = route.params;
   const { nickname } = useSelector(selectNavigation);
   const { data } = useSuspenseQuery({
-    queryKey: ['getChallengeDetail', challengePk],
+    queryKey: ['getChallengeDetail', nickname, challengePk],
     queryFn: () => getChallengeDetail({ challengePk, nickname }),
   });
+
   const { response } = data;
-  const daysObj = weekDayArr.reduce(
-    (acc, cur) => {
-      acc[cur as Week] = (response.days as Week[]).includes(cur as Week);
-      return acc;
-    },
-    {} as Record<Week, boolean>
-  );
+  if (response && response !== null && response.days) {
+    daysObj = weekDayArr.reduce(
+      (acc, cur) => {
+        acc[cur as Week] = (response.days as Week[]).includes(cur as Week);
+        return acc;
+      },
+      {} as Record<Week, boolean>
+    );
+  }
   return (
     <ChallengeDetailScreenContainer>
       <ContentBox>
@@ -102,14 +106,16 @@ export default function ChallengeDetailScreen() {
         </ChallengeTypeWrapper>
         <InputLine
           placeholder="챌린지 타이틀"
-          value={response.title}
+          value={response?.title || '서버 에러!'}
           editable={false}
+          width={rWidth(320)}
         />
         <InputLine
           placeholder="목표 횟수를 작성해주세요!"
-          value={response.goal}
+          value={response?.goal || '서버 에러!'}
           keyboardType="numeric"
           editable={false}
+          width={rWidth(320)}
         />
         {response && response.alert && (
           <>

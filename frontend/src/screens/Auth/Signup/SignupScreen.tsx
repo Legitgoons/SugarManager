@@ -45,13 +45,21 @@ export default function SignupScreen() {
         email,
         fcmToken: '12345',
       }),
-    onSuccess: () => {
-      showAlert({
-        title: '회원가입 성공',
-        content: '회원가입에 성공했습니다! 로그인 해주세요.',
-        onOk: () => {},
-      });
-      router.replace('Signin');
+    onSuccess: (data) => {
+      if (data.success) {
+        showAlert({
+          title: '회원가입 성공',
+          content: '회원가입에 성공했습니다! 로그인 해주세요.',
+          onOk: () => {},
+        });
+        router.replace('Signin');
+      } else {
+        showAlert({
+          title: '회원가입 실패',
+          content: '에러가 발생했습니다. 다시 시도해주세요!',
+          onOk: () => {},
+        });
+      }
     },
     onError: () => {
       showAlert({
@@ -89,10 +97,11 @@ export default function SignupScreen() {
       });
       return;
     }
-    if (nickname.length === 0) {
+    if (nickname.length < 6) {
       showAlert({
         title: '회원가입 실패',
-        content: '닉네임을 제대로 넣어주세요',
+        content:
+          '닉네임은 영문, 숫자, 한글이 가능한 6자 이상으로 입력해야 합니다.',
         onOk: () => {},
       });
       return;

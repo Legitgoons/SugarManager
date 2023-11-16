@@ -11,6 +11,7 @@ interface PostChallengeAddProps {
   minute: number;
   days: Week[];
   userPk: string;
+  nickname: string;
 }
 
 interface PostChallengeDeleteProps {

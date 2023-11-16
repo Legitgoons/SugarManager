@@ -89,7 +89,7 @@ function DailyInfoModal({ isOpen, handleClose, time }: DailyInfoModalProps) {
                       <IconText Icon={CrownIcon} text="챌린지" />
                     </IconTextGroup>
                     <DefaultText typography="captionr" color="secondary">
-                      기록을 누르면 상세 페이지로 이동 할 수 있어요!
+                      ※ 챌린지의 경우, 완료된 시간을 기준으로 보입니다.
                     </DefaultText>
                   </View>
                   {response.map(

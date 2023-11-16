@@ -5,6 +5,7 @@ import BlackRightArrowButton from '@/assets/icon/BlackRightArrowIcon.svg';
 import { rHeight, rWidth } from '@/utils';
 import ProgressBar from '../atoms/ProgressBar';
 import SubFillButton from '../atoms/SubFillButton';
+import extractNumber from '../../utils/number';
 
 const ChallengeCardContainer = styled(DefaultCard)`
   display: flex;
@@ -33,7 +34,7 @@ interface ChallengeCardProps {
   title: string;
   leftNumeric: string;
   rightNumeric: string;
-  buttonType?: 'view' | 'otherAlarm' | 'record';
+  buttonType?: 'view' | 'otherAlarm' | 'record' | 'claim';
   buttonTitle?: string;
   onPress?: () => void;
   onPressButton?: () => void;
@@ -48,6 +49,12 @@ export default function ChanllengeCard({
   onPress,
   onPressButton,
 }: ChallengeCardProps) {
+  const getCardButtonTitle = () => {
+    if (leftNumeric === rightNumeric) return '완료됨';
+    return extractNumber(leftNumeric) === extractNumber(rightNumeric) - 1
+      ? '완료하기'
+      : '횟수 추가';
+  };
   return (
     <ChallengeCardContainer size="lg" onPress={onPress}>
       <CardTitleWrapper typography="captionr" color="secondary">
@@ -71,6 +78,20 @@ export default function ChanllengeCard({
                     width={rWidth(20)}
                     height={rHeight(20)}
                     onPress={onPressButton}
+                  />
+                );
+              case 'claim':
+                return (
+                  <SubFillButton
+                    bgColor={`${
+                      leftNumeric === rightNumeric ? 'secondary' : 'b4'
+                    }`}
+                    onPress={() => {
+                      if (leftNumeric === rightNumeric || !onPressButton)
+                        return;
+                      onPressButton();
+                    }}
+                    title={getCardButtonTitle()}
                   />
                 );
               case 'otherAlarm':
