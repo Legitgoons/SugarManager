@@ -165,6 +165,7 @@ export default function ProfileSettingScreen() {
               value: userNickname,
               onChangeText: setUserNickname,
               width: 200,
+              unit: 'kg',
             }}
           />
           <LabelledInput
