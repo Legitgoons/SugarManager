@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { DefaultText } from '@/styles';
-import { rHeight, showAlert } from '@/utils';
+import { rHeight, rWidth, showAlert } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
-import { postGroupLeave } from '@/apis';
+import { postGroupJoin } from '@/apis';
 import { useDispatch } from 'react-redux';
 import { setGroupCode } from '@/redux/slice/userSlice';
 import DefaultModal from './DefaultModal';
@@ -26,7 +26,7 @@ export default function GroupJoinModal({ open, setOpen }: GroupJoinModalProps) {
   const dispatch = useDispatch();
 
   const { mutate } = useMutation({
-    mutationFn: () => postGroupLeave(),
+    mutationFn: () => postGroupJoin(inputGroupCode),
     onSuccess: async () => {
       showAlert({
         title: '그룹가입 성공',
@@ -76,6 +76,7 @@ export default function GroupJoinModal({ open, setOpen }: GroupJoinModalProps) {
           value={inputGroupCode}
           onChangeText={setInputGroupCode}
           placeholder="그룹 코드"
+          width={rWidth(320)}
         />
       </ContentBox>
     </DefaultModal>

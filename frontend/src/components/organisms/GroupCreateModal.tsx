@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { DefaultText } from '@/styles';
 import { rHeight, showAlert } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
-import { postGroupLeave } from '@/apis';
+import { postGroupCraete } from '@/apis';
 import { useDispatch } from 'react-redux';
 import { setGroupCode } from '@/redux/slice/userSlice';
 import DefaultModal from './DefaultModal';
@@ -26,7 +26,7 @@ export default function GroupCreateModal({
 }: GroupCreateModalProps) {
   const dispatch = useDispatch();
   const { mutate } = useMutation({
-    mutationFn: () => postGroupLeave(),
+    mutationFn: () => postGroupCraete(),
     onSuccess: async (data) => {
       showAlert({
         title: '그룹생성 성공',

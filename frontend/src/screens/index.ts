@@ -10,6 +10,7 @@ import AlarmSettingScreen from './Setting/AlarmSettingScreen';
 import MealScreen from './Meal/MealScreen';
 import MealWriteScreen from './Meal/MealWriteScreen';
 import SignupScreen from './Auth/Signup/SignupScreen';
+import ErrorScreen from './Exception/ErrorScreen';
 
 export {
   HomeScreen,
@@ -24,4 +25,5 @@ export {
   AlarmSettingScreen,
   MealScreen,
   MealWriteScreen,
+  ErrorScreen,
 };

@@ -5,9 +5,8 @@ import { NavigationSliceStateType } from '@/redux/slice/navigationSlice';
 import ProfileButton from '../atoms/ProfileButton';
 
 interface ProfileListProps {
-  list: Array<{ uid: string; nickname: string; profile_url: string }>;
+  list: Array<{ uid: string; nickname: string; profileUrl: string }>;
   person: string;
-  setPerson: React.Dispatch<React.SetStateAction<string>>;
   onPress: (props: NavigationSliceStateType) => void;
 }
 
@@ -16,17 +15,15 @@ const ProfileListBox = styled.View``;
 export default function ProfileList({
   list,
   person,
-  setPerson,
   onPress,
 }: ProfileListProps) {
   return (
     <ProfileListBox>
-      {list.map(({ uid, profile_url: profileUrl, nickname }) => (
+      {list.map(({ uid, profileUrl, nickname }) => (
         <ProfileButton
           key={uid}
           imgUrl={profileUrl}
           onPress={() => {
-            setPerson(nickname);
             onPress({ isMine: false, nickname, uid: Number(uid) });
           }}
           isFocus={person === nickname}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "979863209083",
+    "project_id": "sugar-manager",
+    "storage_bucket": "sugar-manager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979863209083:android:17a501f4586bf11f860ede",
+        "android_client_info": {
+          "package_name": "kr.co.sugarmanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9ywx44RciqR1nanNZOGlooIU96r0CE9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

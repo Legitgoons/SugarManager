@@ -45,6 +45,7 @@ export default function BloodSugarWriteContent({
         value={bloodSugar}
         placeholder="혈당을 입력해주세요"
         unit="mg/dL"
+        keyboardType="numeric"
       />
       <InputLine
         onChangeText={setIssue}

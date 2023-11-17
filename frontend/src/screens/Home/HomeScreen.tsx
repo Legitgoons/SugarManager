@@ -33,6 +33,8 @@ const HomeCardBox = styled.View`
 `;
 
 export default function HomeScreen() {
+  let challengeLeftNumeric = 0;
+  let challengeRightNumeric = 5;
   const router = useRouter();
   const curDate = new Date();
   const [openGroupJoinModal, setOpenGroupJoinModal] = useState(false);
@@ -43,17 +45,29 @@ export default function HomeScreen() {
     day: number;
   }>({
     year: curDate.getFullYear(),
-    month: curDate.getMonth(),
+    month: curDate.getMonth() + 1,
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
 
   const { groupCode } = useSelector(selectUser);
   const { nickname } = useSelector(selectNavigation);
-  useSuspenseQuery({
+
+  const { data } = useSuspenseQuery({
     queryKey: ['getChallengeList', nickname],
     queryFn: () => getChallengeList(nickname),
   });
+
+  const { response, success } = data;
+
+  if (response && success) {
+    challengeRightNumeric = response.list.length;
+    response.list.forEach(
+      ({ goal, count }: { goal: number; count: number }) => {
+        if (goal === count) challengeLeftNumeric += 1;
+      }
+    );
+  }
 
   return (
     <>
@@ -98,8 +112,8 @@ export default function HomeScreen() {
             />
             <ChanllengeCard
               title="챌린지 - 오늘의 달성도"
-              leftNumeric="0개"
-              rightNumeric="5개"
+              leftNumeric={`${challengeLeftNumeric}개`}
+              rightNumeric={`${challengeRightNumeric}개`}
               buttonType="view"
               onPressButton={() => {
                 router.navigate('ChallengeInfo');

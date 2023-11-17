@@ -43,6 +43,7 @@ export default function NumberWeek({
           title={numberDay}
           isMarked={isMarked}
           onPress={() => {
+            if (!isMarked) return;
             onPress(year, month, numberDay);
           }}
         />
