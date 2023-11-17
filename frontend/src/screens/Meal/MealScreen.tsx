@@ -8,6 +8,7 @@ import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
+import { rWidth } from '@/utils';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -18,14 +19,16 @@ const BloodSugarContainer = styled.View`
 `;
 
 const DatePickerControllerWrapper = styled.View`
-  padding: 5%;
+  width: ${rWidth(320)}px;
 `;
 
 // const MealContentCardWrapper = styled.View`
-//   padding: 5%;
+// width: ${rWidth(320)}px;
+// padding-top: ${rWidth(20)}px;
 // `;
 
 const FillButtonWrapper = styled.View`
+  width: ${rWidth(320)}px;
   position: absolute;
   bottom: 52px;
   width: 100%;
