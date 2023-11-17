@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postGroupLeave } from '@/apis';
 import { useDispatch } from 'react-redux';
 import { setGroupCode } from '@/redux/slice/userSlice';
-import DefaultModal from './Modal';
+import DefaultModal from './DefaultModal';
 
 const ContentBox = styled.View`
   display: flex;
