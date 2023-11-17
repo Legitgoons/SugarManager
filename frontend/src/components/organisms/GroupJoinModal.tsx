@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postGroupJoin } from '@/apis';
 import { useDispatch } from 'react-redux';
 import { setGroupCode } from '@/redux/slice/userSlice';
-import DefaultModal from './Modal';
+import DefaultModal from './DefaultModal';
 import InputLine from '../molecules/InputLine';
 
 const ContentBox = styled.View`

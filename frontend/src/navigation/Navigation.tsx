@@ -11,6 +11,8 @@ import {
   BloodSugarWriteScreen,
   ProfileSettingScreen,
   AlarmSettingScreen,
+  MealScreen,
+  MealWriteScreen,
   ErrorScreen,
 } from '@/screens';
 import { useSelector } from 'react-redux';
@@ -105,6 +107,22 @@ function SuspenseProfileSettingScreen() {
   );
 }
 
+function SuspenseMealScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealScreen />
+    </Suspense>
+  );
+}
+
+function SuspenseMealWriteScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealWriteScreen />
+    </Suspense>
+  );
+}
+
 export default function Navigation({ Stack }: { Stack: any }) {
   const { isSignin } = useSelector(selectUser);
   return (
@@ -156,6 +174,16 @@ export default function Navigation({ Stack }: { Stack: any }) {
               name="Profile"
               component={SuspenseProfileSettingScreen}
               options={{ title: '계정 설정', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="Meal"
+              component={SuspenseMealScreen}
+              options={{ title: '식사 기록', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="MealWrite"
+              component={SuspenseMealWriteScreen}
+              options={{ title: '식사 기록 작성', headerTitleAlign: 'center' }}
             />
           </>
         ) : (

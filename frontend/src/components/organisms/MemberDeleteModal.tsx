@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import { persistor } from '@/redux/store/storeConfig';
 import useRouter from '@/hooks/useRouter';
-import DefaultModal from './Modal';
+import DefaultModal from './DefaultModal';
 import InputLine from '../molecules/InputLine';
 
 const ContentBox = styled.View`
