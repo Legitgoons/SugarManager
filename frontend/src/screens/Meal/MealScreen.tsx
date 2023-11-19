@@ -9,9 +9,13 @@ import useRouter from '@/hooks/useRouter';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
-import MealHorizontalGraph from '@/components/molecules/MealHorizontalGraph';
+// import MealHorizontalGraph from '@/components/molecules/MealHorizontalGraph';
 import { DefaultText } from '@/styles';
 import { rHeight } from '@/utils/style';
+
+/**
+ * @todo MealHorizontalGraph error 해결
+ */
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -147,11 +151,11 @@ export default function MealScreen() {
       <ScrollView onScroll={handleScroll}>
         {mealData.length > 0 && (
           <>
-            <MealHorizontalGraph
+            {/* <MealHorizontalGraph
               carbohydrate={curCarbohydrate}
               protein={curProtein}
               fat={curFat}
-            />
+            /> */}
             <TextBox>
               <DefaultText color="secondary" typography="captionr">
                 탄수화물 기준 섭취량 : {baseCarbohydrate}g 현재 섭취량 :
