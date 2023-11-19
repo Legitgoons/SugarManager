@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { periodBloodSugar } from '@/apis/bloodSugar';
@@ -10,10 +10,12 @@ import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard'
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
+import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
   width: 100%;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-top: 10%;
@@ -104,8 +106,19 @@ export default function BloodSugarScreen() {
     }
   };
 
+  const bloodSugarGraphList = useMemo(
+    () =>
+      bloodSugarData.map(({ bloodSugarBefore, bloodSugarAfter, time }) => [
+        time,
+        bloodSugarBefore,
+        bloodSugarAfter,
+      ]),
+    [bloodSugarData]
+  );
+
   return (
     <BloodSugarContainer>
+      <TwinLineGraph list={bloodSugarGraphList} />
       <ScrollView onScroll={handleScroll}>
         <DatePickerControllerWrapper>
           <DatePickerController

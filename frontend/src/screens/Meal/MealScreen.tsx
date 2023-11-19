@@ -9,13 +9,16 @@ import useRouter from '@/hooks/useRouter';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
+import MealHorizontalGraph from '@/components/molecules/MealHorizontalGraph';
+import { DefaultText } from '@/styles';
+import { rHeight } from '@/utils/style';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
   width: 100%;
+  padding-top: 10%;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 10%;
 `;
 
 const DatePickerControllerWrapper = styled.View`
@@ -35,6 +38,12 @@ const FillButtonWrapper = styled.View`
   align-items: center;
 `;
 
+const TextBox = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${rHeight(20)}px;
+`;
 export default function MealScreen() {
   const router = useRouter();
   const [startDate, setStartDate] = useState(new Date());
@@ -44,6 +53,13 @@ export default function MealScreen() {
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+
+  let baseCarbohydrate = 0;
+  let baseProtein = 0;
+  let baseFat = 0;
+  let curCarbohydrate = 0;
+  let curProtein = 0;
+  let curFat = 0;
 
   const setStartDateSafe = (date: Date) => {
     if (date > endDate) {
@@ -101,9 +117,55 @@ export default function MealScreen() {
     }
   };
 
+  const calculateMealSummary = () => {
+    let carbohydrate = 0;
+    let protein = 0;
+    let fat = 0;
+    let cnt = 0;
+
+    mealData.forEach((item) => {
+      cnt += 1;
+      carbohydrate += item.dayFoodCarbohydrate || 0;
+      protein += item.dayFoodProtein || 0;
+      fat += item.dayFoodFat || 0;
+    });
+    return { carbohydrate, protein, fat, cnt };
+  };
+
+  if (mealData.length > 0) {
+    baseCarbohydrate = 120 * mealData.length;
+    baseProtein = 20 * mealData.length;
+    baseFat = 25 * mealData.length;
+    const { carbohydrate, protein, fat } = calculateMealSummary();
+    curCarbohydrate += carbohydrate;
+    curProtein += protein;
+    curFat += fat;
+  }
+
   return (
     <BloodSugarContainer>
       <ScrollView onScroll={handleScroll}>
+        {mealData.length > 0 && (
+          <>
+            <MealHorizontalGraph
+              carbohydrate={curCarbohydrate}
+              protein={curProtein}
+              fat={curFat}
+            />
+            <TextBox>
+              <DefaultText color="secondary" typography="captionr">
+                탄수화물 기준 섭취량 : {baseCarbohydrate}g 현재 섭취량 :
+                {curCarbohydrate}g
+              </DefaultText>
+              <DefaultText color="secondary" typography="captionr">
+                단백질 기준 섭취량 : {baseProtein}g 현재 섭취량 : {curProtein}g
+              </DefaultText>
+              <DefaultText color="secondary" typography="captionr">
+                탄수화물 기준 섭취량 : {baseFat}g 현재 섭취량 : {curFat}g
+              </DefaultText>
+            </TextBox>
+          </>
+        )}
         <DatePickerControllerWrapper>
           <DatePickerController
             startDate={startDate}
