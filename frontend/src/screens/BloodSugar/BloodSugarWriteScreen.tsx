@@ -10,6 +10,7 @@ import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
 import { saveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
 import formatDate from '@/utils/formatDate';
+import BloodSugarStatusBarContent from '@/components/organisms/BloodSugarStatusBarContent';
 
 const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -91,6 +92,7 @@ export default function BloodSugarWriteScreen() {
         leftTitle="식전"
         rightTitle="식후"
       />
+      {bloodSugar && <BloodSugarStatusBarContent value={+bloodSugar} />}
       <BloodSugarWriteContent
         bloodSugar={bloodSugar}
         setBloodSugar={setBloodSugar}
