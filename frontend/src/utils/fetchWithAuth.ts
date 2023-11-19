@@ -34,7 +34,11 @@ const fetchWithAuth = async (
   };
 
   if (options.body) {
-    fetchOptions.body = JSON.stringify(options.body);
+    if (headers.get('Content-Type') === 'application/json') {
+      fetchOptions.body = JSON.stringify(options.body);
+    } else {
+      fetchOptions.body = options.body;
+    }
   }
 
   try {

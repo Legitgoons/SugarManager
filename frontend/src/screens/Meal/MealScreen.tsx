@@ -6,7 +6,6 @@ import { BloodSugarResponseData } from '@/types/api/request/bloodSugar';
 import { useSelector } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
-import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
@@ -23,10 +22,10 @@ const DatePickerControllerWrapper = styled.View`
   width: ${rWidth(320)}px;
 `;
 
-const BloodSugarContentCardWrapper = styled.View`
-  width: ${rWidth(320)}px;
-  padding-top: ${rWidth(20)}px;
-`;
+// const MealContentCardWrapper = styled.View`
+// width: ${rWidth(320)}px;
+// padding-top: ${rWidth(20)}px;
+// `;
 
 const FillButtonWrapper = styled.View`
   width: ${rWidth(320)}px;
@@ -36,14 +35,12 @@ const FillButtonWrapper = styled.View`
   align-items: center;
 `;
 
-export default function BloodSugarScreen() {
+export default function MealScreen() {
   const router = useRouter();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { nickname } = useSelector(selectNavigation);
-  const [bloodSugarData, setBloodSugarData] = useState<
-    BloodSugarResponseData[]
-  >([]);
+  const [mealData, setMealData] = useState<BloodSugarResponseData[]>([]);
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
@@ -77,12 +74,12 @@ export default function BloodSugarScreen() {
     if (data.response.length === 0) {
       setIsEnd(true);
     } else {
-      setBloodSugarData((prevData) => [...prevData, ...data.response]);
+      setMealData((prevData) => [...prevData, ...data.response]);
     }
   }, [nickname, startDate, endDate, page]);
 
   useEffect(() => {
-    setBloodSugarData([]);
+    setMealData([]);
     setPage(0);
     setIsEnd(false);
   }, [nickname, startDate, endDate]);
@@ -115,38 +112,14 @@ export default function BloodSugarScreen() {
             setEndDate={setEndDateSafe}
           />
         </DatePickerControllerWrapper>
-        {bloodSugarData.map(
-          (item) =>
-            item.bloodSugarBefore != null &&
-            item.bloodSugarAfter != null && (
-              <BloodSugarContentCardWrapper>
-                <BloodSugarContentCard
-                  key={item.time}
-                  date={(() => {
-                    const date = new Date(item.time);
-                    const month = date.getMonth() + 1;
-                    const day = date.getDate();
-                    return `${month.toString().padStart(2, '0')}/${day
-                      .toString()
-                      .padStart(2, '0')}`;
-                  })()}
-                  count={item.count}
-                  beforeNum={Math.round(item.bloodSugarBefore)}
-                  beforeType={item.bloodSugarBeforeStatus}
-                  afterNum={Math.round(item.bloodSugarAfter)}
-                  afterType={item.bloodSugarAfterStatus}
-                />
-              </BloodSugarContentCardWrapper>
-            )
-        )}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>
           <MainFillButton
             bgColor="b4"
-            title="혈당 등록하기"
+            title="식사 등록하기"
             onPress={() => {
-              router.navigate('BloodSugarWrite');
+              router.navigate('MealWrite');
             }}
           />
         </FillButtonWrapper>

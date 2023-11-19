@@ -53,7 +53,7 @@ export default function Input<T extends string | number>({
     <InputBox pointerEvents={!editable ? 'none' : undefined} width={width}>
       <InputWrapper
         placeholder={placeholder}
-        value={value.toString()}
+        value={value ? value.toString() : ''}
         onChangeText={handleChange}
         maxLength={maxLength}
         keyboardType={keyboardType || 'default'}
