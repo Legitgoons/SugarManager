@@ -15,6 +15,7 @@ import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 const BloodSugarContainer = styled.View`
   height: 100%;
   width: 100%;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-top: 10%;
@@ -34,12 +35,6 @@ const FillButtonWrapper = styled.View`
   position: absolute;
   bottom: 52px;
   width: 100%;
-  align-items: center;
-`;
-
-const GraphWrapper = styled.View`
-  width: 320px;
-  justify-content: center;
   align-items: center;
 `;
 
@@ -123,9 +118,7 @@ export default function BloodSugarScreen() {
 
   return (
     <BloodSugarContainer>
-      <GraphWrapper>
-        <TwinLineGraph list={bloodSugarGraphList} />
-      </GraphWrapper>
+      <TwinLineGraph list={bloodSugarGraphList} />
       <ScrollView onScroll={handleScroll}>
         <DatePickerControllerWrapper>
           <DatePickerController

@@ -1,31 +1,36 @@
 import React from 'react';
-import { View } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 import { rHeight, rWidth } from '@/utils';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/redux/slice/userSlice';
+import styled from 'styled-components/native';
 
+const ChartWrapper = styled.View`
+  display: flex;
+  width: ${rWidth(320)}px;
+  justify-content: center;
+  align-items: center;
+`;
 interface TwinLineGraphProps {
   list: (number | null | string)[][];
 }
 
 export default function TwinLineGraph({ list }: TwinLineGraphProps) {
+  const { bloodSugarMax } = useSelector(selectUser);
   const d1 = list.map((item) => ({
     value: item[1],
-    label: item[0],
-    showXAxisIndex: true,
   }));
   const d2 = list.map((item) => ({
     value: item[2],
-    label: item[0],
-    showXAxisIndex: true,
   }));
 
   return (
-    <View style={{ marginTop: 100 }}>
+    <ChartWrapper>
       <LineChart
         data={d1}
-        maxValue={140}
+        spacing={d1.length > 1 ? rWidth(260) / (d1.length - 1) : rWidth(260)}
+        maxValue={bloodSugarMax < 200 ? 200 : bloodSugarMax}
         noOfSections={7}
-        spacing={16}
         hideDataPoints
         hideRules
         color="orange"
@@ -35,18 +40,12 @@ export default function TwinLineGraph({ list }: TwinLineGraphProps) {
         yAxisIndicesWidth={10}
         secondaryData={d2}
         secondaryLineConfig={{ color: 'blue' }}
-        secondaryYAxis={{
-          maxValue: 0.2,
-          noOfSections: 4,
-          showFractionalValues: true,
-          roundToDigits: 3,
-          yAxisColor: 'blue',
-          yAxisIndicesColor: 'blue',
-        }}
         xAxisLabelTextStyle={{ width: 80, marginLeft: -36 }}
         xAxisIndicesHeight={10}
         xAxisIndicesWidth={2}
+        width={rWidth(260)}
+        height={rHeight(200)}
       />
-    </View>
+    </ChartWrapper>
   );
 }
