@@ -3,13 +3,14 @@ import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { periodBloodSugar } from '@/apis/bloodSugar';
 import { BloodSugarResponseData } from '@/types/api/request/bloodSugar';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
 import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard';
 import DatePickerController from '@/components/organisms/DatePickerController';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
+import { setTime } from '@/redux/slice/bloodSugarSlice';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -37,7 +38,6 @@ const FillButtonWrapper = styled.View`
 `;
 
 export default function BloodSugarScreen() {
-  const router = useRouter();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { nickname } = useSelector(selectNavigation);
@@ -47,6 +47,8 @@ export default function BloodSugarScreen() {
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const setStartDateSafe = (date: Date) => {
     if (date > endDate) {
@@ -121,6 +123,10 @@ export default function BloodSugarScreen() {
             item.bloodSugarAfter != null && (
               <BloodSugarContentCardWrapper key={item.time}>
                 <BloodSugarContentCard
+                  onPress={() => {
+                    dispatch(setTime(item.time));
+                    router.navigate('BloodSugarDetail');
+                  }}
                   key={item.time}
                   date={(() => {
                     const date = new Date(item.time);
