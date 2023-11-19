@@ -24,7 +24,7 @@ const MainFillButtonWrapper = styled.View`
 
 export default function BloodSugarWriteScreen() {
   const [beforeMeal, setBeforeMeal] = useState(false);
-  const [bloodSugar, setBloodSugar] = useState('');
+  const [bloodSugar, setBloodSugar] = useState(0);
   const [issue, setIssue] = useState('');
   const [date, setDate] = useState(new Date());
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -32,11 +32,7 @@ export default function BloodSugarWriteScreen() {
   const onOk = () => {};
 
   useEffect(() => {
-    if (bloodSugar === '') {
-      setButtonDisabled(true);
-    } else {
-      setButtonDisabled(false);
-    }
+    setButtonDisabled(bloodSugar <= 0);
   }, [bloodSugar]);
 
   const setDateSafe = useCallback((newDate: Date) => {
@@ -52,14 +48,7 @@ export default function BloodSugarWriteScreen() {
   });
 
   const handleSubmit = () => {
-    const bloodSugarNum = Number(bloodSugar);
-    if (Number.isNaN(bloodSugarNum)) {
-      const content = '혈당 수치는 숫자여야 합니다.';
-      showAlert({ title, content, onOk });
-      return;
-    }
-    // eslint-disable-next-line yoda
-    if (bloodSugarNum < 0 || 999 < bloodSugarNum) {
+    if (bloodSugar < 0 || bloodSugar > 999) {
       const content = '혈당 수치가 정상적이지 않습니다.';
       showAlert({ title, content, onOk });
       return;
@@ -67,13 +56,13 @@ export default function BloodSugarWriteScreen() {
     mutation.mutate(
       {
         category: beforeMeal ? 'BEFORE' : 'AFTER',
-        level: bloodSugarNum,
+        level: bloodSugar,
         content: issue,
         registedAt: formatDate(date),
       },
       {
         onSuccess() {
-          setBloodSugar('');
+          setBloodSugar(0); // 상태 초기화
           setIssue('');
         },
         onError() {
@@ -92,7 +81,7 @@ export default function BloodSugarWriteScreen() {
         leftTitle="식전"
         rightTitle="식후"
       />
-      {bloodSugar && <BloodSugarStatusBarContent value={+bloodSugar} />}
+      {bloodSugar > 0 && <BloodSugarStatusBarContent value={bloodSugar} />}
       <BloodSugarWriteContent
         bloodSugar={bloodSugar}
         setBloodSugar={setBloodSugar}

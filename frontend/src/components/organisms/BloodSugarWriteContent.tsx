@@ -23,8 +23,8 @@ const BoxTextWrapper = styled.Text`
 `;
 
 interface BloodSugarWriteContentProps extends DatePickerProps {
-  bloodSugar: string;
-  setBloodSugar: React.Dispatch<React.SetStateAction<string>>;
+  bloodSugar: number;
+  setBloodSugar: React.Dispatch<React.SetStateAction<number>>;
   issue: string;
   setIssue: React.Dispatch<React.SetStateAction<string>>;
 }
