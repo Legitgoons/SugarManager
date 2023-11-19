@@ -13,12 +13,12 @@ interface FetchOptions {
 
 const fetchWithAuth = async (
   url: string,
-  options: FetchOptions = { wasRefreshing: false }
+  options: FetchOptions = { wasRefreshing: false },
+  isFormData = false
 ): Promise<any> => {
   const state: RootState = store.getState();
   const { accessToken, uid } = state.user;
   const headers = new Headers({
-    'Content-Type': 'application/json',
     'X-Authorization-Id': uid.toString(),
     ...options.headers,
   });
@@ -34,7 +34,8 @@ const fetchWithAuth = async (
   };
 
   if (options.body) {
-    if (headers.get('Content-Type') === 'application/json') {
+    if (!isFormData) {
+      headers.append('Content-Type', 'application/json');
       fetchOptions.body = JSON.stringify(options.body);
     } else {
       fetchOptions.body = options.body;
