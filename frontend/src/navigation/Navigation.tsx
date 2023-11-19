@@ -8,6 +8,7 @@ import {
   ChallengeDetailScreen,
   ChallengeMakeScreen,
   BloodSugarScreen,
+  BloodSugarDetailScreen,
   BloodSugarWriteScreen,
   ProfileSettingScreen,
   AlarmSettingScreen,
@@ -91,6 +92,14 @@ function SuspenseBloodSugarScreen() {
   );
 }
 
+function SuspenseBloodSugarDetailScreen() {
+  return (
+    <BoundaryWrapper>
+      <BloodSugarDetailScreen />
+    </BoundaryWrapper>
+  );
+}
+
 function SuspenseBloodSugarWriteScreen() {
   return (
     <BoundaryWrapper>
@@ -161,6 +170,11 @@ export default function Navigation({ Stack }: { Stack: any }) {
               name="BloodSugar"
               component={SuspenseBloodSugarScreen}
               options={{ title: '혈당 정보', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="BloodSugarDetail"
+              component={SuspenseBloodSugarDetailScreen}
+              options={{ title: '혈당 일일 정보', headerTitleAlign: 'center' }}
             />
             <Stack.Screen
               name="BloodSugarWrite"

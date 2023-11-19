@@ -4,6 +4,7 @@ import {
   BloodSugarWriteData,
   periodBloodSugarProps,
   BloodSugarApiResponse,
+  detailBloodSugarProps,
 } from '@/types/api/request/bloodSugar';
 import { fetchWithAuth } from '@/utils';
 
@@ -41,6 +42,14 @@ export async function periodBloodSugar({
   const data = await response.json();
   return data;
 }
+
+export const dailyBloodSugar = ({
+  nickname,
+  year,
+  month,
+  day,
+}: detailBloodSugarProps) =>
+  fetchWithAuth(`/bloodsugar/${nickname}/${year}/${month}/${day}`);
 
 export const saveBloodSugar = (data: BloodSugarWriteData) =>
   fetchWithAuth('/bloodsugar/save', { body: data, method: 'POST' });

@@ -26,13 +26,14 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
   };
   formData.append('menuDto', JSON.stringify(menuDto));
 
-  const response = await fetchWithAuth('/menu/save', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data',
+  const response = await fetchWithAuth(
+    '/menu/save',
+    {
+      method: 'POST',
+      body: formData,
     },
-    body: formData,
-  });
+    true
+  );
   return response;
 };
 
