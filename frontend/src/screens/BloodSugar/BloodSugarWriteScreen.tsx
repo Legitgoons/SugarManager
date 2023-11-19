@@ -10,7 +10,7 @@ import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
 import { saveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
 import formatDate from '@/utils/formatDate';
-import BloodSugarStatusBarContent from '@/components/organisms/BloodSugarStatusBarContent';
+import BloodSugarStatusBarContent from '@/components/molecules/BloodSugarStatusBarContent';
 
 const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
