@@ -119,7 +119,7 @@ export default function BloodSugarScreen() {
           (item) =>
             item.bloodSugarBefore != null &&
             item.bloodSugarAfter != null && (
-              <BloodSugarContentCardWrapper>
+              <BloodSugarContentCardWrapper key={item.time}>
                 <BloodSugarContentCard
                   key={item.time}
                   date={(() => {

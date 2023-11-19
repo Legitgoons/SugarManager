@@ -9,6 +9,7 @@ import DefaultScreenContainer from '@/styles/Container';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
 import { saveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
+import formatDate from '@/utils/formatDate';
 
 const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -67,6 +68,7 @@ export default function BloodSugarWriteScreen() {
         category: beforeMeal ? 'BEFORE' : 'AFTER',
         level: bloodSugarNum,
         content: issue,
+        registedAt: formatDate(date),
       },
       {
         onSuccess() {
