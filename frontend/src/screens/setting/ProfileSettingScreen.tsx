@@ -189,6 +189,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserHeight,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'cm',
             }}
           />
           <LabelledInput
@@ -200,6 +201,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserWeight,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'kg',
             }}
           />
           <LabelledInput
@@ -211,6 +213,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserBloodSugarMin,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'mg/dL',
             }}
           />
           <LabelledInput
@@ -222,6 +225,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserBloodSugarMax,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'mg/dL',
             }}
           />
           <LabelledInput
