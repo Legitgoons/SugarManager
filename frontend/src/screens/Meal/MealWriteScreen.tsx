@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FlatList, Text, Pressable } from 'react-native';
+import { FlatList, Text, Pressable, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { rHeight, rWidth } from '@/utils/style';
 import MainFillButton from '@/components/atoms/MainFillButton';
@@ -14,6 +14,7 @@ import MealRegistModalContent from '@/components/organisms/MealRegistModalConten
 import { searchFood, saveMeal } from '@/apis/meal';
 import { foodNutrients, MealSave } from '@/types/api/request/meal';
 import MealCard from '@/components/molecules/MealCard';
+import { showAlert } from '@/utils';
 
 const MealWriteContainer = styled(DefaultScreenContainer)`
   height: 100%;
@@ -21,7 +22,7 @@ const MealWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   align-items: center;
   padding-top: 10%;
-  gap: ${rHeight(20)}px;
+  gap: ${rHeight(30)}px;
 `;
 
 const TextDatePickerWrapper = styled.View`
@@ -34,7 +35,9 @@ const SearchBox = styled.View`
   width: ${rWidth(320)}px;
   flex-direction: row;
 `;
-
+const MealCardWrapper = styled.View`
+  padding-bottom: ${rHeight(20)}px;
+`;
 const FlatListWrapper = styled.View`
   width: ${rWidth(320)}px;
   height: ${rHeight(100)}px;
@@ -66,7 +69,11 @@ export default function MealWriteScreen() {
   const [mealList, setMealList] = useState<MealSave[]>([]);
   const [registmModalVisible, setRegistModalVisible] = useState(false);
   const [registByUser, setRegistByUser] = useState(false);
+  const [isTop, setIsTop] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const title = '등록에 실패했습니다.';
+  const content = '다시 시도해주세요.';
+  const onOk = () => {};
 
   const foodReset = () => {
     setFoodName('');
@@ -155,6 +162,13 @@ export default function MealWriteScreen() {
     registModalOpen();
   };
 
+  const handleScroll = (event: any) => {
+    const { nativeEvent } = event;
+    const { contentOffset } = nativeEvent;
+    const isScrolledToTop = contentOffset.y === 0;
+    setIsTop(isScrolledToTop);
+  };
+
   useEffect(() => {
     if (mealList.length === 0) {
       setButtonDisabled(true);
@@ -167,12 +181,13 @@ export default function MealWriteScreen() {
     try {
       const result = await saveMeal(selectedImages, date, mealList);
       if (result.ok) {
-        console.log('성공적으로 등록되었습니다.', result);
+        foodReset();
+        setMealList([]);
       } else {
-        console.log('등록에 실패했습니다.');
+        showAlert({ title, content, onOk });
       }
     } catch (error) {
-      console.log('등록에 실패했습니다.', error);
+      showAlert({ title, content, onOk });
     }
   };
 
@@ -214,11 +229,7 @@ export default function MealWriteScreen() {
             <Pressable
               onPress={() => {
                 setAmount(item.nutrientsAmount);
-                setFoodName(
-                  item.nutrientsName.length > 6
-                    ? `${item.nutrientsName.substring(0, 6)}...`
-                    : item.nutrientsName
-                );
+                setFoodName(item.nutrientsName);
                 setCalorie(item.nutrientsKcal);
                 setProtein(item.nutrientsProtein);
                 setFat(item.nutrientsFat);
@@ -246,7 +257,9 @@ export default function MealWriteScreen() {
           registByUser={registByUser}
           amount={amount}
           setAmount={setAmount}
-          foodName={foodName}
+          foodName={
+            foodName.length > 6 ? `${foodName.substring(0, 6)}...` : foodName
+          }
           setFoodName={setFoodName}
           sugar={sugar}
           setSugar={setSugar}
@@ -260,27 +273,33 @@ export default function MealWriteScreen() {
           setCalorie={setCalorie}
         />
       </DefaultModal>
-      {mealList.map((meal) => (
-        <MealCard
-          key={meal.foodName}
-          mode="meal"
-          amount={meal.foodGrams}
-          foodName={meal.foodName}
-          calorie={meal.foodCal}
-          sugar={meal.foodSugars}
-          protein={meal.foodProtein}
-          carbohydrate={meal.foodCarbohydrate}
-          fat={meal.foodFat}
-        />
-      ))}
-      <MainFillButtonWrapper>
-        <MainFillButton
-          title="등록"
-          bgColor={buttonDisabled ? 'b3' : 'b4'}
-          disabled={buttonDisabled}
-          onPress={handleSubmit}
-        />
-      </MainFillButtonWrapper>
+      <ScrollView onScroll={handleScroll}>
+        {mealList.map((meal) => (
+          <MealCardWrapper>
+            <MealCard
+              key={meal.foodName}
+              mode="meal"
+              amount={meal.foodGrams}
+              foodName={meal.foodName}
+              calorie={meal.foodCal}
+              sugar={meal.foodSugars}
+              protein={meal.foodProtein}
+              carbohydrate={meal.foodCarbohydrate}
+              fat={meal.foodFat}
+            />
+          </MealCardWrapper>
+        ))}
+      </ScrollView>
+      {isTop && (
+        <MainFillButtonWrapper>
+          <MainFillButton
+            title="등록"
+            bgColor={buttonDisabled ? 'b3' : 'b4'}
+            disabled={buttonDisabled}
+            onPress={handleSubmit}
+          />
+        </MainFillButtonWrapper>
+      )}
     </MealWriteContainer>
   );
 }
