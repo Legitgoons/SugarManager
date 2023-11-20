@@ -20,7 +20,6 @@ export interface MealSave {
   foodProtein: number;
   foodDietaryFiber: number;
   foodVitamin: number;
-  foodMineral: number;
   foodFat: number;
   foodSalt: number;
   foodSugars: number;
