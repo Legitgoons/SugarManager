@@ -12,6 +12,7 @@ import { rWidth } from '@/utils';
 // import MealHorizontalGraph from '@/components/molecules/MealHorizontalGraph';
 import { DefaultText } from '@/styles';
 import { rHeight } from '@/utils/style';
+import MealCard from '@/components/molecules/MealCard';
 
 /**
  * @todo MealHorizontalGraph error 해결
@@ -178,6 +179,16 @@ export default function MealScreen() {
             setEndDate={setEndDateSafe}
           />
         </DatePickerControllerWrapper>
+        {/* <MealCard
+          mode="day"
+          count={}
+          time={}
+          calorie={}
+          sugar={}
+          protein={}
+          carbohydrate={}
+          fat={}
+        /> */}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>

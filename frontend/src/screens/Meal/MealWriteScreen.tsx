@@ -147,7 +147,6 @@ export default function MealWriteScreen() {
         foodProtein: protein,
         foodDietaryFiber: 0,
         foodVitamin: 0,
-        foodMineral: 0,
         foodSalt: 0,
         foodSugars: sugar,
         foodFat: fat,
@@ -180,9 +179,10 @@ export default function MealWriteScreen() {
   const handleSubmit = async () => {
     try {
       const result = await saveMeal(selectedImages, date, mealList);
-      if (result.ok) {
+      if (result.success) {
         foodReset();
         setMealList([]);
+        setSearch('');
       } else {
         showAlert({ title, content, onOk });
       }
