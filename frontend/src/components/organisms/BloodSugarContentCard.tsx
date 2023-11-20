@@ -43,6 +43,7 @@ interface BloodSugarContentCardProps {
   beforeType: colorSquareType;
   afterNum: number;
   afterType: colorSquareType;
+  onPress: () => void;
 }
 
 export default function BloodSugarContentCard({
@@ -52,9 +53,10 @@ export default function BloodSugarContentCard({
   beforeType,
   afterNum,
   afterType,
+  onPress,
 }: BloodSugarContentCardProps) {
   return (
-    <CardSection size="lg">
+    <CardSection size="lg" onPress={onPress}>
       <CardContent>
         <CardHeaderBox>
           <DateTextWrapper>{date}</DateTextWrapper>

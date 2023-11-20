@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 import { rHeight, rWidth } from '@/utils';
+import { DefalutCardProps } from '@/types/card';
 
-const DefaultCard = styled.Pressable<{ size: 'lg' | 'md' | 'sm' }>`
+const DefaultCard = styled.Pressable<DefalutCardProps>`
   width: ${rWidth(320)}px;
   height: ${(props) => {
     if (props.size === 'lg') {
