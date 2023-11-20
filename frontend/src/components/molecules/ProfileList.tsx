@@ -10,7 +10,10 @@ interface ProfileListProps {
   onPress: (props: NavigationSliceStateType) => void;
 }
 
-const ProfileListBox = styled.View``;
+const ProfileListBox = styled.View`
+  flex-direction: row;
+  gap: 4px;
+`;
 
 export default function ProfileList({
   list,
