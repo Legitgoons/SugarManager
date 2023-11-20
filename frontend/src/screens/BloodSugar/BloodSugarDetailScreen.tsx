@@ -10,6 +10,7 @@ import { rWidth } from '@/utils';
 import BloodSugarDetailCard from '@/components/organisms/BloodSugarDetailCard';
 import { selectTime } from '@/redux/slice/bloodSugarSlice';
 import { dailyBloodSugar } from '@/apis/bloodSugar';
+import DayCard from '@/components/molecules/DayCard';
 
 const DetailContainer = styled.View`
   height: 100%;
@@ -60,6 +61,7 @@ export default function BloodSugarDetailScreen() {
   return (
     <DetailContainer>
       <ScrollView onScroll={handleScroll}>
+        <DayCard title={`${year}.${month}.${day}`} />
         {bloodSugarDetailData.map((item) => (
           <DetailContentCardWrapper key={item.registedAt}>
             <BloodSugarDetailCard
