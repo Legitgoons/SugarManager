@@ -70,34 +70,6 @@ export interface BloodSugarDetailApiResponse {
 }
 
 /**
- * @param {string} nickname 대상자 nickname
- * @param {Date} startDate 시작 날짜
- * @param {Date} endDate 종료 날짜
- * @param {number} page 에러 정보
- */
-
-export type periodBloodSugarProps = {
-  nickname: string;
-  startDate: Date;
-  endDate: Date;
-  page: number;
-};
-
-/**
- * @param {string} nickname 대상자 nickname
- * @param {string} year 대상 년
- * @param {string} month 월
- * @param {string} day 일
- */
-
-export type detailBloodSugarProps = {
-  nickname: string;
-  year: string;
-  month: string;
-  day: string;
-};
-
-/**
  * @property {"BEFORE" | "AFTER"} category BEFORE 식전, AFTER 식후
  * @property {number} level 혈당 수치
  * @property {string} content 사용자의 메모

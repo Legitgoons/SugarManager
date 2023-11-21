@@ -2,10 +2,9 @@ import { API_ENDPOINT } from '@env';
 import { store, RootState } from '@/redux/store/storeConfig';
 import {
   BloodSugarWriteData,
-  periodBloodSugarProps,
   BloodSugarApiResponse,
-  detailBloodSugarProps,
 } from '@/types/api/request/bloodSugar';
+import { periodProps, detailProps } from '@/types/api/request/fetchPeriod';
 import { fetchWithAuth } from '@/utils';
 
 export async function periodBloodSugar({
@@ -13,7 +12,7 @@ export async function periodBloodSugar({
   startDate,
   endDate,
   page,
-}: periodBloodSugarProps): Promise<BloodSugarApiResponse> {
+}: periodProps): Promise<BloodSugarApiResponse> {
   const state: RootState = store.getState();
   const { accessToken } = state.user;
 
@@ -43,12 +42,7 @@ export async function periodBloodSugar({
   return data;
 }
 
-export const dailyBloodSugar = ({
-  nickname,
-  year,
-  month,
-  day,
-}: detailBloodSugarProps) =>
+export const dailyBloodSugar = ({ nickname, year, month, day }: detailProps) =>
   fetchWithAuth(`/bloodsugar/${nickname}/${year}/${month}/${day}`);
 
 export const saveBloodSugar = (data: BloodSugarWriteData) =>
