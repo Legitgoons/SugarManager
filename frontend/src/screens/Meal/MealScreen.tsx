@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { fetchMealData } from '@/apis/meal';
-import { PeriodMealData } from '@/types/api/request/meal';
+import { PeriodMealData } from '@/types/api/response/meal';
 import { useSelector } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
