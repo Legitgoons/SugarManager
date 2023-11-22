@@ -183,6 +183,8 @@ export default function MealWriteScreen() {
         foodReset();
         setMealList([]);
         setSearch('');
+        setSelectedImages([]);
+        setExpandedImage('');
       } else {
         showAlert({ title, content, onOk });
       }

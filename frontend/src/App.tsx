@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SplashScreen from 'react-native-splash-screen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import theme from './styles/theme';
 import { persistor, store } from './redux/store/storeConfig';
 import Navigation from './navigation/Navigation';
@@ -24,15 +25,19 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
-    }, 1000); // 스플래시 활성화 시간
+    }, 1000);
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       showAlert({
-        title: '알람 등록 성공',
-        content: JSON.stringify(remoteMessage),
+        title: '알람',
+        content: JSON.stringify(remoteMessage?.notification),
         onOk: () => {},
       });
     });
-
+    const getFCMToken = async () => {
+      const token = await messaging().getToken();
+      await AsyncStorage.setItem('fcmToken', token);
+    };
+    getFCMToken();
     return unsubscribe;
   });
   return (
