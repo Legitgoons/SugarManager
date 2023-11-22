@@ -23,6 +23,7 @@ const MealWriteContainer = styled(DefaultScreenContainer)`
   align-items: center;
   padding-top: 10%;
   gap: ${rHeight(30)}px;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const TextDatePickerWrapper = styled.View`

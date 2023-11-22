@@ -12,6 +12,7 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
 import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 import { setTime } from '@/redux/slice/bloodSugarSlice';
+import { formatToMonthDay } from '@/utils/formatDate';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -20,6 +21,7 @@ const BloodSugarContainer = styled.View`
   justify-content: flex-start;
   align-items: center;
   padding-top: 10%;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const DatePickerControllerWrapper = styled.View`
@@ -141,14 +143,7 @@ export default function BloodSugarScreen() {
                     router.navigate('BloodSugarDetail');
                   }}
                   key={item.time}
-                  date={(() => {
-                    const date = new Date(item.time);
-                    const month = date.getMonth() + 1;
-                    const day = date.getDate();
-                    return `${month.toString().padStart(2, '0')}/${day
-                      .toString()
-                      .padStart(2, '0')}`;
-                  })()}
+                  date={formatToMonthDay(item.time)}
                   count={item.count}
                   beforeNum={Math.round(item.bloodSugarBefore)}
                   beforeType={item.bloodSugarBeforeStatus}

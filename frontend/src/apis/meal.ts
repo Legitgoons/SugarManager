@@ -1,7 +1,7 @@
 import { fetchWithAuth } from '@/utils';
 import { MealSave } from '@/types/api/request/meal';
 import { store, RootState } from '@/redux/store/storeConfig';
-import formatDate from '@/utils/formatDate';
+import { formatToFullDateTime } from '@/utils/formatDate';
 import { periodProps } from '@/types/api/request/fetchPeriod';
 import { API_ENDPOINT } from '@env';
 import periodDate from '@/utils/periodDate';
@@ -24,7 +24,7 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
   // });
   // const formData = new FormData();
   const menuDto = {
-    registedAt: formatDate(date),
+    registedAt: formatToFullDateTime(date),
     foods: mealList,
   };
 

@@ -25,6 +25,7 @@ export default function MealHorizontalGraph({
       <BarChart
         horizontal
         barWidth={22}
+        height={rHeight(120)}
         width={320}
         maxValue={Math.max(carbohydrate, protein, fat)}
         barBorderRadius={4}

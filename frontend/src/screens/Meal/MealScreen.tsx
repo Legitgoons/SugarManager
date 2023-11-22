@@ -13,6 +13,7 @@ import MealHorizontalGraph from '@/components/molecules/MealHorizontalGraph';
 import { DefaultText } from '@/styles';
 import { rHeight } from '@/utils/style';
 import MealCard from '@/components/molecules/MealCard';
+import { formatToMonthDay } from '@/utils/formatDate';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -20,6 +21,7 @@ const BloodSugarContainer = styled.View`
   padding-top: 10%;
   justify-content: flex-start;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const DatePickerControllerWrapper = styled.View`
@@ -165,26 +167,19 @@ export default function MealScreen() {
             setEndDate={setEndDateSafe}
           />
         </DatePickerControllerWrapper>
-        {mealData.map((meal) => {
-          const date = new Date(meal.time);
-          const time = date.toLocaleDateString('ko-KR', {
-            month: '2-digit',
-            day: '2-digit',
-          });
-          return (
-            <CardWrapper key={meal.time}>
-              <MealCard
-                topTitle=""
-                topText={time}
-                calorie={Math.round(meal.dayFoodCal)}
-                sugar={meal.dayFoodSugars || 0}
-                protein={meal.dayFoodProtein || 0}
-                carbohydrate={meal.dayFoodCarbohydrate || 0}
-                fat={meal.dayFoodFat || 0}
-              />
-            </CardWrapper>
-          );
-        })}
+        {mealData.map((meal) => (
+          <CardWrapper key={meal.time}>
+            <MealCard
+              topTitle=""
+              topText={formatToMonthDay(meal.time)}
+              calorie={Math.round(meal.dayFoodCal)}
+              sugar={meal.dayFoodSugars || 0}
+              protein={meal.dayFoodProtein || 0}
+              carbohydrate={meal.dayFoodCarbohydrate || 0}
+              fat={meal.dayFoodFat || 0}
+            />
+          </CardWrapper>
+        ))}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>
