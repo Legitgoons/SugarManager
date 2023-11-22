@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { periodBloodSugar } from '@/apis/bloodSugar';
-import { BloodSugarResponseData } from '@/types/api/request/bloodSugar';
+import { BloodSugarResponseData } from '@/types/api/response/bloodSugar';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';

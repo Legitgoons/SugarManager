@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { BloodSugarDetailResponseData } from '@/types/api/request/bloodSugar';
+import { BloodSugarDetailResponseData } from '@/types/api/response/bloodSugar';
 import { useSelector } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';

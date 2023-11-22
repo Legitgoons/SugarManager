@@ -1,9 +1,7 @@
 import { API_ENDPOINT } from '@env';
 import { store, RootState } from '@/redux/store/storeConfig';
-import {
-  BloodSugarWriteData,
-  BloodSugarApiResponse,
-} from '@/types/api/request/bloodSugar';
+import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
+import { BloodSugarApiResponse } from '@/types/api/response/bloodSugar';
 import { periodProps, detailProps } from '@/types/api/request/fetchPeriod';
 import { fetchWithAuth } from '@/utils';
 
