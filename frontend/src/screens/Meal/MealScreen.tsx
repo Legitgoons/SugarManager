@@ -20,6 +20,7 @@ const BloodSugarContainer = styled.View`
   padding-top: 10%;
   justify-content: flex-start;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const DatePickerControllerWrapper = styled.View`

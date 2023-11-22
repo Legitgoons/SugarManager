@@ -16,6 +16,7 @@ const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
   gap: ${rHeight(36)}px;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const MainFillButtonWrapper = styled.View`
