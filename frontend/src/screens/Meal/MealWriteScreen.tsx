@@ -280,9 +280,8 @@ export default function MealWriteScreen() {
           <MealCardWrapper>
             <MealCard
               key={meal.foodName}
-              mode="meal"
-              amount={meal.foodGrams}
-              foodName={meal.foodName}
+              topTitle={`${meal.foodGrams}g`}
+              topText={meal.foodName}
               calorie={meal.foodCal}
               sugar={meal.foodSugars}
               protein={meal.foodProtein}

@@ -76,9 +76,8 @@ const fetchWithAuth = async (
     //     default:
     //       break;
     //   }
-    //   return error;
-    // }
-    console.log(error);
+    return error;
   }
 };
+
 export default fetchWithAuth;
