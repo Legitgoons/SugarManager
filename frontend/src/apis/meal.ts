@@ -4,6 +4,7 @@ import { store, RootState } from '@/redux/store/storeConfig';
 import formatDate from '@/utils/formatDate';
 import { periodProps } from '@/types/api/request/fetchPeriod';
 import { API_ENDPOINT } from '@env';
+import periodDate from '@/utils/periodDate';
 
 const searchFood = async (food: string) => {
   const response = await fetchWithAuth(`/search/${food}`);
@@ -80,14 +81,8 @@ const fetchMealData = async ({
   const state: RootState = store.getState();
   const { accessToken } = state.user;
 
-  const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
-  const startDay = startDate.getDate().toString().padStart(2, '0');
-
-  const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
-  const endDay = endDate.getDate().toString().padStart(2, '0');
-
-  const start = `${startDate.getFullYear()}-${startMonth}-${startDay}`;
-  const end = `${endDate.getFullYear()}-${endMonth}-${endDay}`;
+  const start = periodDate(startDate);
+  const end = periodDate(endDate);
 
   const response = await fetch(
     `${API_ENDPOINT}/menu/period/${nickname}/${start}/${end}/${page}`,
