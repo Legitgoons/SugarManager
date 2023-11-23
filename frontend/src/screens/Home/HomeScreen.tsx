@@ -28,6 +28,7 @@ const HomeContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
   gap: ${rHeight(30)}px;
 `;
+
 const HomeCardBox = styled.View`
   gap: ${rHeight(20)}px;
 `;

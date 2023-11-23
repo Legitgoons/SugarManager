@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import alertConfig from '@/config/alertConfig';
 
 const SignupScreenContainer = styled(DefaultScreenContainer)`
   padding-top: ${rHeight(60)}px;
@@ -35,6 +36,7 @@ export default function SignupScreen() {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
+  const { normalFail, normalSuccess, validationFail } = alertConfig;
   const { mutate } = useMutation({
     mutationFn: () =>
       PostSignup({
@@ -48,23 +50,23 @@ export default function SignupScreen() {
     onSuccess: (data) => {
       if (data.success) {
         showAlert({
-          title: '회원가입 성공',
-          content: '회원가입에 성공했습니다! 로그인 해주세요.',
+          title: normalSuccess.title('회원가입'),
+          content: normalSuccess.content('회원가입'),
           onOk: () => {},
         });
         router.replace('Signin');
       } else {
         showAlert({
-          title: '회원가입 실패',
-          content: '에러가 발생했습니다. 다시 시도해주세요!',
+          title: normalFail.title('회원가입'),
+          content: normalFail.content,
           onOk: () => {},
         });
       }
     },
     onError: () => {
       showAlert({
-        title: '회원가입 실패',
-        content: '에러가 발생했습니다. 다시 시도해주세요!',
+        title: normalFail.title('회원가입'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },
@@ -72,9 +74,8 @@ export default function SignupScreen() {
   const handleSignup = () => {
     if (!validationId(id)) {
       showAlert({
-        title: '아이디 입력 오류',
-        content:
-          '아이디는 영문, 소문자, 숫자 가능, 특수문자 불가능하며 6자 이상 320자 이하입니다.',
+        title: validationFail.title('아이디 입력'),
+        content: validationFail.content('id'),
         onOk: () => {},
       });
       return;
@@ -82,34 +83,32 @@ export default function SignupScreen() {
 
     if (!validationPw(pw)) {
       showAlert({
-        title: '비밀번호 입력 오류',
-        content:
-          '비밀번호는 영문, 대문자, 소문자, 숫자, 특수 문자가 포함되며 8자 이상 20자 이하입니다.',
+        title: validationFail.title('비밀번호 입력'),
+        content: validationFail.content('pw'),
         onOk: () => {},
       });
       return;
     }
     if (name.length === 0) {
       showAlert({
-        title: '회원가입 실패',
-        content: '이름을 제대로 넣어주세요',
+        title: validationFail.title('이름 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;
     }
     if (nickname.length < 6) {
       showAlert({
-        title: '회원가입 실패',
-        content:
-          '닉네임은 영문, 숫자, 한글이 가능한 6자 이상으로 입력해야 합니다.',
+        title: validationFail.title('닉네임 입력'),
+        content: validationFail.content('nickname'),
         onOk: () => {},
       });
       return;
     }
     if (!validateEmail(email)) {
       showAlert({
-        title: '회원가입 실패',
-        content: '이메일을 제대로 넣어주세요',
+        title: validationFail.title('이메일 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;

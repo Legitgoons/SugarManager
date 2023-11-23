@@ -15,6 +15,7 @@ import { searchFood, saveMeal } from '@/apis/meal';
 import { foodNutrients, MealSave } from '@/types/api/request/meal';
 import MealCard from '@/components/molecules/MealCard';
 import { showAlert } from '@/utils';
+import alertConfig from '@/config/alertConfig';
 
 const MealWriteContainer = styled(DefaultScreenContainer)`
   height: 100%;
@@ -71,8 +72,7 @@ export default function MealWriteScreen() {
   const [registByUser, setRegistByUser] = useState(false);
   const [isTop, setIsTop] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const title = '등록에 실패했습니다.';
-  const content = '다시 시도해주세요.';
+  const { normalFail } = alertConfig;
   const onOk = () => {};
 
   const foodReset = () => {
@@ -186,10 +186,18 @@ export default function MealWriteScreen() {
         setSelectedImages([]);
         setExpandedImage('');
       } else {
-        showAlert({ title, content, onOk });
+        showAlert({
+          title: normalFail.title('식단 등록'),
+          content: normalFail.content,
+          onOk,
+        });
       }
     } catch (error) {
-      showAlert({ title, content, onOk });
+      showAlert({
+        title: normalFail.title('식단 등록'),
+        content: normalFail.content,
+        onOk,
+      });
     }
   };
 

@@ -16,6 +16,7 @@ import { ScrollView } from 'react-native';
 import TextButton from '@/components/atoms/TextButton';
 import GroupLeaveModal from '@/components/organisms/GroupLeaveModal';
 import MemberDeleteModal from '@/components/organisms/MemberDeleteModal';
+import alertConfig from '@/config/alertConfig';
 
 const ProfileSettingScreenContainer = styled(DefaultScreenContainer)`
   padding-top: ${rHeight(20)}px;
@@ -77,7 +78,7 @@ export default function ProfileSettingScreen() {
   const [userBloodSugarMax, setUserBloodSugarMax] = useState(bloodSugarMax);
   const [openMemberDeleteModal, setOpenMemberDeleteModal] = useState(false);
   const [openGroupLeaveModal, setOpenGroupLeaveModal] = useState(false);
-
+  const { normalSuccess, normalFail } = alertConfig;
   const dispatch = useDispatch();
 
   const { mutate } = useMutation({
@@ -105,22 +106,22 @@ export default function ProfileSettingScreen() {
           })
         );
         showAlert({
-          title: '수정 성공',
-          content: '수정사항을 저장했습니다.',
+          title: normalSuccess.title('프로필 수정'),
+          content: normalSuccess.content('프로필 수정'),
           onOk: () => {},
         });
         return;
       }
       showAlert({
-        title: '수정 실패',
-        content: '네트워크 상태를 확인해주세요',
+        title: normalFail.title('프로필 수정'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },
     onError: () => {
       showAlert({
-        title: '수정 실패',
-        content: '네트워크 상태를 확인해주세요',
+        title: normalFail.title('프로필 수정'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },

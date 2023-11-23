@@ -26,6 +26,7 @@ import {
   postMemberPoke,
 } from '@/apis';
 import { PostChallengeDeleteProps } from '@/types/api/request/challenge';
+import alertConfig from '@/config/alertConfig';
 
 const PageLayout = styled.View`
   flex: 1;
@@ -75,6 +76,7 @@ function checkChallengeProcess(challengeList: any) {
 
 export default function ChallengeScreen() {
   let challengeList = [];
+  const { normalFail } = alertConfig;
   const queryClient = useQueryClient();
   const router = useRouter();
   const [deleteList, setDeleteList] = useState<Record<string, boolean>>({});
@@ -94,16 +96,16 @@ export default function ChallengeScreen() {
         });
       } else {
         showAlert({
-          title: '증가 실패',
-          content: '다시 시도해주세요',
+          title: normalFail.title('횟수 증가'),
+          content: normalFail.content,
           onOk: () => {},
         });
       }
     },
     onError() {
       showAlert({
-        title: '증가 실패',
-        content: '다시 시도해주세요',
+        title: normalFail.title('횟수 증가'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },
@@ -133,7 +135,11 @@ export default function ChallengeScreen() {
         setMode('view');
       },
       onError() {
-        console.log('에러!');
+        showAlert({
+          title: normalFail.title('챌린지 삭제'),
+          content: normalFail.content,
+          onOk: () => {},
+        });
       },
     });
   };

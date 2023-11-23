@@ -11,6 +11,7 @@ import { saveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
 import formatDate from '@/utils/formatDate';
 import BloodSugarStatusBarContent from '@/components/molecules/BloodSugarStatusBarContent';
+import alertConfig from '@/config/alertConfig';
 
 const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -28,7 +29,7 @@ export default function BloodSugarWriteScreen() {
   const [issue, setIssue] = useState('');
   const [date, setDate] = useState(new Date());
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const title = '경고';
+  const { validationFail, normalFail } = alertConfig;
   const onOk = () => {};
 
   useEffect(() => {
@@ -49,8 +50,11 @@ export default function BloodSugarWriteScreen() {
 
   const handleSubmit = () => {
     if (bloodSugar < 0 || bloodSugar > 999) {
-      const content = '혈당 수치가 정상적이지 않습니다.';
-      showAlert({ title, content, onOk });
+      showAlert({
+        title: validationFail.title('혈당 수치 입력'),
+        content: validationFail.content('bloodSugar'),
+        onOk,
+      });
       return;
     }
     mutation.mutate(
@@ -62,12 +66,15 @@ export default function BloodSugarWriteScreen() {
       },
       {
         onSuccess() {
-          setBloodSugar(0); // 상태 초기화
+          setBloodSugar(0);
           setIssue('');
         },
         onError() {
-          const content = '혈당이 등록되지 않았습니다. 다시 시도해주세요.';
-          showAlert({ title, content, onOk });
+          showAlert({
+            title: normalFail.title('혈당 등록'),
+            content: normalFail.content,
+            onOk,
+          });
         },
       }
     );

@@ -14,6 +14,7 @@ import DropdownItem from '@/types/dropdown';
 import { PostAlarmSaveProps } from '@/types/api/request/member';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { Text } from 'react-native';
+import alertConfig from '@/config/alertConfig';
 import extractNumber from '../../utils/number';
 
 const AlarmSettingScreenContainer = styled(DefaultScreenContainer)`
@@ -48,6 +49,7 @@ const AlarmContentHeaderTitle = styled(DefaultText)``;
 
 export default function AlarmSettingScreen() {
   const queryClient = useQueryClient();
+  const { normalSuccess, normalFail } = alertConfig;
   const { data } = useSuspenseQuery({
     queryKey: ['getMyAlarm'],
     queryFn: () => getMyAlarm(),
@@ -117,15 +119,15 @@ export default function AlarmSettingScreen() {
     const allSuccess = results.every((result) => result.status === 'fulfilled');
     if (allSuccess) {
       showAlert({
-        title: '수정 성공',
-        content: '수정 내용을 저장했습니다.',
+        title: normalSuccess.title('알람 수정'),
+        content: normalSuccess.content('알람 수정'),
         onOk: () => {},
       });
       queryClient.invalidateQueries({ queryKey: ['getMyAlarm'] });
     } else {
       showAlert({
-        title: '수정 실패',
-        content: '다시 시도해주세요!',
+        title: normalFail.title('알람 수정'),
+        content: normalFail.content,
         onOk: () => {},
       });
     }
