@@ -1,30 +1,22 @@
 import { API_ENDPOINT } from '@env';
 import { store, RootState } from '@/redux/store/storeConfig';
-import {
-  BloodSugarWriteData,
-  periodBloodSugarProps,
-  BloodSugarApiResponse,
-  detailBloodSugarProps,
-} from '@/types/api/request/bloodSugar';
+import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
+import { BloodSugarApiResponse } from '@/types/api/response/bloodSugar';
+import { periodProps, detailProps } from '@/types/api/request/fetchPeriod';
 import { fetchWithAuth } from '@/utils';
+import periodDate from '@/utils/periodDate';
 
 export async function periodBloodSugar({
   nickname,
   startDate,
   endDate,
   page,
-}: periodBloodSugarProps): Promise<BloodSugarApiResponse> {
+}: periodProps): Promise<BloodSugarApiResponse> {
   const state: RootState = store.getState();
   const { accessToken } = state.user;
 
-  const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
-  const startDay = startDate.getDate().toString().padStart(2, '0');
-
-  const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
-  const endDay = endDate.getDate().toString().padStart(2, '0');
-
-  const start = `${startDate.getFullYear()}-${startMonth}-${startDay}`;
-  const end = `${endDate.getFullYear()}-${endMonth}-${endDay}`;
+  const start = periodDate(startDate);
+  const end = periodDate(endDate);
 
   const response = await fetch(
     `${API_ENDPOINT}/bloodsugar/period/${nickname}/${start}/${end}/${page}`,
@@ -34,21 +26,14 @@ export async function periodBloodSugar({
       },
     }
   );
-
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
-
   const data = await response.json();
   return data;
 }
 
-export const dailyBloodSugar = ({
-  nickname,
-  year,
-  month,
-  day,
-}: detailBloodSugarProps) =>
+export const dailyBloodSugar = ({ nickname, year, month, day }: detailProps) =>
   fetchWithAuth(`/bloodsugar/${nickname}/${year}/${month}/${day}`);
 
 export const saveBloodSugar = (data: BloodSugarWriteData) =>

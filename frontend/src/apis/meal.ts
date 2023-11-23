@@ -1,6 +1,10 @@
 import { fetchWithAuth } from '@/utils';
 import { MealSave } from '@/types/api/request/meal';
-import formatDate from '@/utils/formatDate';
+import { store, RootState } from '@/redux/store/storeConfig';
+import { formatToFullDateTime } from '@/utils/formatDate';
+import { periodProps } from '@/types/api/request/fetchPeriod';
+import { API_ENDPOINT } from '@env';
+import periodDate from '@/utils/periodDate';
 
 const searchFood = async (food: string) => {
   const response = await fetchWithAuth(`/search/${food}`);
@@ -20,7 +24,7 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
   // });
   // const formData = new FormData();
   const menuDto = {
-    registedAt: formatDate(date),
+    registedAt: formatToFullDateTime(date),
     foods: mealList,
   };
 
@@ -68,4 +72,33 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
   // return response;
 };
 
-export { saveMeal, searchFood };
+const fetchMealData = async ({
+  nickname,
+  startDate,
+  endDate,
+  page,
+}: periodProps) => {
+  const state: RootState = store.getState();
+  const { accessToken } = state.user;
+
+  const start = periodDate(startDate);
+  const end = periodDate(endDate);
+
+  const response = await fetch(
+    `${API_ENDPOINT}/menu/period/${nickname}/${start}/${end}/${page}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export { saveMeal, searchFood, fetchMealData };

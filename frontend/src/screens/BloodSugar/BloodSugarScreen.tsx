@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { periodBloodSugar } from '@/apis/bloodSugar';
-import { BloodSugarResponseData } from '@/types/api/request/bloodSugar';
+import { BloodSugarResponseData } from '@/types/api/response/bloodSugar';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
@@ -12,6 +12,7 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
 import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 import { setTime } from '@/redux/slice/bloodSugarSlice';
+import { formatToMonthDay } from '@/utils/formatDate';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -20,13 +21,14 @@ const BloodSugarContainer = styled.View`
   justify-content: flex-start;
   align-items: center;
   padding-top: 10%;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const DatePickerControllerWrapper = styled.View`
   width: ${rWidth(320)}px;
 `;
 
-const BloodSugarContentCardWrapper = styled.View`
+const CardWrapper = styled.View`
   width: ${rWidth(320)}px;
   padding-top: ${rWidth(20)}px;
 `;
@@ -134,28 +136,21 @@ export default function BloodSugarScreen() {
           (item) =>
             item.bloodSugarBefore != null &&
             item.bloodSugarAfter != null && (
-              <BloodSugarContentCardWrapper key={item.time}>
+              <CardWrapper key={item.time}>
                 <BloodSugarContentCard
                   onPress={() => {
                     dispatch(setTime(item.time));
                     router.navigate('BloodSugarDetail');
                   }}
                   key={item.time}
-                  date={(() => {
-                    const date = new Date(item.time);
-                    const month = date.getMonth() + 1;
-                    const day = date.getDate();
-                    return `${month.toString().padStart(2, '0')}/${day
-                      .toString()
-                      .padStart(2, '0')}`;
-                  })()}
+                  date={formatToMonthDay(item.time)}
                   count={item.count}
                   beforeNum={Math.round(item.bloodSugarBefore)}
                   beforeType={item.bloodSugarBeforeStatus}
                   afterNum={Math.round(item.bloodSugarAfter)}
                   afterType={item.bloodSugarAfterStatus}
                 />
-              </BloodSugarContentCardWrapper>
+              </CardWrapper>
             )
         )}
       </ScrollView>

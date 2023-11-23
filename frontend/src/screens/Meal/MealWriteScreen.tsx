@@ -24,6 +24,7 @@ const MealWriteContainer = styled(DefaultScreenContainer)`
   align-items: center;
   padding-top: 10%;
   gap: ${rHeight(30)}px;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const TextDatePickerWrapper = styled.View`
@@ -288,9 +289,8 @@ export default function MealWriteScreen() {
           <MealCardWrapper>
             <MealCard
               key={meal.foodName}
-              mode="meal"
-              amount={meal.foodGrams}
-              foodName={meal.foodName}
+              topTitle={`${meal.foodGrams}g`}
+              topText={meal.foodName}
               calorie={meal.foodCal}
               sugar={meal.foodSugars}
               protein={meal.foodProtein}

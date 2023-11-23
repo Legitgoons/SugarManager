@@ -29,11 +29,8 @@ const CardBodyBox = styled.View`
 `;
 
 interface MealCardProps {
-  mode: 'day' | 'meal';
-  count?: number;
-  time?: string;
-  amount?: number;
-  foodName?: string;
+  topTitle: string;
+  topText: string;
   calorie: number;
   sugar: number;
   protein: number;
@@ -42,11 +39,8 @@ interface MealCardProps {
 }
 
 export default function MealCard({
-  mode,
-  count,
-  time,
-  amount,
-  foodName,
+  topTitle,
+  topText,
   calorie,
   sugar,
   protein,
@@ -57,10 +51,7 @@ export default function MealCard({
     <CardSection size="lg">
       <CardContent>
         <CardHeaderBox>
-          <TextWithSmallTitle
-            title={mode === 'day' ? `${count}회` : `${amount}g`}
-            text={mode === 'day' ? `${time}` : `${foodName}`}
-          />
+          <TextWithSmallTitle title={topTitle} text={topText} />
           <CalorieTextWrapper>{`${calorie}Kcal`}</CalorieTextWrapper>
         </CardHeaderBox>
         <CardBodyBox>
