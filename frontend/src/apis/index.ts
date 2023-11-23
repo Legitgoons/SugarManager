@@ -26,6 +26,12 @@ import {
   postMemberDelete,
 } from './member';
 import { getTimelineState, getTimelineDetail } from './timeline';
+import { saveMeal, searchFood, fetchMealData, getMealByDay } from './meal';
+import {
+  periodBloodSugar,
+  dailyBloodSugar,
+  saveBloodSugar,
+} from './bloodSugar';
 
 export {
   postKakaoSignin,
@@ -49,4 +55,11 @@ export {
   postGroupLeave,
   postGroupCraete,
   postGroupJoin,
+  saveMeal,
+  searchFood,
+  fetchMealData,
+  getMealByDay,
+  periodBloodSugar,
+  dailyBloodSugar,
+  saveBloodSugar,
 };
