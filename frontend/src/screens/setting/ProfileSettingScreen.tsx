@@ -81,6 +81,22 @@ export default function ProfileSettingScreen() {
   const { normalSuccess, normalFail } = alertConfig;
   const dispatch = useDispatch();
 
+  function resultFailAlert() {
+    showAlert({
+      title: normalFail.title('프로필 수정'),
+      content: normalFail.content,
+      onOk: () => {},
+    });
+  }
+
+  function resultSuccessAlert() {
+    showAlert({
+      title: normalSuccess.title('프로필 수정'),
+      content: normalSuccess.content('프로필 수정'),
+      onOk: () => {},
+    });
+  }
+
   const { mutate } = useMutation({
     mutationFn: () =>
       postProfileEdit({
@@ -105,25 +121,13 @@ export default function ProfileSettingScreen() {
             bloodSugarMin: userBloodSugarMin,
           })
         );
-        showAlert({
-          title: normalSuccess.title('프로필 수정'),
-          content: normalSuccess.content('프로필 수정'),
-          onOk: () => {},
-        });
+        resultSuccessAlert();
         return;
       }
-      showAlert({
-        title: normalFail.title('프로필 수정'),
-        content: normalFail.content,
-        onOk: () => {},
-      });
+      resultFailAlert();
     },
     onError: () => {
-      showAlert({
-        title: normalFail.title('프로필 수정'),
-        content: normalFail.content,
-        onOk: () => {},
-      });
+      resultFailAlert();
     },
   });
 
