@@ -1,7 +1,7 @@
 import { API_ENDPOINT } from '@env';
 import { store, RootState } from '@/redux/store/storeConfig';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
-import { BloodSugarApiResponse } from '@/types/api/response/bloodSugar';
+import { BloodSugarPeriodApiResponse } from '@/types/api/response/bloodSugar';
 import { periodProps, detailProps } from '@/types/api/request/fetchPeriod';
 import { fetchWithAuth } from '@/utils';
 import periodDate from '@/utils/periodDate';
@@ -11,7 +11,7 @@ export async function periodBloodSugar({
   startDate,
   endDate,
   page,
-}: periodProps): Promise<BloodSugarApiResponse> {
+}: periodProps): Promise<BloodSugarPeriodApiResponse> {
   const state: RootState = store.getState();
   const { accessToken } = state.user;
 

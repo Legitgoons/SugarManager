@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { periodBloodSugar } from '@/apis/bloodSugar';
-import { BloodSugarResponseData } from '@/types/api/response/bloodSugar';
+import { BloodSugarPeriodResponseData } from '@/types/api/response/bloodSugar';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
@@ -46,7 +46,7 @@ export default function BloodSugarScreen() {
   const [endDate, setEndDate] = useState(new Date());
   const { nickname } = useSelector(selectNavigation);
   const [bloodSugarData, setBloodSugarData] = useState<
-    BloodSugarResponseData[]
+    BloodSugarPeriodResponseData[]
   >([]);
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
@@ -80,7 +80,11 @@ export default function BloodSugarScreen() {
       endDate,
       page,
     });
-    setBloodSugarData([...data.response]);
+    if (data.response.length === 0) {
+      setIsEnd(true);
+    } else {
+      setBloodSugarData((prevData) => [...prevData, ...data.response]);
+    }
   }, [nickname, startDate, endDate, page]);
 
   useEffect(() => {
@@ -95,9 +99,15 @@ export default function BloodSugarScreen() {
 
   const handleScroll = (event: any) => {
     const { nativeEvent } = event;
-    const { contentOffset } = nativeEvent;
+    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
     const isScrolledToTop = contentOffset.y === 0;
+    const isScrolledToBottom =
+      Math.round(contentOffset.y + layoutMeasurement.height) >=
+      Math.round(contentSize.height);
     setIsTop(isScrolledToTop);
+    if (isScrolledToBottom && !isEnd) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
   const bloodSugarGraphList = useMemo(
