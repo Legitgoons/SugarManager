@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { BloodSugarDetailResponseData } from '@/types/api/response/bloodSugar';
+import { BloodSugarDetailResponseDataList } from '@/types/api/response/bloodSugar';
 import { useSelector } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
@@ -38,11 +38,11 @@ export default function BloodSugarDetailScreen() {
   const router = useRouter();
   const { nickname } = useSelector(selectNavigation);
   const [bloodSugarDetailData, setBloodSugarDetailData] = useState<
-    BloodSugarDetailResponseData[]
+    BloodSugarDetailResponseDataList[]
   >([]);
   const [isTop, setIsTop] = useState(true);
   const time = useSelector(selectTime);
-  const [year, month, day] = time.split('-');
+  const [year, month, day] = time ? time.split('-') : ['', '', ''];
 
   const handleScroll = (event: any) => {
     const { nativeEvent } = event;
