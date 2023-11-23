@@ -55,7 +55,7 @@ export default function HomeScreen() {
   const { groupCode } = useSelector(selectUser);
   const { nickname } = useSelector(selectNavigation);
 
-  const { data: challegeListData } = useSuspenseQuery({
+  const { data: challengeListData } = useSuspenseQuery({
     queryKey: ['getChallengeList', nickname],
     queryFn: () => getChallengeList(nickname),
   });
@@ -82,20 +82,28 @@ export default function HomeScreen() {
       }),
   });
 
-  if (challegeListData?.response && challegeListData?.success) {
-    challengeRightNumeric = challegeListData.list.length;
-    challegeListData.list.forEach(
+  if (
+    challengeListData?.response &&
+    challengeListData?.success &&
+    challengeListData?.response?.list
+  ) {
+    challengeRightNumeric = challengeListData.response.list.length;
+    challengeListData.response.list.forEach(
       ({ goal, count }: { goal: number; count: number }) => {
         if (goal === count) challengeLeftNumeric += 1;
       }
     );
   }
 
-  if (mealData?.response && mealData?.success) {
+  if (mealData?.response && mealData?.success && mealData?.response?.list) {
     mealCnt = mealData.response.list.length;
   }
 
-  if (bloodSugarData?.response && bloodSugarData?.success) {
+  if (
+    bloodSugarData?.response &&
+    bloodSugarData?.success &&
+    bloodSugarData?.response?.list
+  ) {
     bloodSugarCnt = bloodSugarData.response.list.length;
   }
 
