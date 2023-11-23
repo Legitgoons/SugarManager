@@ -35,8 +35,6 @@ export default function CopyInput<T extends string | number>(
   const copyToClipboard = () => {
     if (value !== null && value !== undefined) {
       Clipboard.setString(value.toString());
-    } else {
-      console.log('복사할 값이 없습니다.');
     }
   };
   return (

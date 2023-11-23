@@ -5,10 +5,12 @@ import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
 import showAlert from '@/utils/alert';
 import useRouter from '@/hooks/useRouter';
 import { setNavigation } from '@/redux/slice/navigationSlice';
+import alertConfig from '@/config/alertConfig';
 
 const useAuth = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { normalFail } = alertConfig;
 
   const handleSignInSuccess = async () => {
     const myProfile = await getMyProfile();
@@ -50,8 +52,8 @@ const useAuth = () => {
       }
     } catch (error) {
       showAlert({
-        title: '로그인 실패',
-        content: (error as any).message,
+        title: normalFail.title('카카오 로그인 접근'),
+        content: normalFail.content,
         onOk: () => {},
       });
     }
@@ -73,8 +75,8 @@ const useAuth = () => {
       }
     } catch (error) {
       showAlert({
-        title: '로그인 실패',
-        content: (error as any).message,
+        title: normalFail.title('로그인'),
+        content: normalFail.content,
         onOk: () => {},
       });
     }

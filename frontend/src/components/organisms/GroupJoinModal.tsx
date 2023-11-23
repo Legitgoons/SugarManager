@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postGroupJoin } from '@/apis';
 import { useDispatch } from 'react-redux';
 import { setGroupCode } from '@/redux/slice/userSlice';
+import alertConfig from '@/config/alertConfig';
 import DefaultModal from './DefaultModal';
 import InputLine from '../molecules/InputLine';
 
@@ -24,13 +25,14 @@ interface GroupJoinModalProps {
 export default function GroupJoinModal({ open, setOpen }: GroupJoinModalProps) {
   const [inputGroupCode, setInputGroupCode] = useState('');
   const dispatch = useDispatch();
+  const { normalSuccess, normalFail, validationFail } = alertConfig;
 
   const { mutate } = useMutation({
     mutationFn: () => postGroupJoin(inputGroupCode),
     onSuccess: async () => {
       showAlert({
-        title: '그룹가입 성공',
-        content: '그룹 가입에 성공하였습니다.',
+        title: normalSuccess.title('그룹 가입'),
+        content: normalSuccess.content('그룹 가입'),
         onOk: () => {},
       });
       dispatch(setGroupCode(inputGroupCode));
@@ -38,8 +40,8 @@ export default function GroupJoinModal({ open, setOpen }: GroupJoinModalProps) {
     },
     onError: () => {
       showAlert({
-        title: '그룹가입 실패',
-        content: '다시 시도해주세요',
+        title: normalFail.title('그룹 가입'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },
@@ -47,8 +49,8 @@ export default function GroupJoinModal({ open, setOpen }: GroupJoinModalProps) {
   const handleJoinGroup = () => {
     if (inputGroupCode.length === 0) {
       showAlert({
-        title: '실패',
-        content: '코드를 입력해주세요.',
+        title: validationFail.title('그룹 코드 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;

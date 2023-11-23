@@ -2,7 +2,7 @@ import { fetchWithAuth } from '@/utils';
 import { MealSave } from '@/types/api/request/meal';
 import { store, RootState } from '@/redux/store/storeConfig';
 import { formatToFullDateTime } from '@/utils/formatDate';
-import { periodProps } from '@/types/api/request/fetchPeriod';
+import { detailProps, periodProps } from '@/types/api/request/fetchPeriod';
 import { API_ENDPOINT } from '@env';
 import periodDate from '@/utils/periodDate';
 
@@ -51,7 +51,7 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
     // return sResponse;
     return fResponse;
   } catch (e) {
-    console.log(e);
+    return e;
   }
   // const formData = new FormData();
 
@@ -101,4 +101,7 @@ const fetchMealData = async ({
   return data;
 };
 
-export { saveMeal, searchFood, fetchMealData };
+const getMealByDay = ({ nickname, year, month, day }: detailProps) =>
+  fetchWithAuth(`/menu/${nickname}/${year}/${month}/${day}`);
+
+export { saveMeal, searchFood, fetchMealData, getMealByDay };

@@ -14,7 +14,7 @@ import DailyInfoModal from '@/components/organisms/DailyInfoModal';
 import useRouter from '@/hooks/useRouter';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getChallengeList } from '@/apis';
+import { getChallengeList, getMealByDay, dailyBloodSugar } from '@/apis';
 import GroupJoinModal from '@/components/organisms/GroupJoinModal';
 import GroupCreateModal from '@/components/organisms/GroupCreateModal';
 
@@ -28,6 +28,7 @@ const HomeContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
   gap: ${rHeight(30)}px;
 `;
+
 const HomeCardBox = styled.View`
   gap: ${rHeight(20)}px;
 `;
@@ -35,6 +36,8 @@ const HomeCardBox = styled.View`
 export default function HomeScreen() {
   let challengeLeftNumeric = 0;
   let challengeRightNumeric = 5;
+  let mealCnt = 0;
+  let bloodSugarCnt = 0;
   const router = useRouter();
   const curDate = new Date();
   const [openGroupJoinModal, setOpenGroupJoinModal] = useState(false);
@@ -49,24 +52,51 @@ export default function HomeScreen() {
     day: 0,
   });
   const [openDailyInfo, setOpenDailyInfo] = useState(false);
-
   const { groupCode } = useSelector(selectUser);
   const { nickname } = useSelector(selectNavigation);
 
-  const { data } = useSuspenseQuery({
+  const { data: challegeListData } = useSuspenseQuery({
     queryKey: ['getChallengeList', nickname],
     queryFn: () => getChallengeList(nickname),
   });
 
-  const { response, success } = data;
+  const { data: mealData } = useSuspenseQuery({
+    queryKey: ['getMealByDay', nickname, time.year, time.month, time.day],
+    queryFn: () =>
+      getMealByDay({
+        nickname,
+        year: String(time.year),
+        month: String(time.month),
+        day: String(time.day),
+      }),
+  });
 
-  if (response && success) {
-    challengeRightNumeric = response.list.length;
-    response.list.forEach(
+  const { data: bloodSugarData } = useSuspenseQuery({
+    queryKey: ['dailyBloodSugar', nickname, time.year, time.month, time.day],
+    queryFn: () =>
+      dailyBloodSugar({
+        nickname,
+        year: String(time.year),
+        month: String(time.month),
+        day: String(time.day),
+      }),
+  });
+
+  if (challegeListData?.response && challegeListData?.success) {
+    challengeRightNumeric = challegeListData.list.length;
+    challegeListData.list.forEach(
       ({ goal, count }: { goal: number; count: number }) => {
         if (goal === count) challengeLeftNumeric += 1;
       }
     );
+  }
+
+  if (mealData?.response && mealData?.success) {
+    mealCnt = mealData.response.list.length;
+  }
+
+  if (bloodSugarData?.response && bloodSugarData?.success) {
+    bloodSugarCnt = bloodSugarData.response.list.length;
   }
 
   return (
@@ -104,8 +134,8 @@ export default function HomeScreen() {
           <HomeCardBox>
             <HomeInfoCard
               title="혈당 측정"
-              firstContent="오늘 총, 3회 측정 하였습니다."
-              secondContent="저녁 식사 후 측정이 필요합니다."
+              firstContent="혈당을 기록하고, 관리해보세요."
+              secondContent={`오늘 총 ${bloodSugarCnt}회 기록하였습니다.`}
               onPress={() => {
                 router.navigate('BloodSugar');
               }}
@@ -124,8 +154,8 @@ export default function HomeScreen() {
             />
             <HomeInfoCard
               title="식사 분석"
-              firstContent="기능 추가 예정입니다."
-              secondContent="빠른 시일 내 추가하겠습니다."
+              firstContent="식사를 등록하고 관리해보세요"
+              secondContent={`오늘은 총 ${mealCnt}회 등록했습니다.`}
               onPress={() => {
                 router.navigate('Meal');
               }}

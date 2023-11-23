@@ -53,7 +53,6 @@ export default function BloodSugarDetailScreen() {
   useEffect(() => {
     const fetchBloodSugarDetailData = async () => {
       const data = await dailyBloodSugar({ nickname, year, month, day });
-      console.log(data.response.list);
       setBloodSugarDetailData(data.response.list);
     };
     fetchBloodSugarDetailData();

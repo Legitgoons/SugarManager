@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import { persistor } from '@/redux/store/storeConfig';
 import useRouter from '@/hooks/useRouter';
+import alertConfig from '@/config/alertConfig';
 import DefaultModal from './DefaultModal';
 import InputLine from '../molecules/InputLine';
 
@@ -30,12 +31,14 @@ export default function MemberDeleteModal({
   const [inputNickname, setInputNickname] = useState('');
   const { nickname } = useSelector(selectUser);
   const router = useRouter();
+  const { normalSuccess, normalFail, validationFail } = alertConfig;
+
   const { mutate } = useMutation({
     mutationFn: () => postMemberDelete(inputNickname),
     onSuccess: async () => {
       showAlert({
-        title: '회원탈퇴 성공',
-        content: '닉네임을 제대로 입력해주세요',
+        title: normalSuccess.title('회원 탈퇴'),
+        content: normalSuccess.content('회원 탈퇴'),
         onOk: () => {},
       });
       await persistor.purge();
@@ -46,8 +49,8 @@ export default function MemberDeleteModal({
     },
     onError: () => {
       showAlert({
-        title: '회원탈퇴 실패',
-        content: '재시도 혹은 다시 로그인해주세요',
+        title: normalFail.title('회원 탈퇴'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },
@@ -55,8 +58,8 @@ export default function MemberDeleteModal({
   const handleDeleteMember = () => {
     if (nickname !== inputNickname) {
       showAlert({
-        title: '실패',
-        content: '닉네임을 제대로 입력해주세요',
+        title: validationFail.title('닉네임 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;
