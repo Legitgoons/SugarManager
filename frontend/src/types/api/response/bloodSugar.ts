@@ -7,7 +7,7 @@ import { colorSquareType } from '@/types/colorSquare';
  * @property {number|null} bloodSugarAfter 식후 혈당 평균 값
  */
 
-export interface BloodSugarResponseData {
+export interface BloodSugarPeriodResponseData {
   count: number;
   time: string;
   bloodSugarBefore: number | null;

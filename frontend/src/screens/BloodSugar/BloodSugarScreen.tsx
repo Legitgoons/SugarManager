@@ -80,11 +80,7 @@ export default function BloodSugarScreen() {
       endDate,
       page,
     });
-    if (data.response.length === 0) {
-      setIsEnd(true);
-    } else {
-      setBloodSugarData((prevData) => [...prevData, ...data.response]);
-    }
+    setBloodSugarData([...data.response]);
   }, [nickname, startDate, endDate, page]);
 
   useEffect(() => {
@@ -99,15 +95,9 @@ export default function BloodSugarScreen() {
 
   const handleScroll = (event: any) => {
     const { nativeEvent } = event;
-    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
+    const { contentOffset } = nativeEvent;
     const isScrolledToTop = contentOffset.y === 0;
-    const isScrolledToBottom =
-      Math.round(contentOffset.y + layoutMeasurement.height) >=
-      Math.round(contentSize.height);
     setIsTop(isScrolledToTop);
-    if (isScrolledToBottom && !isEnd) {
-      setPage((prevPage) => prevPage + 1);
-    }
   };
 
   const bloodSugarGraphList = useMemo(
