@@ -17,6 +17,18 @@ export interface BloodSugarPeriodResponseData {
 }
 
 /**
+ * @property {boolean} success API 호출 성공 여부
+ * @property {BloodSugarPeriodResponseData[]} response API 응답 데이터 배열
+ * @property {any} error 에러 정보
+ */
+
+export interface BloodSugarPeriodApiResponse {
+  success: boolean;
+  response: BloodSugarPeriodResponseData[];
+  error: string | null;
+}
+
+/**
  * @property {number} bloodSugarPk PK값
  * @property {'BEFORE' | 'AFTER'} category BEFORE 식전, AFTER 식후
  * @property {string | null} content 사용자의 메모
@@ -24,7 +36,7 @@ export interface BloodSugarPeriodResponseData {
  * @property {string} updatedAt 등록 시간
  */
 
-export interface BloodSugarDetailResponseData {
+export interface BloodSugarDetailResponseDataList {
   bloodSugarPk: number;
   category: 'BEFORE' | 'AFTER';
   content: string | null;
@@ -36,13 +48,13 @@ export interface BloodSugarDetailResponseData {
 /**
  * @property {number} bloodSugarMin 혈당 최소값
  * @property {number} bloodSugarMax 혈당 최대값
- * @property {BloodSugarDetailResponseData[]} list 혈당 상세 기록
+ * @property {BloodSugarDetailResponseDataList[]} list 혈당 상세 기록
  */
 
-export interface BloodSugarDaliyResponseData {
+export interface BloodSugarDetailResponseData {
   bloodSugarMin: number;
   bloodSugarMax: number;
-  list: BloodSugarDaliyResponseData[];
+  list: BloodSugarDetailResponseDataList[];
 }
 
 /**
@@ -53,18 +65,6 @@ export interface BloodSugarDaliyResponseData {
 
 export interface BloodSugarApiResponse {
   success: boolean;
-  response: BloodSugarDaliyResponseData[];
-  error: any;
-}
-
-/**
- * @property {boolean} success API 호출 성공 여부
- * @property {BloodSugarDetailResponseData[]} response API 응답 데이터 배열
- * @property {any} error 에러 정보
- */
-
-export interface BloodSugarDetailApiResponse {
-  success: boolean;
-  response: BloodSugarDetailResponseData;
+  response: BloodSugarDetailResponseData[];
   error: string | null;
 }
