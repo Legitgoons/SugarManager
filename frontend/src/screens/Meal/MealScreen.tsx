@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { fetchMealData } from '@/apis/meal';
-import { PeriodMealData } from '@/types/api/response/meal';
-import { useSelector } from 'react-redux';
+import { MealPeriodResponseData } from '@/types/api/response/meal';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
 import DatePickerController from '@/components/organisms/DatePickerController';
@@ -14,6 +14,7 @@ import { DefaultText } from '@/styles';
 import { rHeight } from '@/utils/style';
 import MealCard from '@/components/molecules/MealCard';
 import { formatToMonthDay } from '@/utils/formatDate';
+import { setMealTime } from '@/redux/slice/mealSlice';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -48,14 +49,15 @@ const TextBox = styled.View`
   margin-bottom: ${rHeight(20)}px;
 `;
 export default function MealScreen() {
-  const router = useRouter();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { nickname } = useSelector(selectNavigation);
-  const [mealData, setMealData] = useState<PeriodMealData[]>([]);
+  const [mealData, setMealData] = useState<MealPeriodResponseData[]>([]);
   const [page, setPage] = useState(0);
   const [isTop, setIsTop] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   let baseCarbohydrate = 0;
   let baseProtein = 0;
@@ -183,6 +185,10 @@ export default function MealScreen() {
         {mealData.map((meal) => (
           <CardWrapper key={meal.time}>
             <MealCard
+              onPress={() => {
+                dispatch(setMealTime(meal.time));
+                router.navigate('MealDaily');
+              }}
               topTitle=""
               topText={formatToMonthDay(meal.time)}
               calorie={Math.round(meal.dayFoodCal)}
