@@ -149,9 +149,7 @@ export default function MealScreen() {
     <BloodSugarContainer>
       <ScrollView onScroll={handleScroll}>
         {mealData.length > 0 &&
-          curCarbohydrate > 0 &&
-          curProtein > 0 &&
-          curFat > 0 && (
+          (curCarbohydrate > 0 || curProtein > 0 || curFat > 0) && (
             <>
               <MealHorizontalGraph
                 carbohydrate={curCarbohydrate}
