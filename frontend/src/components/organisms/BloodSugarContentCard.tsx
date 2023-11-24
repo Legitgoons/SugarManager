@@ -39,10 +39,10 @@ const CountTextWrapper = styled.Text`
 interface BloodSugarContentCardProps {
   date: string;
   count: number;
-  beforeNum?: number;
-  beforeType?: colorSquareType;
-  afterNum?: number;
-  afterType?: colorSquareType;
+  beforeNum: number | null;
+  beforeType: colorSquareType | null;
+  afterNum: number | null;
+  afterType: colorSquareType | null;
   onPress: () => void;
 }
 
@@ -63,10 +63,10 @@ export default function BloodSugarContentCard({
           <CountTextWrapper>{count}회 측정</CountTextWrapper>
         </CardHeaderBox>
         <SquareBox>
-          {beforeNum && beforeType && (
+          {beforeNum !== null && beforeType !== null && (
             <BloodSugarSquare isBefore num={beforeNum} type={beforeType} />
           )}
-          {afterNum && afterType && (
+          {afterNum !== null && afterType !== null && (
             <BloodSugarSquare
               isBefore={false}
               num={afterNum}
