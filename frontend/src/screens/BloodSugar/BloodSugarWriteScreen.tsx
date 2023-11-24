@@ -9,7 +9,7 @@ import DefaultScreenContainer from '@/styles/Container';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
 import { saveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
-import { formatToFullDateTime } from '@/utils/formatDate';
+import { formatToApiDateTime } from '@/utils/formatDate';
 import BloodSugarStatusBarContent from '@/components/molecules/BloodSugarStatusBarContent';
 import alertConfig from '@/config/alertConfig';
 
@@ -63,7 +63,7 @@ export default function BloodSugarWriteScreen() {
         category: beforeMeal ? 'BEFORE' : 'AFTER',
         level: bloodSugar,
         content: issue,
-        registedAt: formatToFullDateTime(date),
+        registedAt: formatToApiDateTime(date),
       },
       {
         onSuccess() {
