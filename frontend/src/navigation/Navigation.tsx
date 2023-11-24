@@ -14,6 +14,8 @@ import {
   AlarmSettingScreen,
   MealScreen,
   MealWriteScreen,
+  MealDailyScreen,
+  MealDetailScreen,
   ErrorScreen,
 } from '@/screens';
 import { useSelector } from 'react-redux';
@@ -124,6 +126,22 @@ function SuspenseMealScreen() {
   );
 }
 
+function SuspenseMealDailyScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealDailyScreen />
+    </Suspense>
+  );
+}
+
+function SuspenseMealDetailScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealDetailScreen />
+    </Suspense>
+  );
+}
+
 function SuspenseMealWriteScreen() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -193,6 +211,16 @@ export default function Navigation({ Stack }: { Stack: any }) {
               name="Meal"
               component={SuspenseMealScreen}
               options={{ title: '식사 기록', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="MealDaily"
+              component={SuspenseMealDailyScreen}
+              options={{ title: '식사 일일 기록', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="MealDetail"
+              component={SuspenseMealDetailScreen}
+              options={{ title: '식사 상세 기록', headerTitleAlign: 'center' }}
             />
             <Stack.Screen
               name="MealWrite"

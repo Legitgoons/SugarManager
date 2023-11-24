@@ -10,6 +10,8 @@ export type RootStackParam = {
   ChallengeDetail: undefined;
   ChallengeMake: undefined;
   Meal: undefined;
+  MealDaily: undefined;
+  MealDetail: undefined;
   MealWrite: undefined;
 };
 
