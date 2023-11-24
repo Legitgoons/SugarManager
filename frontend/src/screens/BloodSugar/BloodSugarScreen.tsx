@@ -132,27 +132,31 @@ export default function BloodSugarScreen() {
             setEndDate={setEndDateSafe}
           />
         </DatePickerControllerWrapper>
-        {bloodSugarData.map(
-          (item) =>
-            item.bloodSugarBefore != null &&
-            item.bloodSugarAfter != null && (
-              <CardWrapper key={item.time}>
-                <BloodSugarContentCard
-                  onPress={() => {
-                    dispatch(setTime(item.time));
-                    router.navigate('BloodSugarDetail');
-                  }}
-                  key={item.time}
-                  date={formatToMonthDay(item.time)}
-                  count={item.count}
-                  beforeNum={Math.round(item.bloodSugarBefore)}
-                  beforeType={item.bloodSugarBeforeStatus}
-                  afterNum={Math.round(item.bloodSugarAfter)}
-                  afterType={item.bloodSugarAfterStatus}
-                />
-              </CardWrapper>
-            )
-        )}
+        {bloodSugarData.map((item) => (
+          <CardWrapper key={item.time}>
+            <BloodSugarContentCard
+              onPress={() => {
+                dispatch(setTime(item.time));
+                router.navigate('BloodSugarDetail');
+              }}
+              key={item.time}
+              date={formatToMonthDay(item.time)}
+              count={item.count}
+              beforeNum={
+                item.bloodSugarBefore !== null
+                  ? Math.round(item.bloodSugarBefore)
+                  : null
+              }
+              beforeType={item.bloodSugarBeforeStatus}
+              afterNum={
+                item.bloodSugarAfter !== null
+                  ? Math.round(item.bloodSugarAfter)
+                  : null
+              }
+              afterType={item.bloodSugarAfterStatus}
+            />
+          </CardWrapper>
+        ))}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>
