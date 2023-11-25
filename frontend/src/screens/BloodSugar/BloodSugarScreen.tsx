@@ -132,31 +132,38 @@ export default function BloodSugarScreen() {
             setEndDate={setEndDateSafe}
           />
         </DatePickerControllerWrapper>
-        {bloodSugarData.map((item) => (
-          <CardWrapper key={item.time}>
-            <BloodSugarContentCard
-              onPress={() => {
-                dispatch(setTime(item.time));
-                router.navigate('BloodSugarDetail');
-              }}
-              key={item.time}
-              date={formatToMonthDay(item.time)}
-              count={item.count}
-              beforeNum={
-                item.bloodSugarBefore !== null
-                  ? Math.round(item.bloodSugarBefore)
-                  : null
-              }
-              beforeType={item.bloodSugarBeforeStatus}
-              afterNum={
-                item.bloodSugarAfter !== null
-                  ? Math.round(item.bloodSugarAfter)
-                  : null
-              }
-              afterType={item.bloodSugarAfterStatus}
-            />
-          </CardWrapper>
-        ))}
+        {bloodSugarData.map(
+          ({
+            count,
+            time,
+            bloodSugarBefore,
+            bloodSugarAfter,
+            bloodSugarBeforeStatus,
+            bloodSugarAfterStatus,
+          }) => (
+            <CardWrapper key={time}>
+              <BloodSugarContentCard
+                onPress={() => {
+                  dispatch(setTime(time));
+                  router.navigate('BloodSugarDetail');
+                }}
+                key={time}
+                date={formatToMonthDay(time)}
+                count={count}
+                beforeNum={
+                  bloodSugarBefore !== null
+                    ? Math.round(bloodSugarBefore)
+                    : null
+                }
+                beforeType={bloodSugarBeforeStatus}
+                afterNum={
+                  bloodSugarAfter !== null ? Math.round(bloodSugarAfter) : null
+                }
+                afterType={bloodSugarAfterStatus}
+              />
+            </CardWrapper>
+          )
+        )}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>
