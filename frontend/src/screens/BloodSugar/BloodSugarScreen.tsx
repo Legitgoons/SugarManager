@@ -13,6 +13,7 @@ import { rWidth } from '@/utils';
 import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 import { setTime } from '@/redux/slice/bloodSugarSlice';
 import { formatToMonthDay } from '@/utils/formatDate';
+import getRoundOrNull from '@/utils/getRoundOrNull';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -150,15 +151,9 @@ export default function BloodSugarScreen() {
                 key={time}
                 date={formatToMonthDay(time)}
                 count={count}
-                beforeNum={
-                  bloodSugarBefore !== null
-                    ? Math.round(bloodSugarBefore)
-                    : null
-                }
+                beforeNum={getRoundOrNull(bloodSugarBefore)}
                 beforeType={bloodSugarBeforeStatus}
-                afterNum={
-                  bloodSugarAfter !== null ? Math.round(bloodSugarAfter) : null
-                }
+                afterNum={getRoundOrNull(bloodSugarAfter)}
                 afterType={bloodSugarAfterStatus}
               />
             </CardWrapper>
