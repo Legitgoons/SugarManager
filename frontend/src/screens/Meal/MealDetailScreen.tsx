@@ -69,19 +69,30 @@ export default function MealDetailScreen() {
     <DailyContainer>
       <ScrollView onScroll={handleScroll}>
         <DayCard title={`${formatToMonthDay(time)} ${formatToTime(time)}`} />
-        {foodData.map((food) => (
-          <DailyContentCardWrapper key={food.foodPk}>
-            <MealCard
-              topTitle={`${food.foodGrams}g`}
-              topText={food.foodName}
-              calorie={Math.round(food.foodCal)}
-              sugar={food.foodSugars || 0}
-              protein={food.foodProtein || 0}
-              carbohydrate={food.foodCarbohydrate || 0}
-              fat={food.foodFat || 0}
-            />
-          </DailyContentCardWrapper>
-        ))}
+        {foodData.map(
+          ({
+            foodPk,
+            foodName,
+            foodCal,
+            foodGrams,
+            foodCarbohydrate,
+            foodProtein,
+            foodFat,
+            foodSugars,
+          }) => (
+            <DailyContentCardWrapper key={foodPk}>
+              <MealCard
+                topTitle={`${foodGrams}g`}
+                topText={foodName}
+                calorie={Math.round(foodCal)}
+                sugar={foodSugars || 0}
+                protein={foodProtein || 0}
+                carbohydrate={foodCarbohydrate || 0}
+                fat={foodFat || 0}
+              />
+            </DailyContentCardWrapper>
+          )
+        )}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>
