@@ -13,6 +13,7 @@ import { rWidth } from '@/utils';
 import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 import { setTime } from '@/redux/slice/bloodSugarSlice';
 import { formatToMonthDay } from '@/utils/formatDate';
+import getRoundOrNull from '@/utils/getRoundOrNull';
 
 const BloodSugarContainer = styled.View`
   height: 100%;
@@ -133,25 +134,30 @@ export default function BloodSugarScreen() {
           />
         </DatePickerControllerWrapper>
         {bloodSugarData.map(
-          (item) =>
-            item.bloodSugarBefore != null &&
-            item.bloodSugarAfter != null && (
-              <CardWrapper key={item.time}>
-                <BloodSugarContentCard
-                  onPress={() => {
-                    dispatch(setTime(item.time));
-                    router.navigate('BloodSugarDetail');
-                  }}
-                  key={item.time}
-                  date={formatToMonthDay(item.time)}
-                  count={item.count}
-                  beforeNum={Math.round(item.bloodSugarBefore)}
-                  beforeType={item.bloodSugarBeforeStatus}
-                  afterNum={Math.round(item.bloodSugarAfter)}
-                  afterType={item.bloodSugarAfterStatus}
-                />
-              </CardWrapper>
-            )
+          ({
+            count,
+            time,
+            bloodSugarBefore,
+            bloodSugarAfter,
+            bloodSugarBeforeStatus,
+            bloodSugarAfterStatus,
+          }) => (
+            <CardWrapper key={time}>
+              <BloodSugarContentCard
+                onPress={() => {
+                  dispatch(setTime(time));
+                  router.navigate('BloodSugarDetail');
+                }}
+                key={time}
+                date={formatToMonthDay(time)}
+                count={count}
+                beforeNum={getRoundOrNull(bloodSugarBefore)}
+                beforeType={bloodSugarBeforeStatus}
+                afterNum={getRoundOrNull(bloodSugarAfter)}
+                afterType={bloodSugarAfterStatus}
+              />
+            </CardWrapper>
+          )
         )}
       </ScrollView>
       {isTop && (

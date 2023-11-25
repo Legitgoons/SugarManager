@@ -5,7 +5,7 @@
  * @param {number} page 에러 정보
  */
 
-export type periodProps = {
+export type PeriodProps = {
   nickname: string;
   startDate: Date;
   endDate: Date;
@@ -19,7 +19,7 @@ export type periodProps = {
  * @param {string} day 일
  */
 
-export type detailProps = {
+export type DailyProps = {
   nickname: string;
   year: string;
   month: string;

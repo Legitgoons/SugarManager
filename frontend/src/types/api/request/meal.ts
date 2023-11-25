@@ -24,3 +24,7 @@ export interface MealSave {
   foodSalt: number;
   foodSugars: number;
 }
+
+export interface MealDetailProps {
+  menuPK: number;
+}

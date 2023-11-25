@@ -1,10 +1,9 @@
 import { fetchWithAuth } from '@/utils';
-import { MealSave } from '@/types/api/request/meal';
+import { MealSave, MealDetailProps } from '@/types/api/request/meal';
 import { store, RootState } from '@/redux/store/storeConfig';
-import { formatToFullDateTime } from '@/utils/formatDate';
-import { detailProps, periodProps } from '@/types/api/request/fetchPeriod';
+import { periodDate, formatToApiDateTime } from '@/utils/formatDate';
+import { DailyProps, PeriodProps } from '@/types/api/request/fetchPeriod';
 import { API_ENDPOINT } from '@env';
-import periodDate from '@/utils/periodDate';
 
 const searchFood = async (food: string) => {
   const response = await fetchWithAuth(`/search/${food}`);
@@ -24,7 +23,7 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
   // });
   // const formData = new FormData();
   const menuDto = {
-    registedAt: formatToFullDateTime(date),
+    registedAt: formatToApiDateTime(date),
     foods: mealList,
   };
 
@@ -77,7 +76,7 @@ const fetchMealData = async ({
   startDate,
   endDate,
   page,
-}: periodProps) => {
+}: PeriodProps) => {
   const state: RootState = store.getState();
   const { accessToken } = state.user;
 
@@ -101,7 +100,10 @@ const fetchMealData = async ({
   return data;
 };
 
-const getMealByDay = ({ nickname, year, month, day }: detailProps) =>
+const getMealByDay = ({ nickname, year, month, day }: DailyProps) =>
   fetchWithAuth(`/menu/${nickname}/${year}/${month}/${day}`);
 
-export { saveMeal, searchFood, fetchMealData, getMealByDay };
+const getMealDetail = ({ menuPK }: MealDetailProps) =>
+  fetchWithAuth(`/menu/${menuPK}`);
+
+export { saveMeal, searchFood, fetchMealData, getMealByDay, getMealDetail };
