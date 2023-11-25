@@ -4,7 +4,7 @@ import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
 import { BloodSugarPeriodApiResponse } from '@/types/api/response/bloodSugar';
 import { PeriodProps, DailyProps } from '@/types/api/request/fetchPeriod';
 import { fetchWithAuth } from '@/utils';
-import periodDate from '@/utils/periodDate';
+import { periodDate } from '@/utils/formatDate';
 
 export async function periodBloodSugar({
   nickname,

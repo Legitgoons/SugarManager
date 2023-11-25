@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import weekDayArr from '@/config/weekConfig';
+import { padNumber } from './formatDate';
 
 interface GetMonthObjProps {
   year: number;
@@ -75,8 +76,8 @@ function getMonthObj({ year, month, monthStatus }: GetMonthObjProps) {
 }
 
 function getTimeSecondText(hour: number, minute: number) {
-  const hourText = hour.toString().padStart(2, '0');
-  const minuteText = minute.toString().padStart(2, '0');
+  const hourText = padNumber(hour);
+  const minuteText = padNumber(minute);
 
   return `${hourText}:${minuteText}`;
 }
