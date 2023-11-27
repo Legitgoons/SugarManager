@@ -11,18 +11,15 @@ const searchFood = async (food: string) => {
   return response;
 };
 
-// async function getBlob(uri: string) {
-//   const response = await fetch(uri);
-//   const blobData = await response.blob();
-//   return blobData;
-// }
+async function getBlob(uri: string) {
+  const response = await fetch(uri);
+  const blobData = await response.blob();
+  return blobData;
+}
 
 const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
-  // const blobs = await Promise.all(images.map((image) => getBlob(image)));
-  // blobs.forEach((blob, i) => {
-  //   formData.append('file', blob, `image_${i}.jpg`);
-  // });
-  // const formData = new FormData();
+  const formData = new FormData();
+
   const menuDto = {
     registedAt: formatToApiDateTime(date),
     foods: mealList,
@@ -34,42 +31,32 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
       method: 'POST',
     });
 
-    if (!fResponse || !fResponse?.success) throw new Error();
-    // const { menuPk } = fResponse.response;
+    if (!fResponse || !fResponse?.success) {
+      throw new Error();
+    } else if (images.length === 0) return fResponse;
 
-    // images.forEach(async (cur) => {
-    //   const sijal = await getBlob(cur);
-    //   formData.append('file', sijal);
-    // });
-    // formData.append('menuPk', menuPk);
+    const blobs = await Promise.all(images.map((image) => getBlob(image)));
+    blobs.forEach((blob, i) => {
+      formData.append('file', blob, `image_${i}.jpg`);
+    });
 
-    // const sResponse = await fetchWithAuth('/menu/saveImage', {
-    //   headers: { 'Content-Type': 'multipart/form-data' },
-    //   method: 'POST',
-    //   body: formData,
-    // });
-    // return sResponse;
-    return fResponse;
+    const { menuPk } = fResponse.response;
+
+    images.forEach(async (cur) => {
+      const sijal = await getBlob(cur);
+      formData.append('file', sijal);
+    });
+    formData.append('menuPk', menuPk);
+
+    const sResponse = await fetchWithAuth('/menu/saveImage', {
+      headers: { 'Content-Type': 'MultiPart' },
+      method: 'POST',
+      body: formData,
+    });
+    return sResponse;
   } catch (e) {
     return e;
   }
-  // const formData = new FormData();
-
-  // images.forEach(async (cur) => {
-  //   const sijal = await getBlob(cur);
-  //   formData.append('file', sijal);
-  // });
-  // formData.append('menuDto', JSON.stringify(menuDto));
-
-  // const response = await fetchWithAuth(
-  //   '/menu/save',
-  //   {
-  //     method: 'POST',
-  //     body: formData,
-  //   },
-  //   true
-  // );
-  // return response;
 };
 
 const fetchMealData = async ({
