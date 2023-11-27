@@ -12,7 +12,7 @@ import { rWidth } from '@/utils';
 import MealHorizontalGraph from '@/components/molecules/MealHorizontalGraph';
 import { DefaultText } from '@/styles';
 import { rHeight } from '@/utils/style';
-import MealCard from '@/components/molecules/MealCard';
+import MealCard from '@/components/organisms/MealCard';
 import { formatToMonthDay } from '@/utils/formatDate';
 import { setMealTime } from '@/redux/slice/mealSlice';
 

@@ -9,7 +9,7 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
 import { selectMealTime, setMealPK } from '@/redux/slice/mealSlice';
 import DayCard from '@/components/molecules/DayCard';
-import MealCard from '@/components/molecules/MealCard';
+import MealCard from '@/components/organisms/MealCard';
 import { formatToTime } from '@/utils/formatDate';
 import { getMealByDay } from '@/apis/meal';
 

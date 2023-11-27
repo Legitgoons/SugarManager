@@ -5,7 +5,7 @@ import { rHeight, rWidth } from '@/utils/style';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import DefaultScreenContainer from '@/styles/Container';
 import SubFillButton from '@/components/atoms/SubFillButton';
-import MealWriteAddPhoto from '@/components/molecules/MealWriteAddPhoto';
+import MealWriteAddPhoto from '@/components/organisms/MealWriteAddPhoto';
 import InputLine from '@/components/molecules/InputLine';
 import TextDatePicker from '@/components/molecules/TextDatePicker';
 import PhotoModal from '@/components/organisms/PhotoModal';
@@ -13,7 +13,7 @@ import DefaultModal from '@/components/organisms/DefaultModal';
 import MealRegistModalContent from '@/components/organisms/MealRegistModalContent';
 import { searchFood, saveMeal } from '@/apis/meal';
 import { foodNutrients, MealSave } from '@/types/api/request/meal';
-import MealCard from '@/components/molecules/MealCard';
+import MealCard from '@/components/organisms/MealCard';
 import { showAlert } from '@/utils';
 import alertConfig from '@/config/alertConfig';
 
@@ -268,9 +268,7 @@ export default function MealWriteScreen() {
           registByUser={registByUser}
           amount={amount}
           setAmount={setAmount}
-          foodName={
-            foodName.length > 6 ? `${foodName.substring(0, 6)}...` : foodName
-          }
+          foodName={foodName}
           setFoodName={setFoodName}
           sugar={sugar}
           setSugar={setSugar}

@@ -5,12 +5,13 @@ import { getMealDetail } from '@/apis/meal';
 import { BloodSugar, Food } from '@/types/api/response/meal';
 import { useSelector } from 'react-redux';
 import useRouter from '@/hooks/useRouter';
-import MainFillButton from '@/components/atoms/MainFillButton';
+import { formatToMonthDay, formatToTime } from '@/utils/formatDate';
 import { rWidth } from '@/utils';
 import { selectMealPK } from '@/redux/slice/mealSlice';
+import MainFillButton from '@/components/atoms/MainFillButton';
 import DayCard from '@/components/molecules/DayCard';
-import MealCard from '@/components/molecules/MealCard';
-import { formatToMonthDay, formatToTime } from '@/utils/formatDate';
+import MealCard from '@/components/organisms/MealCard';
+import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard';
 
 /**
  * @Todo BloodSugar status 추가 구현시 적용
@@ -25,7 +26,7 @@ const DailyContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const DailyContentCardWrapper = styled.View`
+const CardWrapper = styled.View`
   width: ${rWidth(320)}px;
   padding-top: ${rWidth(20)}px;
 `;
@@ -69,8 +70,19 @@ export default function MealDetailScreen() {
     <DailyContainer>
       <ScrollView onScroll={handleScroll}>
         <DayCard title={`${formatToMonthDay(time)} ${formatToTime(time)}`} />
+        {mealBloodSugar && (
+          <CardWrapper>
+            <BloodSugarContentCard
+              size="sm"
+              beforeNum={mealBloodSugar.beforeLevel}
+              beforeType={mealBloodSugar.beforeStatus}
+              afterNum={mealBloodSugar.afterLevel}
+              afterType={mealBloodSugar.afterStatus}
+            />
+          </CardWrapper>
+        )}
         {foodData.map((food) => (
-          <DailyContentCardWrapper key={food.foodPk}>
+          <CardWrapper key={food.foodPk}>
             <MealCard
               topTitle={`${food.foodGrams}g`}
               topText={food.foodName}
@@ -80,7 +92,7 @@ export default function MealDetailScreen() {
               carbohydrate={food.foodCarbohydrate || 0}
               fat={food.foodFat || 0}
             />
-          </DailyContentCardWrapper>
+          </CardWrapper>
         ))}
       </ScrollView>
       {isTop && (
