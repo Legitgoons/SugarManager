@@ -1,10 +1,9 @@
 import { fetchWithAuth } from '@/utils';
 import { MealSave, MealDetailProps } from '@/types/api/request/meal';
 import { store, RootState } from '@/redux/store/storeConfig';
-import { formatToApiDateTime } from '@/utils/formatDate';
+import { periodDate, formatToApiDateTime } from '@/utils/formatDate';
 import { DailyProps, PeriodProps } from '@/types/api/request/fetchPeriod';
 import { API_ENDPOINT } from '@env';
-import periodDate from '@/utils/periodDate';
 
 const searchFood = async (food: string) => {
   const response = await fetchWithAuth(`/search/${food}`);

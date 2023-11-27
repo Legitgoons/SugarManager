@@ -81,19 +81,30 @@ export default function MealDetailScreen() {
             />
           </CardWrapper>
         )}
-        {foodData.map((food) => (
-          <CardWrapper key={food.foodPk}>
-            <MealCard
-              topTitle={`${food.foodGrams}g`}
-              topText={food.foodName}
-              calorie={Math.round(food.foodCal)}
-              sugar={food.foodSugars || 0}
-              protein={food.foodProtein || 0}
-              carbohydrate={food.foodCarbohydrate || 0}
-              fat={food.foodFat || 0}
-            />
-          </CardWrapper>
-        ))}
+        {foodData.map(
+          ({
+            foodPk,
+            foodName,
+            foodCal,
+            foodGrams,
+            foodCarbohydrate,
+            foodProtein,
+            foodFat,
+            foodSugars,
+          }) => (
+            <CardWrapper key={foodPk}>
+              <MealCard
+                topTitle={`${foodGrams}g`}
+                topText={foodName}
+                calorie={Math.round(foodCal)}
+                sugar={foodSugars || 0}
+                protein={foodProtein || 0}
+                carbohydrate={foodCarbohydrate || 0}
+                fat={foodFat || 0}
+              />
+            </CardWrapper>
+          )
+        )}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>

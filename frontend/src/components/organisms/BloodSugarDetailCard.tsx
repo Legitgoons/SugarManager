@@ -4,6 +4,7 @@ import DefaultCard from '@/styles/Card';
 import { rWidth } from '@/utils/style';
 import { colorSquareType } from '@/types/colorSquare';
 import { DefalutCardProps } from '@/types/card';
+import { padNumber } from '@/utils/formatDate';
 import BloodSugarSquare from '../molecules/BloodSugarSquare';
 
 const CardSection = styled(DefaultCard)`
@@ -60,8 +61,8 @@ export default function BloodSugarDetailCard({
   size,
 }: BloodSugarDetailCardProps) {
   const date = new Date(time);
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const hours = padNumber(date.getHours());
+  const minutes = padNumber(date.getMinutes());
 
   return (
     <CardSection size={size}>
