@@ -14,7 +14,7 @@ import DailyInfoModal from '@/components/organisms/DailyInfoModal';
 import useRouter from '@/hooks/useRouter';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getChallengeList, getMealByDay, dailyBloodSugar } from '@/apis';
+import { getChallengeList, getMealByDay, getDetailBloodSugar } from '@/apis';
 import GroupJoinModal from '@/components/organisms/GroupJoinModal';
 import GroupCreateModal from '@/components/organisms/GroupCreateModal';
 
@@ -72,9 +72,15 @@ export default function HomeScreen() {
   });
 
   const { data: bloodSugarData } = useSuspenseQuery({
-    queryKey: ['dailyBloodSugar', nickname, time.year, time.month, time.day],
+    queryKey: [
+      'getDetailBloodSugar',
+      nickname,
+      time.year,
+      time.month,
+      time.day,
+    ],
     queryFn: () =>
-      dailyBloodSugar({
+      getDetailBloodSugar({
         nickname,
         year: String(time.year),
         month: String(time.month),
