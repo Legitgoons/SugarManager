@@ -37,7 +37,7 @@ export interface MealDailyApiResponse {
 }
 
 export interface MenuImage {
-  menuImagePk: number;
+  menuImagePk: string;
   menuImageUrl: string;
 }
 
