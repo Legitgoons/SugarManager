@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { fetchMealData } from '@/apis/meal';
+import { getMealData } from '@/apis/meal';
 import { MealPeriodResponseData } from '@/types/api/response/meal';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
@@ -86,7 +86,7 @@ export default function MealScreen() {
   };
 
   const fetchMeal = useCallback(async () => {
-    const data = await fetchMealData({
+    const data = await getMealData({
       nickname,
       startDate,
       endDate,
