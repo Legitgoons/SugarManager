@@ -9,7 +9,7 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
 import BloodSugarDetailCard from '@/components/organisms/BloodSugarDetailCard';
 import { selectTime } from '@/redux/slice/bloodSugarSlice';
-import { dailyBloodSugar } from '@/apis/bloodSugar';
+import { getDetailBloodSugar } from '@/apis/bloodSugar';
 import DayCard from '@/components/molecules/DayCard';
 
 const DetailContainer = styled.View`
@@ -52,7 +52,7 @@ export default function BloodSugarDetailScreen() {
   };
   useEffect(() => {
     const fetchBloodSugarDetailData = async () => {
-      const data = await dailyBloodSugar({ nickname, year, month, day });
+      const data = await getDetailBloodSugar({ nickname, year, month, day });
       setBloodSugarDetailData(data.response.list);
     };
     fetchBloodSugarDetailData();
