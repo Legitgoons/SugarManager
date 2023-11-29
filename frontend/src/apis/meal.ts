@@ -1,24 +1,42 @@
 import { fetchWithAuth } from '@/utils';
 import { MealSave, MealDetailProps } from '@/types/api/request/meal';
-import { store, RootState } from '@/redux/store/storeConfig';
 import { periodDate, formatToApiDateTime } from '@/utils/formatDate';
 import { DailyProps, PeriodProps } from '@/types/api/request/fetchPeriod';
-import { API_ENDPOINT } from '@env';
 
-const searchFood = async (food: string) => {
+import RNFetchBlob from 'rn-fetch-blob';
+
+const getsearchFood = async (food: string) => {
   const response = await fetchWithAuth(`/search/${food}`);
   return response;
 };
 
-async function getBlob(uri: string) {
-  const response = await fetch(uri);
-  const blobData = await response.blob();
-  return blobData;
-}
+const createFormData = async (photos: string[], body = {}) => {
+  const data = new FormData();
 
-const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
-  const formData = new FormData();
+  for (let i = 0; i < photos.length; i++) {
+    const photo = photos[i];
+    const imgBlob = await RNFetchBlob.fs.readFile(photo, 'base64');
+    const blob = `data:image/jpg;base64,${imgBlob}`;
 
+    data.append(`file${i}`, {
+      uri: blob,
+      type: 'image/jpg',
+      name: `photo${i}.jpg`,
+    });
+  }
+
+  Object.keys(body).forEach((key) => {
+    data.append(key, body[key]);
+  });
+
+  return data;
+};
+
+const postSaveMeal = async (
+  images: string[],
+  date: Date,
+  mealList: MealSave[]
+) => {
   const menuDto = {
     registedAt: formatToApiDateTime(date),
     foods: mealList,
@@ -34,57 +52,32 @@ const saveMeal = async (images: string[], date: Date, mealList: MealSave[]) => {
       throw new Error();
     } else if (images.length === 0) return fResponse;
 
-    const blobs = await Promise.all(images.map((image) => getBlob(image)));
-    blobs.forEach((blob, i) => {
-      formData.append('file', blob, `image_${i}.jpg`);
-    });
-
     const { menuPk } = fResponse.response;
+    const imageFormData = await createFormData(images, { menuPk });
 
-    images.forEach(async (cur) => {
-      const sijal = await getBlob(cur);
-      formData.append('file', sijal);
-    });
-    formData.append('menuPk', menuPk);
-
-    const sResponse = await fetchWithAuth('/menu/saveImage', {
-      headers: { 'Content-Type': 'MultiPart' },
-      method: 'POST',
-      body: formData,
-    });
+    const sResponse = fetchWithAuth(
+      '/menu/saveImage',
+      {
+        method: 'POST',
+        body: imageFormData,
+      },
+      true
+    );
     return sResponse;
   } catch (e) {
     return e;
   }
 };
 
-const fetchMealData = async ({
+const getMealData = async ({
   nickname,
   startDate,
   endDate,
   page,
 }: PeriodProps) => {
-  const state: RootState = store.getState();
-  const { accessToken } = state.user;
-
   const start = periodDate(startDate);
   const end = periodDate(endDate);
-
-  const response = await fetch(
-    `${API_ENDPOINT}/menu/period/${nickname}/${start}/${end}/${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-
-  const data = await response.json();
-  return data;
+  return fetchWithAuth(`/menu/period/${nickname}/${start}/${end}/${page}`);
 };
 
 const getMealByDay = ({ nickname, year, month, day }: DailyProps) =>
@@ -93,4 +86,10 @@ const getMealByDay = ({ nickname, year, month, day }: DailyProps) =>
 const getMealDetail = ({ menuPK }: MealDetailProps) =>
   fetchWithAuth(`/menu/${menuPK}`);
 
-export { saveMeal, searchFood, fetchMealData, getMealByDay, getMealDetail };
+export {
+  getsearchFood,
+  postSaveMeal,
+  getMealData,
+  getMealByDay,
+  getMealDetail,
+};
