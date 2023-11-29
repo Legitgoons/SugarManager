@@ -26,11 +26,11 @@ import {
   postMemberDelete,
 } from './member';
 import { getTimelineState, getTimelineDetail } from './timeline';
-import { saveMeal, searchFood, fetchMealData, getMealByDay } from './meal';
+import { postSaveMeal, getsearchFood, getMealData, getMealByDay } from './meal';
 import {
-  periodBloodSugar,
-  dailyBloodSugar,
-  saveBloodSugar,
+  getPeriodBloodSugar,
+  getDetailBloodSugar,
+  postSaveBloodSugar,
 } from './bloodSugar';
 
 export {
@@ -55,11 +55,11 @@ export {
   postGroupLeave,
   postGroupCraete,
   postGroupJoin,
-  saveMeal,
-  searchFood,
-  fetchMealData,
+  postSaveMeal,
+  getsearchFood,
+  getMealData,
   getMealByDay,
-  periodBloodSugar,
-  dailyBloodSugar,
-  saveBloodSugar,
+  getPeriodBloodSugar,
+  getDetailBloodSugar,
+  postSaveBloodSugar,
 };
