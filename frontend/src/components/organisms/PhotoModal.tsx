@@ -44,7 +44,7 @@ interface PhotoModalProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   expandedImage: string;
-  deleteImg: () => void;
+  deleteImg?: () => void;
 }
 
 export default function PhotoModal({
@@ -58,9 +58,11 @@ export default function PhotoModal({
       <Overlay>
         <FullImageBox>
           <ButtonBox>
-            <DeleteButton onPress={deleteImg}>
-              <DeleteIcon />
-            </DeleteButton>
+            {deleteImg && (
+              <DeleteButton onPress={deleteImg}>
+                <DeleteIcon />
+              </DeleteButton>
+            )}
             <CancleButton
               onPress={() => {
                 setModalVisible(false);

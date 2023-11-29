@@ -51,31 +51,31 @@ const fetchWithAuth = async (
     const data: any = await response.json();
     return data;
   } catch (error) {
-    //   const errorResponse = await (error as any).json();
-    //   if (errorResponse === undefined) {
-    //     await persistor.purge();
-    //     reset('Signin');
-    //     return error;
-    //   }
-    //   switch (errorResponse.error.code) {
-    //     case 'U003':
-    //       if (options.wasRefreshing) break;
-    //       try {
-    //         const refreshResponse = await postTokenRefresh();
-    //         const data = await refreshResponse.json();
-    //         store.dispatch(setAccessToken(data.response.accessToken));
-    //         return fetchWithAuth(url, {
-    //           ...options,
-    //           wasRefreshing: true,
-    //         });
-    //       } catch (e) {
-    //         await persistor.purge();
-    //         reset('Signin');
-    //         return e;
-    //       }
-    //     default:
-    //       break;
-    //   }
+    const errorResponse = await (error as any).json();
+    if (errorResponse === undefined) {
+      await persistor.purge();
+      reset('Signin');
+      return error;
+    }
+    switch (errorResponse.error.code) {
+      case 'U003':
+        if (options.wasRefreshing) break;
+        try {
+          const refreshResponse = await postTokenRefresh();
+          const data = await refreshResponse.json();
+          store.dispatch(setAccessToken(data.response.accessToken));
+          return fetchWithAuth(url, {
+            ...options,
+            wasRefreshing: true,
+          });
+        } catch (e) {
+          await persistor.purge();
+          reset('Signin');
+          return e;
+        }
+      default:
+        break;
+    }
     return error;
   }
 };

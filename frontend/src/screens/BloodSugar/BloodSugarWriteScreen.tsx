@@ -7,7 +7,7 @@ import Toggle from '@/components/molecules/Toggle';
 import BloodSugarWriteContent from '@/components/organisms/BloodSugarWriteContent';
 import DefaultScreenContainer from '@/styles/Container';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
-import { saveBloodSugar } from '@/apis/bloodSugar';
+import { postSaveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
 import { formatToApiDateTime } from '@/utils/formatDate';
 import BloodSugarStatusBarContent from '@/components/molecules/BloodSugarStatusBarContent';
@@ -46,7 +46,7 @@ export default function BloodSugarWriteScreen() {
   }, []);
 
   const mutation = useMutation({
-    mutationFn: (data: BloodSugarWriteData) => saveBloodSugar(data),
+    mutationFn: (data: BloodSugarWriteData) => postSaveBloodSugar(data),
   });
 
   const handleSubmit = () => {

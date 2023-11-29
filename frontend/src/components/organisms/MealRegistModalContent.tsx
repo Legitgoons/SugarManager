@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { rHeight, rWidth } from '@/utils';
+import cutText from '@/utils/cutText';
 import LabelledInput from '../molecules/LabelledInput';
 import InputLine from '../molecules/InputLine';
 
@@ -71,7 +72,7 @@ export default function MealRegistModalContent({
           </InputLineBox>
         ) : (
           <LabelledInput
-            label={foodName}
+            label={cutText(foodName, 6)}
             inputType="inputLine"
             inputProps={{
               placeholder: '1회 섭취 권장량',

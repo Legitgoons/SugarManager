@@ -9,7 +9,9 @@ const TextWithSmallTitleBox = styled.View`
   gap: ${rWidth(3)}px;
 `;
 const TitleWrapper = styled(DefaultText)``;
-const TextWrapper = styled(DefaultText)``;
+const TextWrapper = styled(DefaultText)`
+  color: ${({ theme }) => theme.colors.b5};
+`;
 
 /**
  * @param {string} title text보다 작은 title

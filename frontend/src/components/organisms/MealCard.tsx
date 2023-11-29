@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import DefaultCard from '@/styles/Card';
 import { rWidth } from '@/utils/style';
+import cutText from '@/utils/cutText';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import TextWithSmallTitle from '../atoms/TextWithSmallTitle';
 
@@ -56,7 +57,7 @@ export default function MealCard({
     <CardSection size="lg" onPress={onPress}>
       <CardContent>
         <CardHeaderBox>
-          <TextWithSmallTitle title={topTitle} text={topText} />
+          <TextWithSmallTitle title={topTitle} text={cutText(topText, 13)} />
           <CalorieTextWrapper>{`${calorie}Kcal`}</CalorieTextWrapper>
         </CardHeaderBox>
         <CardBodyBox>

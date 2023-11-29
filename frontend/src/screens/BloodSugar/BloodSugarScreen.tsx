@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { periodBloodSugar } from '@/apis/bloodSugar';
+import { getPeriodBloodSugar } from '@/apis/bloodSugar';
 import { BloodSugarPeriodResponseData } from '@/types/api/response/bloodSugar';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
@@ -74,8 +74,8 @@ export default function BloodSugarScreen() {
     }
   };
 
-  const fetchBloodSugarData = useCallback(async () => {
-    const data = await periodBloodSugar({
+  const getBloodSugarData = useCallback(async () => {
+    const data = await getPeriodBloodSugar({
       nickname,
       startDate,
       endDate,
@@ -95,8 +95,8 @@ export default function BloodSugarScreen() {
   }, [nickname, startDate, endDate]);
 
   useEffect(() => {
-    fetchBloodSugarData();
-  }, [fetchBloodSugarData]);
+    getBloodSugarData();
+  }, [getBloodSugarData]);
 
   const handleScroll = (event: any) => {
     const { nativeEvent } = event;
@@ -148,6 +148,7 @@ export default function BloodSugarScreen() {
                   dispatch(setTime(time));
                   router.navigate('BloodSugarDetail');
                 }}
+                size="lg"
                 key={time}
                 date={formatToMonthDay(time)}
                 count={count}
