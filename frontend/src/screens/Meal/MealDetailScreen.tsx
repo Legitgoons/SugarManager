@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { getMealDetail } from '@/apis/meal';
-import { BloodSugar, Food } from '@/types/api/response/meal';
+import { BloodSugar, Food, MenuImage } from '@/types/api/response/meal';
 import { useSelector } from 'react-redux';
 import useRouter from '@/hooks/useRouter';
 import { formatToMonthDay, formatToTime } from '@/utils/formatDate';
@@ -12,12 +12,10 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import DayCard from '@/components/molecules/DayCard';
 import MealCard from '@/components/organisms/MealCard';
 import BloodSugarContentCard from '@/components/organisms/BloodSugarContentCard';
+import ImageScrollView from '@/components/molecules/ImageScrollView';
+import PhotoModal from '@/components/organisms/PhotoModal';
 
-/**
- * @Todo BloodSugar status 추가 구현시 적용
- */
-
-const DailyContainer = styled.View`
+const DetailContainer = styled.View`
   height: 100%;
   width: 100%;
   justify-content: flex-start;
@@ -43,6 +41,9 @@ export default function MealDetailScreen() {
   const router = useRouter();
   const [time, setTime] = useState<string>('');
   const [foodData, setFoodData] = useState<Food[]>([]);
+  const [mealImage, setMealImage] = useState<MenuImage[]>([]);
+  const [photoModalVisible, setPhotoModalVisible] = useState(false);
+  const [expandedImage, setExpandedImage] = useState('');
   const [mealBloodSugar, setMealBloodSugar] = useState<BloodSugar>();
   const [isTop, setIsTop] = useState(true);
   const menuPK = useSelector(selectMealPK);
@@ -54,11 +55,24 @@ export default function MealDetailScreen() {
     setIsTop(isScrolledToTop);
   };
 
+  const photoModalOpen = () => {
+    setPhotoModalVisible(true);
+  };
+  const photoModalClose = () => {
+    setPhotoModalVisible(false);
+  };
+
+  const handleImagePress = (image: MenuImage) => {
+    setExpandedImage(image.menuImageUrl);
+    photoModalOpen();
+  };
+
   useEffect(() => {
     const fetchDetailMeal = async () => {
       if (menuPK !== null) {
         const data = await getMealDetail({ menuPK });
         setTime(data.response.registedAt);
+        setMealImage(data.response.menuImages);
         setFoodData(data.response.foods);
         setMealBloodSugar(data.response.bloodSugar);
       }
@@ -67,10 +81,10 @@ export default function MealDetailScreen() {
   }, [menuPK]);
 
   return (
-    <DailyContainer>
+    <DetailContainer>
       <ScrollView onScroll={handleScroll}>
         <DayCard title={`${formatToMonthDay(time)} ${formatToTime(time)}`} />
-        {mealBloodSugar && (
+        {(mealBloodSugar?.beforeLevel || mealBloodSugar?.afterLevel) && (
           <CardWrapper>
             <BloodSugarContentCard
               size="sm"
@@ -80,6 +94,20 @@ export default function MealDetailScreen() {
               afterType={mealBloodSugar.afterStatus}
             />
           </CardWrapper>
+        )}
+        {mealImage.length !== 0 && (
+          <>
+            <ImageScrollView
+              images={mealImage}
+              onImagePress={handleImagePress}
+              isWrite={false}
+            />
+            <PhotoModal
+              modalVisible={photoModalVisible}
+              setModalVisible={photoModalClose}
+              expandedImage={expandedImage}
+            />
+          </>
         )}
         {foodData.map(
           ({
@@ -117,6 +145,6 @@ export default function MealDetailScreen() {
           />
         </FillButtonWrapper>
       )}
-    </DailyContainer>
+    </DetailContainer>
   );
 }
