@@ -18,6 +18,7 @@ import {
   PostChallengeAddProps,
   ChallengeTypeEnum,
 } from '@/types/api/request/challenge';
+import alertConfig from '@/config/alertConfig';
 import extractNumber from '../../utils/number';
 import DropdownItem from '../../types/dropdown';
 
@@ -60,6 +61,7 @@ const ChallengeAlramTimeWrapper = styled.View`
   align-items: center;
 `;
 export default function ChallengeMakeScreen() {
+  const { normalSuccess, validationFail, normalFail } = alertConfig;
   const { uid, nickname } = useSelector(selectUser);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -107,16 +109,16 @@ export default function ChallengeMakeScreen() {
   const handleAddChallenge = () => {
     if (challengeTitle.length === 0) {
       showAlert({
-        title: '등록 실패',
-        content: '알람의 제목을 작성해주세요.',
+        title: validationFail.title('챌린지 제목 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;
     }
     if (!challengeCount || challengeCount <= 0) {
       showAlert({
-        title: '등록 실패',
-        content: '알람의 목표치를 제대로 입력해주세요',
+        title: validationFail.title('알람 횟수 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;
@@ -125,16 +127,16 @@ export default function ChallengeMakeScreen() {
     if (isOpenAlarm) {
       if (alarmHour === null || alarmMinute === null) {
         showAlert({
-          title: '등록 실패',
-          content: '알람의 목표치를 제대로 입력해주세요',
+          title: validationFail.title('알람 시간 입력'),
+          content: validationFail.content('common'),
           onOk: () => {},
         });
         return;
       }
       if (getAlertWeekDays().length === 0) {
         showAlert({
-          title: '등록 실패',
-          content: '알람의 목표치를 제대로 입력해주세요',
+          title: validationFail.title('알람 요일 입력'),
+          content: validationFail.content('common'),
           onOk: () => {},
         });
         return;
@@ -143,6 +145,7 @@ export default function ChallengeMakeScreen() {
 
     mutation.mutate(
       {
+        nickname,
         title: challengeTitle,
         goal: challengeCount,
         type: challengeType
@@ -160,8 +163,8 @@ export default function ChallengeMakeScreen() {
             queryKey: ['getChallengeList', nickname],
           });
           showAlert({
-            title: '등록 성공',
-            content: '챌린지 등록에 성공했습니다!',
+            title: normalSuccess.title('챌린지 등록'),
+            content: normalSuccess.content('챌린지 등록'),
             onOk: () => {
               router.navigate('ChallengeInfo');
             },
@@ -169,8 +172,8 @@ export default function ChallengeMakeScreen() {
         },
         onError() {
           showAlert({
-            title: '등록 실패',
-            content: '다시 시도해주세요',
+            title: normalFail.title('챌린지 등록'),
+            content: normalFail.content,
             onOk: () => {},
           });
         },
@@ -204,12 +207,14 @@ export default function ChallengeMakeScreen() {
             placeholder="챌린지의 제목을 작성해주세요!"
             value={challengeTitle}
             onChangeText={setChallengeTitle}
+            width={rWidth(320)}
           />
           <InputLine
             placeholder="목표 횟수를 작성해주세요!"
             value={challengeCount}
             onChangeText={setChallengeCount}
             keyboardType="numeric"
+            width={rWidth(320)}
           />
           <ChallengeAlarmOpenWrapper>
             <ChallengeAlarmTitle typography="h4r" color="black">

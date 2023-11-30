@@ -5,21 +5,19 @@ import { rWidth, rHeight } from '@/utils/style';
 
 interface InputProps<T extends string | number> extends DefaultInputProps<T> {}
 
-const InputBox = styled.View`
+const InputBox = styled.View<{
+  width: number | undefined;
+}>`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: ${rWidth(320)}px;
+  width: ${({ width }) => rWidth(width || 320)}px;
   height: ${rHeight(40)}px;
 `;
 
-const InputWrapper = styled.TextInput<{
-  width: number | undefined;
-  height: number | undefined;
-}>`
-  width: ${({ width }) => rWidth(width ? width : 320)}px;
-  height: ${({ height }) => rHeight(height ? height : 40)}px;
+const InputWrapper = styled.TextInput<{ height: number | undefined }>`
+  flex: 1;
+  height: ${({ height }) => rHeight(height || 40)}px;
 `;
 
 const InputUnitWrapper = styled.Text`
@@ -37,7 +35,7 @@ export default function Input<T extends string | number>({
   unit,
   maxLength,
   keyboardType,
-  editable,
+  editable = true,
   width,
   height,
 }: InputProps<T>) {
@@ -50,16 +48,16 @@ export default function Input<T extends string | number>({
       onChangeText(text as T);
     }
   };
+
   return (
-    <InputBox pointerEvents={!editable ? 'none' : undefined}>
+    <InputBox pointerEvents={!editable ? 'none' : undefined} width={width}>
       <InputWrapper
         placeholder={placeholder}
-        value={value.toString()}
+        value={value ? value.toString() : ''}
         onChangeText={handleChange}
         maxLength={maxLength}
         keyboardType={keyboardType || 'default'}
         editable={editable}
-        width={width}
         height={height}
       />
       {unit && <InputUnitWrapper>{unit}</InputUnitWrapper>}

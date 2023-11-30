@@ -1,6 +1,6 @@
 import { API_ENDPOINT } from '@env';
 import { store, RootState, persistor } from '@/redux/store/storeConfig';
-import { navigate } from '@/navigation/NavigationService';
+import { reset } from '@/navigation/NavigationService';
 import { postTokenRefresh } from '@/apis';
 import { setAccessToken } from '@/redux/slice/userSlice';
 
@@ -13,13 +13,13 @@ interface FetchOptions {
 
 const fetchWithAuth = async (
   url: string,
-  options: FetchOptions = { wasRefreshing: false }
+  options: FetchOptions = { wasRefreshing: false },
+  isFormData = false
 ): Promise<any> => {
   const state: RootState = store.getState();
   const { accessToken, uid } = state.user;
   const headers = new Headers({
-    'Content-Type': 'application/json',
-    'X-Authrization-Id': uid.toString(),
+    'X-Authorization-Id': uid.toString(),
     ...options.headers,
   });
 
@@ -34,7 +34,12 @@ const fetchWithAuth = async (
   };
 
   if (options.body) {
-    fetchOptions.body = JSON.stringify(options.body);
+    if (!isFormData) {
+      headers.append('Content-Type', 'application/json');
+      fetchOptions.body = JSON.stringify(options.body);
+    } else {
+      fetchOptions.body = options.body;
+    }
   }
 
   try {
@@ -49,7 +54,7 @@ const fetchWithAuth = async (
     const errorResponse = await (error as any).json();
     if (errorResponse === undefined) {
       await persistor.purge();
-      navigate('Signin');
+      reset('Signin');
       return error;
     }
     switch (errorResponse.error.code) {
@@ -65,7 +70,7 @@ const fetchWithAuth = async (
           });
         } catch (e) {
           await persistor.purge();
-          navigate('Signin');
+          reset('Signin');
           return e;
         }
       default:
@@ -74,4 +79,5 @@ const fetchWithAuth = async (
     return error;
   }
 };
+
 export default fetchWithAuth;

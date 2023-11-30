@@ -1,87 +1,62 @@
+import React, { useState } from 'react';
 import OAuthButton from '@/components/atoms/OAuthButton';
 import TitleHeader from '@/components/molecules/TitleHeader';
 import { DefaultScreenContainer } from '@/styles';
-import React from 'react';
 import KakaoIcon from '@/assets/icon/kakaoIcon.svg';
 import styled from 'styled-components/native';
-import { login } from '@react-native-seoul/kakao-login';
-import { postKakaoSignin } from '@/apis/auth';
-import { setKakaoToken, setProfile, setToken } from '@/redux/slice/userSlice';
-import { useDispatch } from 'react-redux';
-import showAlert from '@/utils/alert';
-import { rHeight } from '@/utils';
-import { getMyProfile } from '@/apis/member';
+import {
+  rHeight,
+  rWidth,
+  showAlert,
+  validationId,
+  validationPw,
+} from '@/utils';
+import TextButton from '@/components/atoms/TextButton';
+import InputLine from '@/components/molecules/InputLine';
+import MainFillButton from '@/components/atoms/MainFillButton';
+import Line from '@/components/atoms/Line';
 import useRouter from '@/hooks/useRouter';
-import { setNavigation } from '@/redux/slice/navigationSlice';
+import useAuth from '@/hooks/useSignin';
+import alertConfig from '@/config/alertConfig';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
-  gap: ${rHeight(36)}px;
+  gap: ${rHeight(40)}px;
+`;
+
+const SigninBox = styled.View`
+  gap: ${rHeight(20)}px;
+`;
+
+const LineWrapper = styled.View`
+  width: ${rHeight(320)}px;
 `;
 
 export default function SigninScreen() {
-  const dispatch = useDispatch();
   const router = useRouter();
-  const signInWithKakao = async () => {
-    try {
-      const { accessToken: kakaoAccessToken, refreshToken: kakaoRefreshToken } =
-        await login();
-      dispatch(
-        setKakaoToken({
-          kakaoAccessToken,
-          kakaoRefreshToken,
-        })
-      );
-
-      const apiRes: any = await postKakaoSignin({
-        accessToken: kakaoAccessToken,
-        fcmToken: '1234',
-      });
-      if (apiRes.error === null) {
-        const { accessToken, refreshToken } = apiRes.response;
-        dispatch(
-          setToken({
-            accessToken,
-            refreshToken,
-          })
-        );
-      } else {
-        showAlert({
-          title: '로그인 실패',
-          content: apiRes.error.message,
-          onOk: () => {},
-        });
-      }
-
-      const myProfile = await getMyProfile();
-      if (myProfile.error === null) {
-        dispatch(setProfile({ ...myProfile.response }));
-        dispatch(
-          setNavigation({
-            isMine: true,
-            uid: myProfile.response.uid,
-            nickname: myProfile.response.nickname,
-          })
-        );
-        router.navigate('Home');
-      } else {
-        showAlert({
-          title: '로그인 실패',
-          content: myProfile.error.message,
-          onOk: () => {},
-        });
-      }
-
-      return null;
-    } catch (e) {
+  const { signInWithKakao, signIn } = useAuth();
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+  const { validationFail } = alertConfig;
+  const handleSignIn = async () => {
+    if (!validationId(id)) {
       showAlert({
-        title: '로그인 실패',
-        content: '네트워크 상태를 다시 확인해주세요!',
+        title: validationFail.title('아이디 입력'),
+        content: validationFail.content('id'),
         onOk: () => {},
       });
-      return e;
+      return;
     }
+    if (!validationPw(pw)) {
+      showAlert({
+        title: validationFail.title('비밀번호 입력'),
+        content: validationFail.content('pw'),
+        onOk: () => {},
+      });
+      return;
+    }
+    await signIn(id, pw);
   };
 
   return (
@@ -89,9 +64,38 @@ export default function SigninScreen() {
       <TitleHeader mainTitle="로그인" subTitle="더 많은 서비스를 누려보세요" />
       <OAuthButton
         title="카카오로 로그인하기"
-        bgColor="white"
+        bgColor="kakao"
         OAuthIcon={KakaoIcon}
         onPress={signInWithKakao}
+      />
+      <LineWrapper>
+        <Line color="tertiary" />
+      </LineWrapper>
+      <SigninBox>
+        <InputLine
+          value={id}
+          onChangeText={setId}
+          placeholder="아이디를 입력하세요"
+          width={rWidth(320)}
+        />
+        <InputLine
+          value={pw}
+          onChangeText={setPw}
+          placeholder="비밀번호를 입력하세요"
+          width={rWidth(320)}
+        />
+        <MainFillButton
+          title="로그인 하기"
+          bgColor="b4"
+          onPress={handleSignIn}
+        />
+      </SigninBox>
+      <TextButton
+        title="회원가입 하러가기"
+        isSelected
+        mode="toggle"
+        onPress={() => router.navigate('Signup')}
+        typography="captionr"
       />
     </SigninScreenContainer>
   );

@@ -4,6 +4,7 @@ import DefaultCard from '@/styles/Card';
 import { rWidth } from '@/utils/style';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import { colorSquareType } from '@/types/colorSquare';
+import { DefalutCardProps } from '@/types/card';
 import BloodSugarSquare from '../molecules/BloodSugarSquare';
 
 const CardSection = styled(DefaultCard)`
@@ -19,6 +20,9 @@ const SquareBox = styled.View`
   width: ${rWidth(300)}px;
   flex-direction: row;
   justify-content: space-between;
+`;
+const SquareWrapper = styled.View`
+  width: ${rWidth(120)}px;
 `;
 const CardHeaderBox = styled.View`
   width: ${rWidth(260)}px;
@@ -36,34 +40,51 @@ const CountTextWrapper = styled.Text`
   color : ${({ theme }) => theme.colors.primary};
 `;
 
-interface BloodSugarContentCardProps {
-  date: string;
-  count: number;
-  beforeNum: number;
-  beforeType: colorSquareType;
-  afterNum: number;
-  afterType: colorSquareType;
+interface BloodSugarContentCardProps extends DefalutCardProps {
+  date?: string;
+  count?: number;
+  beforeNum: number | null;
+  beforeType: colorSquareType | null;
+  afterNum: number | null;
+  afterType: colorSquareType | null;
+  onPress?: () => void;
 }
 
 export default function BloodSugarContentCard({
+  size = 'lg',
   date,
   count,
   beforeNum,
   beforeType,
   afterNum,
   afterType,
+  onPress,
 }: BloodSugarContentCardProps) {
   return (
-    <CardSection size="lg">
+    <CardSection size={size} onPress={onPress}>
       <CardContent>
-        <CardHeaderBox>
-          <DateTextWrapper>{date}</DateTextWrapper>
-          <CountTextWrapper>{count}회 측정</CountTextWrapper>
-        </CardHeaderBox>
+        {size === 'lg' && (
+          <CardHeaderBox>
+            <DateTextWrapper>{date}</DateTextWrapper>
+            <CountTextWrapper>{count}회 측정</CountTextWrapper>
+          </CardHeaderBox>
+        )}
         <SquareBox>
-          <BloodSugarSquare isBefore num={beforeNum} type={beforeType} />
-          <BloodSugarSquare isBefore={false} num={afterNum} type={afterType} />
-          <BlackArrowIcon />
+          <SquareWrapper>
+            {beforeNum !== null && beforeType !== null && (
+              <BloodSugarSquare isBefore num={beforeNum} type={beforeType} />
+            )}
+          </SquareWrapper>
+          <SquareWrapper>
+            {afterNum !== null && afterType !== null && (
+              <BloodSugarSquare
+                isBefore={false}
+                num={afterNum}
+                type={afterType}
+              />
+            )}
+          </SquareWrapper>
+          {onPress && <BlackArrowIcon />}
         </SquareBox>
       </CardContent>
     </CardSection>

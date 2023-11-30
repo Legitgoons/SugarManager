@@ -4,37 +4,37 @@ import { useMutation } from '@tanstack/react-query';
 import { rHeight } from '@/utils/style';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import Toggle from '@/components/molecules/Toggle';
-import BloodSugarInfoWriteContent from '@/components/organisms/BloodSugarWriteContent';
+import BloodSugarWriteContent from '@/components/organisms/BloodSugarWriteContent';
 import DefaultScreenContainer from '@/styles/Container';
 import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
-import { saveBloodSugar } from '@/apis/bloodSugar';
+import { postSaveBloodSugar } from '@/apis/bloodSugar';
 import { showAlert } from '@/utils';
+import { formatToApiDateTime } from '@/utils/formatDate';
+import BloodSugarStatusBarContent from '@/components/molecules/BloodSugarStatusBarContent';
+import alertConfig from '@/config/alertConfig';
 
-const BloodSugarInfoWriteContainer = styled(DefaultScreenContainer)`
+const BloodSugarWriteContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
   padding-top: 10%;
   gap: ${rHeight(36)}px;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const MainFillButtonWrapper = styled.View`
   justify-self: end;
 `;
 
-export default function BloodSugarInfoWriteScreen() {
+export default function BloodSugarWriteScreen() {
   const [beforeMeal, setBeforeMeal] = useState(false);
-  const [bloodSugar, setBloodSugar] = useState('');
+  const [bloodSugar, setBloodSugar] = useState(0);
   const [issue, setIssue] = useState('');
   const [date, setDate] = useState(new Date());
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const title = '경고';
+  const { validationFail, normalFail } = alertConfig;
   const onOk = () => {};
 
   useEffect(() => {
-    if (bloodSugar === '') {
-      setButtonDisabled(true);
-    } else {
-      setButtonDisabled(false);
-    }
+    setButtonDisabled(bloodSugar <= 0);
   }, [bloodSugar]);
 
   const setDateSafe = useCallback((newDate: Date) => {
@@ -46,50 +46,51 @@ export default function BloodSugarInfoWriteScreen() {
   }, []);
 
   const mutation = useMutation({
-    mutationFn: (data: BloodSugarWriteData) => saveBloodSugar(data),
+    mutationFn: (data: BloodSugarWriteData) => postSaveBloodSugar(data),
   });
 
   const handleSubmit = () => {
-    const bloodSugarNum = Number(bloodSugar);
-    if (Number.isNaN(bloodSugarNum)) {
-      const content = '혈당 수치는 숫자여야 합니다.';
-      showAlert({ title, content, onOk });
-      return;
-    }
-    // eslint-disable-next-line yoda
-    if (bloodSugarNum < 0 || 999 < bloodSugarNum) {
-      const content = '혈당 수치가 정상적이지 않습니다.';
-      showAlert({ title, content, onOk });
+    if (bloodSugar < 0 || bloodSugar > 999) {
+      showAlert({
+        title: validationFail.title('혈당 수치 입력'),
+        content: validationFail.content('bloodSugar'),
+        onOk,
+      });
       return;
     }
     mutation.mutate(
       {
         category: beforeMeal ? 'BEFORE' : 'AFTER',
-        level: bloodSugarNum,
+        level: bloodSugar,
         content: issue,
+        registedAt: formatToApiDateTime(date),
       },
       {
         onSuccess() {
-          setBloodSugar('');
+          setBloodSugar(0);
           setIssue('');
         },
         onError() {
-          const content = '혈당이 등록되지 않았습니다. 다시 시도해주세요.';
-          showAlert({ title, content, onOk });
+          showAlert({
+            title: normalFail.title('혈당 등록'),
+            content: normalFail.content,
+            onOk,
+          });
         },
       }
     );
   };
 
   return (
-    <BloodSugarInfoWriteContainer>
+    <BloodSugarWriteContainer>
       <Toggle
         isLeft={beforeMeal}
         onPress={setBeforeMeal}
         leftTitle="식전"
         rightTitle="식후"
       />
-      <BloodSugarInfoWriteContent
+      {bloodSugar > 0 && <BloodSugarStatusBarContent value={bloodSugar} />}
+      <BloodSugarWriteContent
         bloodSugar={bloodSugar}
         setBloodSugar={setBloodSugar}
         issue={issue}
@@ -106,6 +107,6 @@ export default function BloodSugarInfoWriteScreen() {
           onPress={handleSubmit}
         />
       </MainFillButtonWrapper>
-    </BloodSugarInfoWriteContainer>
+    </BloodSugarWriteContainer>
   );
 }

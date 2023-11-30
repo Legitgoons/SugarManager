@@ -13,17 +13,27 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
-
-const DownButtonWrapper = styled.View`
-  position: absolute;
-  bottom: ${rHeight(30)}px;
-  align-items: center;
-`;
+import TextButton from '@/components/atoms/TextButton';
+import GroupLeaveModal from '@/components/organisms/GroupLeaveModal';
+import MemberDeleteModal from '@/components/organisms/MemberDeleteModal';
+import alertConfig from '@/config/alertConfig';
 
 const ProfileSettingScreenContainer = styled(DefaultScreenContainer)`
   padding-top: ${rHeight(20)}px;
+  padding-bottom: ${rHeight(100)}px;
   background-color: ${({ theme }) => theme.colors.background};
   gap: ${rHeight(32)}px;
+  position: relative;
+`;
+const DownButtonWrapper = styled.View`
+  width: ${rWidth(320)}px;
+  position: absolute;
+  bottom: ${rHeight(10)}px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
 `;
 const HeaderBox = styled.View`
   width: ${rWidth(320)}px;
@@ -47,11 +57,11 @@ export default function ProfileSettingScreen() {
     gender,
     height,
     weight,
-    groupCode,
     profileImage,
     birthday,
     bloodSugarMin,
     bloodSugarMax,
+    groupCode,
   } = useSelector(selectUser);
   const [userNickname, setUserNickname] = useState(nickname);
   const [userGender, setUserGender] = useState<DropdownItem | null>(
@@ -59,14 +69,33 @@ export default function ProfileSettingScreen() {
       ? null
       : {
           id: `${gender}`,
-          value: `${gender === 'male' ? '남자' : '여자'}`,
+          value: `${gender === 'MALE' ? '남자' : '여자'}`,
         }
   );
   const [userHeight, setUserHeight] = useState(height === null ? 0 : height);
   const [userWeight, setUserWeight] = useState(weight === null ? 0 : weight);
   const [userBloodSugarMin, setUserBloodSugarMin] = useState(bloodSugarMin);
   const [userBloodSugarMax, setUserBloodSugarMax] = useState(bloodSugarMax);
+  const [openMemberDeleteModal, setOpenMemberDeleteModal] = useState(false);
+  const [openGroupLeaveModal, setOpenGroupLeaveModal] = useState(false);
+  const { normalSuccess, normalFail } = alertConfig;
   const dispatch = useDispatch();
+
+  function resultFailAlert() {
+    showAlert({
+      title: normalFail.title('프로필 수정'),
+      content: normalFail.content,
+      onOk: () => {},
+    });
+  }
+
+  function resultSuccessAlert() {
+    showAlert({
+      title: normalSuccess.title('프로필 수정'),
+      content: normalSuccess.content('프로필 수정'),
+      onOk: () => {},
+    });
+  }
 
   const { mutate } = useMutation({
     mutationFn: () =>
@@ -76,41 +105,47 @@ export default function ProfileSettingScreen() {
         height: userHeight,
         weight: userWeight,
         nickname: userNickname,
-        gender: (userGender as DropdownItem).id as 'male' | 'female',
+        gender: (userGender as DropdownItem).id as 'MALE' | 'FEMALE',
         bloodSugarMax: userBloodSugarMax,
         bloodSugarMin: userBloodSugarMin,
       }),
-    onSuccess: () => {
-      dispatch(
-        setProfileSetting({
-          height: userHeight,
-          weight: userWeight,
-          nickname: userNickname,
-          gender: (userGender as DropdownItem).id as 'male' | 'female',
-          bloodSugarMax: userBloodSugarMax,
-          bloodSugarMin: userBloodSugarMin,
-        })
-      );
-      showAlert({
-        title: '수정 성공',
-        content: '수정사항을 저장했습니다.',
-        onOk: () => {},
-      });
+    onSuccess: (data) => {
+      if (data.success) {
+        dispatch(
+          setProfileSetting({
+            height: userHeight,
+            weight: userWeight,
+            nickname: userNickname,
+            gender: (userGender as DropdownItem).id as 'MALE' | 'FEMALE',
+            bloodSugarMax: userBloodSugarMax,
+            bloodSugarMin: userBloodSugarMin,
+          })
+        );
+        resultSuccessAlert();
+        return;
+      }
+      resultFailAlert();
     },
     onError: () => {
-      showAlert({
-        title: '수정 실패',
-        content: '네트워크 상태를 확인해주세요',
-        onOk: () => {},
-      });
+      resultFailAlert();
     },
   });
 
-  const handleEditProfile = () => {
-    mutate();
-  };
+  const handleEditProfile = () => mutate();
   return (
     <ScrollView>
+      {openMemberDeleteModal && (
+        <MemberDeleteModal
+          open={openMemberDeleteModal}
+          setOpen={setOpenMemberDeleteModal}
+        />
+      )}
+      {groupCode && groupCode.length > 0 && openGroupLeaveModal && (
+        <GroupLeaveModal
+          open={openGroupLeaveModal}
+          setOpen={setOpenGroupLeaveModal}
+        />
+      )}
       <ProfileSettingScreenContainer>
         <HeaderBox>
           <ProfileButton
@@ -143,8 +178,8 @@ export default function ProfileSettingScreen() {
             DropdownProps={{
               placeholder: '입력해주세요',
               list: [
-                { id: 'male', value: '남자' },
-                { id: 'female', value: '여자' },
+                { id: 'MALE', value: '남자' },
+                { id: 'FEMALE', value: '여자' },
               ],
               selectItem: userGender,
               setSelectItem: setUserGender,
@@ -159,6 +194,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserHeight,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'cm',
             }}
           />
           <LabelledInput
@@ -170,6 +206,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserWeight,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'kg',
             }}
           />
           <LabelledInput
@@ -181,6 +218,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserBloodSugarMin,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'mg/dL',
             }}
           />
           <LabelledInput
@@ -192,6 +230,7 @@ export default function ProfileSettingScreen() {
               onChangeText: setUserBloodSugarMax,
               keyboardType: 'numeric',
               width: 200,
+              unit: 'mg/dL',
             }}
           />
           <LabelledInput
@@ -201,16 +240,36 @@ export default function ProfileSettingScreen() {
               placeholder: '입력해주세요',
               value: groupCode !== null ? groupCode : '그룹에 가입해주세요',
               width: 200,
-              editable: true,
+              editable: false,
             }}
           />
         </ContentBox>
+        <TwinButtonGroup
+          leftTitle="뒤로가기"
+          rightTitle="저장하기"
+          onLeftPress={() => router.pop()}
+          onRightPress={handleEditProfile}
+        />
         <DownButtonWrapper>
-          <TwinButtonGroup
-            leftTitle="뒤로가기"
-            rightTitle="저장하기"
-            onLeftPress={() => router.pop()}
-            onRightPress={handleEditProfile}
+          <TextButton
+            isSelected={false}
+            onPress={() => {
+              setOpenGroupLeaveModal(true);
+            }}
+            title="그룹 탈퇴"
+            mode="toggle"
+            typography="captionr"
+            color="secondary"
+          />
+          <TextButton
+            isSelected={false}
+            onPress={() => {
+              setOpenMemberDeleteModal(true);
+            }}
+            title="회원 탈퇴"
+            mode="toggle"
+            typography="captionr"
+            color="secondary"
           />
         </DownButtonWrapper>
       </ProfileSettingScreenContainer>

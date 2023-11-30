@@ -1,14 +1,15 @@
 import { rHeight, rWidth } from '@/utils';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import {
   NavigationSliceStateType,
+  selectNavigation,
   setNavigation,
 } from '@/redux/slice/navigationSlice';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import getGroup from '@/apis/group';
+import { getGroup } from '@/apis/group';
 import ProfileList from '../molecules/ProfileList';
 import ProfileButton from '../atoms/ProfileButton';
 
@@ -30,20 +31,22 @@ const MidLine = styled.View`
 `;
 
 export default function HomeGroupBar() {
-  const { data } = useSuspenseQuery({
-    queryKey: ['getGroupList'],
+  let currentGroupList = [];
+  const {
+    profileImage,
+    nickname: myNickname,
+    uid: myUid,
+    groupCode,
+  } = useSelector(selectUser);
+  const { nickname: navigationNickname } = useSelector(selectNavigation);
+  const dispatch = useDispatch();
+  const { data, isSuccess } = useSuspenseQuery({
+    queryKey: ['getGroupList', groupCode],
     queryFn: () => getGroup(),
     staleTime: 1000 * 60 * 100,
     refetchOnWindowFocus: false,
   });
   const { response } = data;
-  const {
-    profileImg,
-    nickname: myNickname,
-    uid: myUid,
-  } = useSelector(selectUser);
-  const [selectPerson, setSelectPerson] = useState<string>('');
-  const dispatch = useDispatch();
   const handleClickProfile = ({
     isMine,
     nickname,
@@ -57,21 +60,26 @@ export default function HomeGroupBar() {
       })
     );
   };
+
+  if (isSuccess && data.success && response.users) {
+    currentGroupList = response.users.filter(
+      (cur: any) => Number(cur.uid) !== Number(myUid)
+    );
+  }
   return (
     <HomeGroupBarBox>
       <ProfileButton
-        imgUrl={profileImg}
+        imgUrl={profileImage}
         onPress={() =>
           handleClickProfile({ isMine: true, nickname: myNickname, uid: myUid })
         }
-        isFocus={selectPerson === myNickname}
+        isFocus={navigationNickname === myNickname}
       />
       <MidLine />
       <ProfileList
         onPress={handleClickProfile}
-        list={response}
-        person={selectPerson}
-        setPerson={setSelectPerson}
+        list={currentGroupList}
+        person={navigationNickname}
       />
     </HomeGroupBarBox>
   );

@@ -1,60 +1,30 @@
-import { API_ENDPOINT } from '@env';
-import { store, RootState } from '@/redux/store/storeConfig';
-import {
-  BloodSugarWriteData,
-  periodBloodSugarProps,
-  BloodSugarApiResponse,
-} from '@/types/api/request/bloodSugar';
+import { BloodSugarWriteData } from '@/types/api/request/bloodSugar';
+import { BloodSugarPeriodApiResponse } from '@/types/api/response/bloodSugar';
+import { PeriodProps, DailyProps } from '@/types/api/request/fetchPeriod';
+import { fetchWithAuth } from '@/utils';
+import { periodDate } from '@/utils/formatDate';
 
-export async function periodBloodSugar({
+export async function getPeriodBloodSugar({
   nickname,
   startDate,
   endDate,
   page,
-}: periodBloodSugarProps): Promise<BloodSugarApiResponse> {
-  const state: RootState = store.getState();
-  const { accessToken } = state.user;
+}: PeriodProps): Promise<BloodSugarPeriodApiResponse> {
+  const start = periodDate(startDate);
+  const end = periodDate(endDate);
 
-  const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
-  const startDay = startDate.getDate().toString().padStart(2, '0');
-
-  const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
-  const endDay = endDate.getDate().toString().padStart(2, '0');
-
-  const start = `${startDate.getFullYear()}-${startMonth}-${startDay}`;
-  const end = `${endDate.getFullYear()}-${endMonth}-${endDay}`;
-
-  const response = await fetch(
-    `${API_ENDPOINT}/bloodsugar/period/${nickname}/${start}/${end}/${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+  return fetchWithAuth(
+    `/bloodsugar/period/${nickname}/${start}/${end}/${page}`
   );
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-
-  const data = await response.json();
-  return data;
 }
 
-export async function saveBloodSugar(data: BloodSugarWriteData) {
-  const state: RootState = store.getState();
-  const { accessToken } = state.user;
+export const getDetailBloodSugar = ({
+  nickname,
+  year,
+  month,
+  day,
+}: DailyProps) =>
+  fetchWithAuth(`/bloodsugar/${nickname}/${year}/${month}/${day}`);
 
-  const response = await fetch(`${API_ENDPOINT}/bloodsugar/save`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-}
+export const postSaveBloodSugar = (data: BloodSugarWriteData) =>
+  fetchWithAuth('/bloodsugar/save', { body: data, method: 'POST' });

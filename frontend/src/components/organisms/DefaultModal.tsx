@@ -4,25 +4,15 @@ import styled from 'styled-components/native';
 import { rWidth, rHeight } from '@/utils';
 import { Overlay } from '@/styles';
 import { TypographyType } from '@/styles/theme';
+import { DefaultModalProps } from '@/types/Modal';
 import TwinButtonGroup from '../molecules/TwinButtonGroup';
-
-interface DefaultModalProps {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  mainTitle: string;
-  children: React.ReactNode;
-  leftBtnTitle: string;
-  onLeftPress: () => void;
-  rightBntTitle: string;
-  onRightPress: () => void;
-}
 
 const ModalContainer = styled.View`
   width: ${rWidth(360)}px;
   height: ${rHeight(496)}px;
   z-index: 10;
   border-width: 1px;
-  border-radius: 10px;
+  border-radius: ${rHeight(10)}px;
   background-color: white;
   justify-content: center;
   align-items: center;
@@ -30,7 +20,7 @@ const ModalContainer = styled.View`
 
 const ModalBox = styled.View`
   width: ${rWidth(320)}px;
-  height: ${rHeight(328)}px;
+  height: ${rHeight(380)}px;
   justify-content: space-between;
   align-items: flex-start;
 `;
@@ -39,8 +29,6 @@ const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
   color: ${({ theme }) => theme.colors.black};
   ${({ fontSize, theme }) => theme.typographys[fontSize]};
   width: 100%;
-  height: ${rHeight(32)}px;
-  background-color: white;
   justify-content: center;
   align-items: center;
 `;
@@ -52,7 +40,7 @@ const MainTitleWrapper = styled.Text<{ fontSize: keyof TypographyType }>`
  * @param {React.ReactNode} children 모달 내부 내용
  * @param {String} leftBtnTitle 모달 좌측 버튼 Title
  * @param {() => void} onLeftPress 모달 좌측 버튼 callback함수
- * @param {String} rightBntTitle 모달 우측 버튼 Title
+ * @param {String} rightBtnTitle 모달 우측 버튼 Title
  * @param {() => void} onRightPress 모달 우측 버튼 callback함수
  * @returns {JSX.Element} Modal Component 반환
  */
@@ -64,7 +52,7 @@ export default function DefaultModal({
   children,
   leftBtnTitle,
   onLeftPress,
-  rightBntTitle,
+  rightBtnTitle,
   onRightPress,
 }: DefaultModalProps) {
   return (
@@ -82,7 +70,7 @@ export default function DefaultModal({
             <TwinButtonGroup
               leftTitle={leftBtnTitle}
               onLeftPress={onLeftPress}
-              rightTitle={rightBntTitle}
+              rightTitle={rightBtnTitle}
               onRightPress={onRightPress}
             />
           </ModalBox>

@@ -1,4 +1,4 @@
-package com.frontend;
+package kr.co.sugarmanager;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

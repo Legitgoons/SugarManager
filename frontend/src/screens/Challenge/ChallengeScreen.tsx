@@ -3,20 +3,30 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import ChanllengeCard from '@/components/molecules/ChallengeCard';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import {
   NavigationSliceStateType,
   selectNavigation,
 } from '@/redux/slice/navigationSlice';
-import { rHeight, rWidth } from '@/utils';
+import { rHeight, rWidth, showAlert } from '@/utils';
 import SubOutlineButton from '@/components/atoms/SubOutlineButton';
 import { DefaultText } from '@/styles';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import ChallengeCheckCard from '@/components/molecules/ChallengeCheckCard';
 import useRouter from '@/hooks/useRouter';
-import { postChallengeDelete, postMemberPoke } from '@/apis';
+import {
+  getChallengeList,
+  postChallengeClaim,
+  postChallengeDelete,
+  postMemberPoke,
+} from '@/apis';
 import { PostChallengeDeleteProps } from '@/types/api/request/challenge';
+import alertConfig from '@/config/alertConfig';
 
 const PageLayout = styled.View`
   flex: 1;
@@ -65,22 +75,51 @@ function checkChallengeProcess(challengeList: any) {
 }
 
 export default function ChallengeScreen() {
+  let challengeList = [];
+  const { normalFail } = alertConfig;
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const mutation = useMutation({
-    mutationFn: (lastDeleteList: Array<PostChallengeDeleteProps>) =>
-      postChallengeDelete(lastDeleteList),
-  });
   const [deleteList, setDeleteList] = useState<Record<string, boolean>>({});
   const { nickname, isMine }: NavigationSliceStateType =
     useSelector(selectNavigation);
   const [mode, setMode] = useState<ChallengeScreenMode>('view');
+  const mutation = useMutation({
+    mutationFn: (lastDeleteList: Array<PostChallengeDeleteProps>) =>
+      postChallengeDelete(lastDeleteList),
+  });
+  const claimMutation = useMutation({
+    mutationFn: (challengePk: number) => postChallengeClaim(challengePk),
+    onSuccess(data) {
+      if (data.success) {
+        queryClient.invalidateQueries({
+          queryKey: ['getChallengeList', nickname],
+        });
+      } else {
+        showAlert({
+          title: normalFail.title('횟수 증가'),
+          content: normalFail.content,
+          onOk: () => {},
+        });
+      }
+    },
+    onError() {
+      showAlert({
+        title: normalFail.title('횟수 증가'),
+        content: normalFail.content,
+        onOk: () => {},
+      });
+    },
+  });
 
-  const queryClient = useQueryClient();
-  const { response }: any = queryClient.getQueryData([
-    'getChallengeList',
-    nickname,
-  ]);
-  const challengeList = response.list;
+  const { data } = useSuspenseQuery({
+    queryKey: ['getChallengeList', nickname],
+    queryFn: () => getChallengeList(nickname),
+  });
+  const { success, response } = data;
+
+  if (success && response && response?.list) {
+    challengeList = response.list;
+  }
   const totalNumericArr = checkChallengeProcess(challengeList);
 
   const handleDeleteCard = async () => {
@@ -96,7 +135,11 @@ export default function ChallengeScreen() {
         setMode('view');
       },
       onError() {
-        console.log('에러!');
+        showAlert({
+          title: normalFail.title('챌린지 삭제'),
+          content: normalFail.content,
+          onOk: () => {},
+        });
       },
     });
   };
@@ -144,12 +187,12 @@ export default function ChallengeScreen() {
                       title={title}
                       leftNumeric={`${count}회`}
                       rightNumeric={`${goal}회`}
-                      buttonType="view"
+                      buttonType="claim"
                       onPress={() => {
                         router.navigate('ChallengeDetail', { challengePk });
                       }}
                       onPressButton={() => {
-                        router.navigate('ChallengeDetail', { challengePk });
+                        claimMutation.mutate(challengePk);
                       }}
                     />
                   ) : (
@@ -163,7 +206,7 @@ export default function ChallengeScreen() {
                       onPressButton={() => {
                         postMemberPoke({
                           nickname,
-                          category: 'CHALLENGE',
+                          type: 'CHALLENGE',
                           challengeId: challengePk,
                         });
                       }}

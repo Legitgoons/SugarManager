@@ -16,7 +16,15 @@ const TwinButtonGroupWrapper = styled.View`
   display: flex;
   gap: 16px;
 `;
-export default function HomeNoneGroupBar() {
+
+interface HomeNoneGroupBarProps {
+  setOpenGroupJoinModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenGroupCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export default function HomeNoneGroupBar({
+  setOpenGroupCreateModal,
+  setOpenGroupJoinModal,
+}: HomeNoneGroupBarProps) {
   return (
     <HomeNoneGroupBarBox>
       <GroupBarText color="secondary" typography="p3r">
@@ -26,8 +34,12 @@ export default function HomeNoneGroupBar() {
         <TwinButtonGroup
           leftTitle="그룹 만들기"
           rightTitle="그룹 참여하기"
-          onLeftPress={() => {}}
-          onRightPress={() => {}}
+          onLeftPress={() => {
+            setOpenGroupCreateModal(true);
+          }}
+          onRightPress={() => {
+            setOpenGroupJoinModal(true);
+          }}
         />
       </TwinButtonGroupWrapper>
     </HomeNoneGroupBarBox>

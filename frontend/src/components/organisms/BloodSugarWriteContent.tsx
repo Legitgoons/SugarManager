@@ -22,14 +22,14 @@ const BoxTextWrapper = styled.Text`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-interface BloodSugarInfoWriteContentProps extends DatePickerProps {
-  bloodSugar: string;
-  setBloodSugar: React.Dispatch<React.SetStateAction<string>>;
+interface BloodSugarWriteContentProps extends DatePickerProps {
+  bloodSugar: number;
+  setBloodSugar: React.Dispatch<React.SetStateAction<number>>;
   issue: string;
   setIssue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function BloodSugarInfoWriteContent({
+export default function BloodSugarWriteContent({
   bloodSugar,
   setBloodSugar,
   issue,
@@ -37,7 +37,7 @@ export default function BloodSugarInfoWriteContent({
   date,
   setDate,
   mode,
-}: BloodSugarInfoWriteContentProps) {
+}: BloodSugarWriteContentProps) {
   return (
     <WriteContentBox>
       <InputLine
@@ -45,6 +45,7 @@ export default function BloodSugarInfoWriteContent({
         value={bloodSugar}
         placeholder="혈당을 입력해주세요"
         unit="mg/dL"
+        keyboardType="numeric"
       />
       <InputLine
         onChangeText={setIssue}

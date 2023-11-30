@@ -3,85 +3,149 @@ import { NavigationContainer } from '@react-navigation/native';
 import {
   HomeScreen,
   SigninScreen,
+  SignupScreen,
   ChallengeScreen,
   ChallengeDetailScreen,
   ChallengeMakeScreen,
   BloodSugarScreen,
+  BloodSugarDetailScreen,
   BloodSugarWriteScreen,
   ProfileSettingScreen,
   AlarmSettingScreen,
+  MealScreen,
+  MealWriteScreen,
+  MealDailyScreen,
+  MealDetailScreen,
+  ErrorScreen,
 } from '@/screens';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/redux/slice/userSlice';
 import Spinner from '@/components/organisms/Spinner';
+import ErrorBoundary from 'react-native-error-boundary';
 
-function SuspenseSigninScreen() {
+function BoundaryWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<Spinner />}>
-      <SigninScreen />
-    </Suspense>
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
+      <Suspense fallback={<Spinner />}>{children}</Suspense>
+    </ErrorBoundary>
   );
 }
+function SuspenseSigninScreen() {
+  return (
+    <BoundaryWrapper>
+      <SigninScreen />
+    </BoundaryWrapper>
+  );
+}
+
+function SuspenseSignupScreen() {
+  return (
+    <BoundaryWrapper>
+      <SignupScreen />
+    </BoundaryWrapper>
+  );
+}
+
 function SuspenseHomeScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <HomeScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseChallengeScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ChallengeScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseChallengeDetailScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ChallengeDetailScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseChallengeMakeScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ChallengeMakeScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseAlarmSettingScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <AlarmSettingScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseBloodSugarScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <BloodSugarScreen />
-    </Suspense>
+    </BoundaryWrapper>
+  );
+}
+
+function SuspenseBloodSugarDetailScreen() {
+  return (
+    <BoundaryWrapper>
+      <BloodSugarDetailScreen />
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseBloodSugarWriteScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <BloodSugarWriteScreen />
-    </Suspense>
+    </BoundaryWrapper>
   );
 }
 
 function SuspenseProfileSettingScreen() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <BoundaryWrapper>
       <ProfileSettingScreen />
+    </BoundaryWrapper>
+  );
+}
+
+function SuspenseMealScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealScreen />
+    </Suspense>
+  );
+}
+
+function SuspenseMealDailyScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealDailyScreen />
+    </Suspense>
+  );
+}
+
+function SuspenseMealDetailScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealDetailScreen />
+    </Suspense>
+  );
+}
+
+function SuspenseMealWriteScreen() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <MealWriteScreen />
     </Suspense>
   );
 }
@@ -126,24 +190,59 @@ export default function Navigation({ Stack }: { Stack: any }) {
               options={{ title: '혈당 정보', headerTitleAlign: 'center' }}
             />
             <Stack.Screen
+              name="BloodSugarDetail"
+              component={SuspenseBloodSugarDetailScreen}
+              options={{ title: '혈당 일일 정보', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
               name="BloodSugarWrite"
               component={SuspenseBloodSugarWriteScreen}
-              options={{ title: '혈당 정보 작성 ', headerTitleAlign: 'center' }}
+              options={{
+                title: '혈당 정보 작성 ',
+                headerTitleAlign: 'center',
+              }}
             />
             <Stack.Screen
               name="Profile"
               component={SuspenseProfileSettingScreen}
               options={{ title: '계정 설정', headerTitleAlign: 'center' }}
             />
+            <Stack.Screen
+              name="Meal"
+              component={SuspenseMealScreen}
+              options={{ title: '식사 기록', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="MealDaily"
+              component={SuspenseMealDailyScreen}
+              options={{ title: '식사 일일 기록', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="MealDetail"
+              component={SuspenseMealDetailScreen}
+              options={{ title: '식사 상세 기록', headerTitleAlign: 'center' }}
+            />
+            <Stack.Screen
+              name="MealWrite"
+              component={SuspenseMealWriteScreen}
+              options={{ title: '식사 기록 작성', headerTitleAlign: 'center' }}
+            />
           </>
         ) : (
-          <Stack.Screen
-            name="Signin"
-            component={SuspenseSigninScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="Signin"
+              component={SuspenseSigninScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={SuspenseSignupScreen}
+              options={{ title: '회원가입', headerTitleAlign: 'center' }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,23 +1,24 @@
 /* eslint-disable no-param-reassign */
 import weekDayArr from '@/config/weekConfig';
+import { padNumber } from './formatDate';
 
 interface GetMonthObjProps {
   year: number;
   month: number;
-  monthStatus: Record<string, boolean>;
+  monthStatus: [];
 }
 
 function format8Date(date: Date) {
   const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString();
+  const day = date.getDate().toString();
 
-  return `${year}${month}${day}`;
+  return `${year}-${month}-${day}`;
 }
 
 function getMonthObj({ year, month, monthStatus }: GetMonthObjProps) {
   if (!monthStatus || typeof monthStatus !== 'object') {
-    monthStatus = {};
+    monthStatus = [];
   }
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
@@ -36,7 +37,10 @@ function getMonthObj({ year, month, monthStatus }: GetMonthObjProps) {
     weekInfo.push({
       numberDay,
       weekDay,
-      isMarked: monthStatus[format8Date(day)] || false,
+      isMarked:
+        monthStatus !== undefined
+          ? monthStatus.find((cur) => format8Date(day) === cur) !== undefined
+          : false,
     });
 
     if (day.getDay() === 6) {
@@ -71,4 +75,10 @@ function getMonthObj({ year, month, monthStatus }: GetMonthObjProps) {
   return monthInfo;
 }
 
-export default getMonthObj;
+function getTimeSecondText(hour: number, minute: number) {
+  const hourText = padNumber(hour);
+  const minuteText = padNumber(minute);
+
+  return `${hourText}:${minuteText}`;
+}
+export { getMonthObj, getTimeSecondText };

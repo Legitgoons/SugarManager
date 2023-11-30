@@ -18,8 +18,8 @@ const CopyInputBox = styled.View<{
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: ${({ width }) => rWidth(width ? width : 320)}px;
-  height: ${({ height }) => rHeight(height ? height : 40)}px;
+  width: ${({ width }) => rWidth(width || 320)}px;
+  height: ${({ height }) => rHeight(height || 40)}px;
 `;
 
 const IconWrapper = styled.View`
@@ -32,17 +32,13 @@ export default function CopyInput<T extends string | number>(
   props: CopyInputProps<T>
 ) {
   const { value, width, height } = props;
-
   const copyToClipboard = () => {
     if (value !== null && value !== undefined) {
       Clipboard.setString(value.toString());
-    } else {
-      console.log('복사할 값이 없습니다.');
     }
   };
-  console.log(width, height);
   return (
-    <CopyInputBox width={width} height={width}>
+    <CopyInputBox width={width} height={height}>
       <Input {...props} />
       <IconWrapper>
         <CopyIcon

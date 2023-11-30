@@ -28,9 +28,13 @@ const postChallengeAdd = (props: PostChallengeAddProps) =>
     body: { ...props },
   });
 
+const postChallengeClaim = (challengePk: number) =>
+  fetchWithAuth(`/challenge/${challengePk}`, { method: 'POST' });
+
 export {
   getChallengeList,
   postChallengeDelete,
   postChallengeAdd,
   getChallengeDetail,
+  postChallengeClaim,
 };
