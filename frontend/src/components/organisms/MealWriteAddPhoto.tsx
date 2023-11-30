@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { ScrollView, Pressable } from 'react-native';
 import { DefaultPressable, DefaultText } from '@/styles';
 import AddPhoto from '@/assets/icon/AddPhoto.svg';
 import { rWidth, rHeight } from '@/utils';
+import { MenuImage } from '@/types/api/response/meal';
+import ImageScrollView from '../molecules/ImageScrollView';
 
 const MealWriteAddPhotoBox = styled(DefaultPressable)`
   width: ${rWidth(320)}px;
@@ -16,16 +17,6 @@ const SelectedPhotoBox = styled.View`
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
-`;
-const ImageScrollViewWrapper = styled.View`
-  width: ${rWidth(240)}px;
-  overflow: hidden;
-`;
-
-const SelectedImage = styled.Image`
-  width: ${rWidth(80)}px;
-  height: ${rHeight(100)}px;
-  border-radius: ${rHeight(10)}px;
 `;
 
 const AddPhotoButton = styled.Pressable`
@@ -72,8 +63,13 @@ export default function MealWriteAddPhoto({
     });
   };
 
-  const openImage = (image: React.SetStateAction<string>) => {
-    setExpandedImage(image);
+  const images: MenuImage[] = selectedImages.map((image, index) => ({
+    menuImagePk: index.toString(),
+    menuImageUrl: image,
+  }));
+
+  const openImage = (image: MenuImage) => {
+    setExpandedImage(image.menuImageUrl);
     photoModalOpen();
   };
 
@@ -81,15 +77,7 @@ export default function MealWriteAddPhoto({
     <MealWriteAddPhotoBox>
       {selectedImages.length > 0 ? (
         <SelectedPhotoBox>
-          <ImageScrollViewWrapper>
-            <ScrollView horizontal>
-              {selectedImages.map((image) => (
-                <Pressable key={image} onPress={() => openImage(image)}>
-                  <SelectedImage source={{ uri: image }} />
-                </Pressable>
-              ))}
-            </ScrollView>
-          </ImageScrollViewWrapper>
+          <ImageScrollView images={images} onImagePress={openImage} isWrite />
           <AddPhotoButton onPress={pickImage}>
             <AddPhotoIcon />
           </AddPhotoButton>

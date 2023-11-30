@@ -17,6 +17,7 @@ import MainFillButton from '@/components/atoms/MainFillButton';
 import Line from '@/components/atoms/Line';
 import useRouter from '@/hooks/useRouter';
 import useAuth from '@/hooks/useSignin';
+import alertConfig from '@/config/alertConfig';
 
 const SigninScreenContainer = styled(DefaultScreenContainer)`
   justify-content: flex-start;
@@ -37,22 +38,20 @@ export default function SigninScreen() {
   const { signInWithKakao, signIn } = useAuth();
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
-
+  const { validationFail } = alertConfig;
   const handleSignIn = async () => {
     if (!validationId(id)) {
       showAlert({
-        title: '아이디 입력 오류',
-        content:
-          '아이디는 영문, 소문자, 숫자 가능, 특수문자 불가능하며 6자 이상 320자 이하입니다.',
+        title: validationFail.title('아이디 입력'),
+        content: validationFail.content('id'),
         onOk: () => {},
       });
       return;
     }
     if (!validationPw(pw)) {
       showAlert({
-        title: '비밀번호 입력 오류',
-        content:
-          '비밀번호는 영문, 대문자, 소문자, 숫자, 특수 문자가 포함되며 8자 이상 20자 이하입니다.',
+        title: validationFail.title('비밀번호 입력'),
+        content: validationFail.content('pw'),
         onOk: () => {},
       });
       return;

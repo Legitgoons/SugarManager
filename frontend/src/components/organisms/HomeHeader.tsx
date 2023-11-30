@@ -1,7 +1,7 @@
-import { DefaultPressable, DefaultText } from '@/styles';
+import { DefaultText } from '@/styles';
 import React from 'react';
 import styled from 'styled-components/native';
-import { rWidth, showAlert } from '@/utils';
+import { rWidth } from '@/utils';
 import { HomeDropdownItem } from '@/types/homeDropdown';
 import { persistor } from '@/redux/store/storeConfig';
 import useRouter from '@/hooks/useRouter';
@@ -32,19 +32,9 @@ export default function HomeHeader() {
   };
   return (
     <HomeHeaderBox>
-      <DefaultPressable
-        onPress={() => {
-          showAlert({
-            title: '찌르기!',
-            content: '챌린지를 완수해주세요!',
-            onOk: () => {},
-          });
-        }}
-      >
-        <HeaderLogoWrapper color="b4" typography="t3">
-          관리하당
-        </HeaderLogoWrapper>
-      </DefaultPressable>
+      <HeaderLogoWrapper color="b4" typography="t3">
+        관리하당
+      </HeaderLogoWrapper>
       <HomeDropDown items={homeDropdownItemList} signOut={handleSignOut} />
     </HomeHeaderBox>
   );

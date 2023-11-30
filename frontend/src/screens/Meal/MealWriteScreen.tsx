@@ -5,16 +5,17 @@ import { rHeight, rWidth } from '@/utils/style';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import DefaultScreenContainer from '@/styles/Container';
 import SubFillButton from '@/components/atoms/SubFillButton';
-import MealWriteAddPhoto from '@/components/molecules/MealWriteAddPhoto';
+import MealWriteAddPhoto from '@/components/organisms/MealWriteAddPhoto';
 import InputLine from '@/components/molecules/InputLine';
 import TextDatePicker from '@/components/molecules/TextDatePicker';
 import PhotoModal from '@/components/organisms/PhotoModal';
 import DefaultModal from '@/components/organisms/DefaultModal';
 import MealRegistModalContent from '@/components/organisms/MealRegistModalContent';
-import { searchFood, saveMeal } from '@/apis/meal';
+import { getsearchFood, postSaveMeal } from '@/apis/meal';
 import { foodNutrients, MealSave } from '@/types/api/request/meal';
-import MealCard from '@/components/molecules/MealCard';
+import MealCard from '@/components/organisms/MealCard';
 import { showAlert } from '@/utils';
+import alertConfig from '@/config/alertConfig';
 
 const MealWriteContainer = styled(DefaultScreenContainer)`
   height: 100%;
@@ -72,8 +73,7 @@ export default function MealWriteScreen() {
   const [registByUser, setRegistByUser] = useState(false);
   const [isTop, setIsTop] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const title = '등록에 실패했습니다.';
-  const content = '다시 시도해주세요.';
+  const { normalFail } = alertConfig;
   const onOk = () => {};
 
   const foodReset = () => {
@@ -116,8 +116,8 @@ export default function MealWriteScreen() {
   }, []);
 
   useEffect(() => {
-    const fetchSearchFood = async () => {
-      const res = await searchFood(search);
+    const SearchFood = async () => {
+      const res = await getsearchFood(search);
       if (!res.success) {
         throw new Error('API 요청에 실패했습니다.');
       }
@@ -126,7 +126,7 @@ export default function MealWriteScreen() {
 
     const debounce = setTimeout(async () => {
       if (search) {
-        await fetchSearchFood();
+        await SearchFood();
       } else {
         setSearchResults([]);
       }
@@ -179,7 +179,7 @@ export default function MealWriteScreen() {
 
   const handleSubmit = async () => {
     try {
-      const result = await saveMeal(selectedImages, date, mealList);
+      const result = await postSaveMeal(selectedImages, date, mealList);
       if (result.success) {
         foodReset();
         setMealList([]);
@@ -187,10 +187,18 @@ export default function MealWriteScreen() {
         setSelectedImages([]);
         setExpandedImage('');
       } else {
-        showAlert({ title, content, onOk });
+        showAlert({
+          title: normalFail.title('식단 등록'),
+          content: normalFail.content,
+          onOk,
+        });
       }
     } catch (error) {
-      showAlert({ title, content, onOk });
+      showAlert({
+        title: normalFail.title('식단 등록'),
+        content: normalFail.content,
+        onOk,
+      });
     }
   };
 
@@ -260,9 +268,7 @@ export default function MealWriteScreen() {
           registByUser={registByUser}
           amount={amount}
           setAmount={setAmount}
-          foodName={
-            foodName.length > 6 ? `${foodName.substring(0, 6)}...` : foodName
-          }
+          foodName={foodName}
           setFoodName={setFoodName}
           sugar={sugar}
           setSugar={setSugar}
@@ -278,7 +284,7 @@ export default function MealWriteScreen() {
       </DefaultModal>
       <ScrollView onScroll={handleScroll}>
         {mealList.map((meal) => (
-          <MealCardWrapper>
+          <MealCardWrapper key={meal.foodName}>
             <MealCard
               key={meal.foodName}
               topTitle={`${meal.foodGrams}g`}

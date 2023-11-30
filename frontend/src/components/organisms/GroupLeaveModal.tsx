@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postGroupLeave } from '@/apis';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setGroupCode } from '@/redux/slice/userSlice';
+import alertConfig from '@/config/alertConfig';
 import DefaultModal from './DefaultModal';
 import InputLine from '../molecules/InputLine';
 
@@ -28,13 +29,14 @@ export default function GroupLeaveModal({
   const [inputNickname, setInputNickname] = useState('');
   const { nickname } = useSelector(selectUser);
   const dispatch = useDispatch();
+  const { normalSuccess, normalFail, validationFail } = alertConfig;
 
   const { mutate } = useMutation({
     mutationFn: () => postGroupLeave(),
     onSuccess: async () => {
       showAlert({
-        title: '그룹탈퇴 성공',
-        content: '그룹 탈퇴에 성공하였습니다.',
+        title: normalSuccess.title('그룹 탈퇴'),
+        content: normalSuccess.content('그룹 탈퇴'),
         onOk: () => {},
       });
       dispatch(setGroupCode(''));
@@ -42,8 +44,8 @@ export default function GroupLeaveModal({
     },
     onError: () => {
       showAlert({
-        title: '그룹탈퇴 실패',
-        content: '재시도 혹은 다시 시도해주세요',
+        title: normalFail.title('그룹 탈퇴'),
+        content: normalFail.content,
         onOk: () => {},
       });
     },
@@ -51,8 +53,8 @@ export default function GroupLeaveModal({
   const handleLeaveGroup = () => {
     if (nickname !== inputNickname) {
       showAlert({
-        title: '실패',
-        content: '닉네임을 제대로 입력해주세요',
+        title: validationFail.title('닉네임 입력'),
+        content: validationFail.content('common'),
         onOk: () => {},
       });
       return;

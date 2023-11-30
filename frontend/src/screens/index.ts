@@ -9,6 +9,8 @@ import BloodSugarWriteScreen from './BloodSugar/BloodSugarWriteScreen';
 import ProfileSettingScreen from './Setting/ProfileSettingScreen';
 import AlarmSettingScreen from './Setting/AlarmSettingScreen';
 import MealScreen from './Meal/MealScreen';
+import MealDailyScreen from './Meal/MealDailyScreen';
+import MealDetailScreen from './Meal/MealDetailScreen';
 import MealWriteScreen from './Meal/MealWriteScreen';
 import SignupScreen from './Auth/Signup/SignupScreen';
 import ErrorScreen from './Exception/ErrorScreen';
@@ -26,6 +28,8 @@ export {
   ProfileSettingScreen,
   AlarmSettingScreen,
   MealScreen,
+  MealDailyScreen,
+  MealDetailScreen,
   MealWriteScreen,
   ErrorScreen,
 };

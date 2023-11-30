@@ -10,7 +10,7 @@ const initialState: TimeState = {
 };
 
 export const timeSlice = createSlice({
-  name: 'time',
+  name: 'bloodSugar',
   initialState,
   reducers: {
     setTime: (state, action: PayloadAction<string>) => {

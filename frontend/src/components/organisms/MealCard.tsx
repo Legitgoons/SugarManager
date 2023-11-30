@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components/native';
 import DefaultCard from '@/styles/Card';
 import { rWidth } from '@/utils/style';
+import cutText from '@/utils/cutText';
+import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
 import TextWithSmallTitle from '../atoms/TextWithSmallTitle';
 
 const CardSection = styled(DefaultCard)`
@@ -10,7 +12,9 @@ const CardSection = styled(DefaultCard)`
 `;
 
 const CardContent = styled.View``;
-
+const BlackArrowIcon = styled(BlackRightArrowIcon)`
+  width: ${rWidth(20)}px;
+`;
 const CardHeaderBox = styled.View`
   width: ${rWidth(280)}px;
   flex-direction: row;
@@ -36,6 +40,7 @@ interface MealCardProps {
   protein: number;
   carbohydrate: number;
   fat: number;
+  onPress?: () => void;
 }
 
 export default function MealCard({
@@ -46,12 +51,13 @@ export default function MealCard({
   protein,
   carbohydrate,
   fat,
+  onPress,
 }: MealCardProps) {
   return (
-    <CardSection size="lg">
+    <CardSection size="lg" onPress={onPress}>
       <CardContent>
         <CardHeaderBox>
-          <TextWithSmallTitle title={topTitle} text={topText} />
+          <TextWithSmallTitle title={topTitle} text={cutText(topText, 13)} />
           <CalorieTextWrapper>{`${calorie}Kcal`}</CalorieTextWrapper>
         </CardHeaderBox>
         <CardBodyBox>
@@ -73,6 +79,7 @@ export default function MealCard({
           />
         </CardBodyBox>
       </CardContent>
+      {onPress && <BlackArrowIcon />}
     </CardSection>
   );
 }

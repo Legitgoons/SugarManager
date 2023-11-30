@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { BloodSugarDetailResponseDataList } from '@/types/api/response/bloodSugar';
-import { useSelector } from 'react-redux';
+import { Meals } from '@/types/api/response/meal';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectNavigation } from '@/redux/slice/navigationSlice';
 import useRouter from '@/hooks/useRouter';
 import MainFillButton from '@/components/atoms/MainFillButton';
 import { rWidth } from '@/utils';
-import BloodSugarDetailCard from '@/components/organisms/BloodSugarDetailCard';
-import { selectTime } from '@/redux/slice/bloodSugarSlice';
-import { getDetailBloodSugar } from '@/apis/bloodSugar';
+import { selectMealTime, setMealPK } from '@/redux/slice/mealSlice';
 import DayCard from '@/components/molecules/DayCard';
+import MealCard from '@/components/organisms/MealCard';
+import { formatToTime } from '@/utils/formatDate';
+import { getMealByDay } from '@/apis/meal';
 
-const DetailContainer = styled.View`
+const DailyContainer = styled.View`
   height: 100%;
   width: 100%;
   justify-content: flex-start;
@@ -21,7 +22,7 @@ const DetailContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const DetailContentCardWrapper = styled.View`
+const DailyContentCardWrapper = styled.View`
   width: ${rWidth(320)}px;
   padding-top: ${rWidth(20)}px;
 `;
@@ -34,15 +35,14 @@ const FillButtonWrapper = styled.View`
   align-items: center;
 `;
 
-export default function BloodSugarDetailScreen() {
+export default function MealDailyScreen() {
   const router = useRouter();
   const { nickname } = useSelector(selectNavigation);
-  const [bloodSugarDetailData, setBloodSugarDetailData] = useState<
-    BloodSugarDetailResponseDataList[]
-  >([]);
+  const [mealDailyData, setmealDailyData] = useState<Meals[]>([]);
   const [isTop, setIsTop] = useState(true);
-  const time = useSelector(selectTime);
+  const time = useSelector(selectMealTime);
   const [year, month, day] = time ? time.split('-') : ['', '', ''];
+  const dispatch = useDispatch();
 
   const handleScroll = (event: any) => {
     const { nativeEvent } = event;
@@ -50,44 +50,47 @@ export default function BloodSugarDetailScreen() {
     const isScrolledToTop = contentOffset.y === 0;
     setIsTop(isScrolledToTop);
   };
-  useEffect(() => {
-    const fetchBloodSugarDetailData = async () => {
-      const data = await getDetailBloodSugar({ nickname, year, month, day });
-      setBloodSugarDetailData(data.response.list);
-    };
-    fetchBloodSugarDetailData();
-  }, [nickname, year, month, day]);
 
+  useEffect(() => {
+    const fetchDailyMeal = async () => {
+      const data = await getMealByDay({ nickname, year, month, day });
+      setmealDailyData(data.response.menuPreviews);
+    };
+    fetchDailyMeal();
+  }, [nickname, year, month, day]);
   return (
-    <DetailContainer>
+    <DailyContainer>
       <ScrollView onScroll={handleScroll}>
         <DayCard title={`${year}.${month}.${day}`} />
-        {bloodSugarDetailData.map((item) => (
-          <DetailContentCardWrapper key={item.registedAt}>
-            <BloodSugarDetailCard
-              key={item.registedAt}
-              count={1}
-              time={item.registedAt}
-              isbefore={item.category === 'BEFORE'}
-              bloodSugarNum={item.level}
-              bloodSugarType={item.status}
-              issue={item.content || undefined}
-              size={item.content ? 'lg' : 'md'}
+        {mealDailyData.map((meal, index) => (
+          <DailyContentCardWrapper key={meal.menuPk}>
+            <MealCard
+              onPress={() => {
+                dispatch(setMealPK(meal.menuPk));
+                router.navigate('MealDetail');
+              }}
+              topTitle={`${index + 1}회`}
+              topText={formatToTime(meal.registedAt)}
+              calorie={Math.round(meal.foodCal)}
+              sugar={meal.foodSugars || 0}
+              protein={meal.foodProtein || 0}
+              carbohydrate={meal.foodCarbohydrate || 0}
+              fat={meal.foodFat || 0}
             />
-          </DetailContentCardWrapper>
+          </DailyContentCardWrapper>
         ))}
       </ScrollView>
       {isTop && (
         <FillButtonWrapper>
           <MainFillButton
             bgColor="b4"
-            title="혈당 등록하기"
+            title="식사 등록하기"
             onPress={() => {
-              router.navigate('BloodSugarWrite');
+              router.navigate('MealWrite');
             }}
           />
         </FillButtonWrapper>
       )}
-    </DetailContainer>
+    </DailyContainer>
   );
 }

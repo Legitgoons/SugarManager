@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postGroupCraete } from '@/apis';
 import { useDispatch } from 'react-redux';
 import { setGroupCode } from '@/redux/slice/userSlice';
+import alertConfig from '@/config/alertConfig';
 import DefaultModal from './DefaultModal';
 
 const ContentBox = styled.View`
@@ -24,13 +25,14 @@ export default function GroupCreateModal({
   open,
   setOpen,
 }: GroupCreateModalProps) {
+  const { normalSuccess, normalFail } = alertConfig;
   const dispatch = useDispatch();
   const { mutate } = useMutation({
     mutationFn: () => postGroupCraete(),
     onSuccess: async (data) => {
       showAlert({
-        title: '그룹생성 성공',
-        content: '그룹 생성에 성공하였습니다.',
+        title: normalSuccess.title('그룹 생성'),
+        content: normalSuccess.content('그룹 생성'),
         onOk: () => {},
       });
       dispatch(setGroupCode(data.response.groupCode));
@@ -38,8 +40,8 @@ export default function GroupCreateModal({
     },
     onError: () => {
       showAlert({
-        title: '그룹가입 실패',
-        content: '다시 시도해주세요',
+        title: normalFail.title('그룹 생성'),
+        content: normalFail.title('그룹 생성'),
         onOk: () => {},
       });
     },
