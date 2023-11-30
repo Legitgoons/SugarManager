@@ -65,17 +65,21 @@
 
 ### 메인
 
-<p align="center">
-<img src="./EXEC/images/login.jpeg" width=200/>
+<p>
 <img src="./EXEC/images/main1.png" width=200/>
 <img src="./EXEC/images/main2.png" width=200/>
 <img src="./EXEC/images/main3.png" width=200/>
+</p>
+
+### 로그인 및 마이페이지
+<p>
+<img src="./EXEC/images/login.jpeg" width=200/>
 <img src="./EXEC/images/mypage.png" width=200/>
 </p>
 
 ### 혈당 관리
 
-<p align="center">
+<p>
 <img src="./EXEC/images/bloodsugar1.png" width=200/>
 <img src="./EXEC/images/bloodsugar2.png" width=200/>
 <img src="./EXEC/images/bloodsugar3.png" width=200/>
@@ -84,7 +88,7 @@
 
 ### 식단 관리
 
-<p align="center">
+<p>
 <img src="./EXEC/images/meal1.png" width=200/>
 <img src="./EXEC/images/meal2.png" width=200/>
 <img src="./EXEC/images/meal3.png" width=200/>
@@ -94,7 +98,7 @@
 
 ### 챌린지
 
-<p align="center">
+<p>
 <img src="./EXEC/images/challenge.jpeg" width=200/>
 <img src="./EXEC/images/challenge1.png" width=200/>
 <img src="./EXEC/images/challenge2.jpeg" width=200/>
