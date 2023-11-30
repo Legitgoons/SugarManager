@@ -1,8 +1,4 @@
-# A304 관리하당
-
-<center>![image.png](./EXEC/images/logo.png)</center>
-
-# 주제
+# 관리하당
 
 ### 당뇨병 환자의 식단 관리를 도와주는 어플리케이션
 
