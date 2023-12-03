@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ScrollView } from 'react-native';
+import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import { getPeriodBloodSugar } from '@/apis/bloodSugar';
 import { BloodSugarPeriodResponseData } from '@/types/api/response/bloodSugar';
@@ -14,8 +14,10 @@ import TwinLineGraph from '@/components/molecules/TwinLineGraph';
 import { setTime } from '@/redux/slice/bloodSugarSlice';
 import { formatToMonthDay } from '@/utils/formatDate';
 import getRoundOrNull from '@/utils/getRoundOrNull';
+import useSafeDate from '@/hooks/useSafeDate';
+import useScroll from '@/hooks/useScroll';
 
-const BloodSugarContainer = styled.View`
+const Container = styled.View`
   height: 100%;
   width: 100%;
   display: flex;
@@ -43,36 +45,17 @@ const FillButtonWrapper = styled.View`
 `;
 
 export default function BloodSugarScreen() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const { startDate, endDate, setStartDateSafe, setEndDateSafe } =
+    useSafeDate();
   const { nickname } = useSelector(selectNavigation);
   const [bloodSugarData, setBloodSugarData] = useState<
     BloodSugarPeriodResponseData[]
   >([]);
   const [page, setPage] = useState(0);
-  const [isTop, setIsTop] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const { isTop, handleScroll } = useScroll();
   const router = useRouter();
   const dispatch = useDispatch();
-
-  const setStartDateSafe = (date: Date) => {
-    if (date > endDate) {
-      setStartDate(endDate);
-    } else {
-      setStartDate(date);
-    }
-  };
-
-  const setEndDateSafe = (date: Date) => {
-    const now = new Date();
-    if (date > now) {
-      setEndDate(now);
-    } else if (date < startDate) {
-      setEndDate(startDate);
-    } else {
-      setEndDate(date);
-    }
-  };
 
   const getBloodSugarData = useCallback(async () => {
     const data = await getPeriodBloodSugar({
@@ -98,19 +81,6 @@ export default function BloodSugarScreen() {
     getBloodSugarData();
   }, [getBloodSugarData]);
 
-  const handleScroll = (event: any) => {
-    const { nativeEvent } = event;
-    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
-    const isScrolledToTop = contentOffset.y === 0;
-    const isScrolledToBottom =
-      Math.round(contentOffset.y + layoutMeasurement.height) >=
-      Math.round(contentSize.height);
-    setIsTop(isScrolledToTop);
-    if (isScrolledToBottom && !isEnd) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
-
   const bloodSugarGraphList = useMemo(
     () =>
       bloodSugarData.map(({ bloodSugarBefore, bloodSugarAfter, time }) => [
@@ -122,45 +92,50 @@ export default function BloodSugarScreen() {
   );
 
   return (
-    <BloodSugarContainer>
+    <Container>
       <TwinLineGraph list={bloodSugarGraphList} />
-      <ScrollView onScroll={handleScroll}>
-        <DatePickerControllerWrapper>
-          <DatePickerController
-            startDate={startDate}
-            setStartDate={setStartDateSafe}
-            endDate={endDate}
-            setEndDate={setEndDateSafe}
-          />
-        </DatePickerControllerWrapper>
-        {bloodSugarData.map(
-          ({
+      <FlatList
+        onScroll={(event) => handleScroll(event, isEnd, setPage)}
+        data={bloodSugarData}
+        ListHeaderComponent={
+          <DatePickerControllerWrapper>
+            <DatePickerController
+              startDate={startDate}
+              setStartDate={setStartDateSafe}
+              endDate={endDate}
+              setEndDate={setEndDateSafe}
+            />
+          </DatePickerControllerWrapper>
+        }
+        keyExtractor={(item) => item.time}
+        renderItem={({
+          item: {
             count,
             time,
             bloodSugarBefore,
             bloodSugarAfter,
             bloodSugarBeforeStatus,
             bloodSugarAfterStatus,
-          }) => (
-            <CardWrapper key={time}>
-              <BloodSugarContentCard
-                onPress={() => {
-                  dispatch(setTime(time));
-                  router.navigate('BloodSugarDetail');
-                }}
-                size="lg"
-                key={time}
-                date={formatToMonthDay(time)}
-                count={count}
-                beforeNum={getRoundOrNull(bloodSugarBefore)}
-                beforeType={bloodSugarBeforeStatus}
-                afterNum={getRoundOrNull(bloodSugarAfter)}
-                afterType={bloodSugarAfterStatus}
-              />
-            </CardWrapper>
-          )
+          },
+        }) => (
+          <CardWrapper key={time}>
+            <BloodSugarContentCard
+              onPress={() => {
+                dispatch(setTime(time));
+                router.navigate('BloodSugarDetail');
+              }}
+              size="lg"
+              key={time}
+              date={formatToMonthDay(time)}
+              count={count}
+              beforeNum={getRoundOrNull(bloodSugarBefore)}
+              beforeType={bloodSugarBeforeStatus}
+              afterNum={getRoundOrNull(bloodSugarAfter)}
+              afterType={bloodSugarAfterStatus}
+            />
+          </CardWrapper>
         )}
-      </ScrollView>
+      />
       {isTop && (
         <FillButtonWrapper>
           <MainFillButton
@@ -172,6 +147,6 @@ export default function BloodSugarScreen() {
           />
         </FillButtonWrapper>
       )}
-    </BloodSugarContainer>
+    </Container>
   );
 }

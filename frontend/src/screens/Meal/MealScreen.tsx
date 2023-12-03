@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ScrollView } from 'react-native';
+import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import { getMealData } from '@/apis/meal';
 import { MealPeriodResponseData } from '@/types/api/response/meal';
@@ -15,8 +15,10 @@ import { rHeight } from '@/utils/style';
 import MealCard from '@/components/organisms/MealCard';
 import { formatToMonthDay } from '@/utils/formatDate';
 import { setMealTime } from '@/redux/slice/mealSlice';
+import useSafeDate from '@/hooks/useSafeDate';
+import useScroll from '@/hooks/useScroll';
 
-const BloodSugarContainer = styled.View`
+const Container = styled.View`
   height: 100%;
   width: 100%;
   padding-top: 10%;
@@ -49,12 +51,12 @@ const TextBox = styled.View`
   margin-bottom: ${rHeight(20)}px;
 `;
 export default function MealScreen() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const { startDate, endDate, setStartDateSafe, setEndDateSafe } =
+    useSafeDate();
+  const { isTop, handleScroll } = useScroll();
   const { nickname } = useSelector(selectNavigation);
   const [mealData, setMealData] = useState<MealPeriodResponseData[]>([]);
   const [page, setPage] = useState(0);
-  const [isTop, setIsTop] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -65,25 +67,6 @@ export default function MealScreen() {
   let curCarbohydrate = 0;
   let curProtein = 0;
   let curFat = 0;
-
-  const setStartDateSafe = (date: Date) => {
-    if (date > endDate) {
-      setStartDate(endDate);
-    } else {
-      setStartDate(date);
-    }
-  };
-
-  const setEndDateSafe = (date: Date) => {
-    const now = new Date();
-    if (date > now) {
-      setEndDate(now);
-    } else if (date < startDate) {
-      setEndDate(startDate);
-    } else {
-      setEndDate(date);
-    }
-  };
 
   const fetchMeal = useCallback(async () => {
     const data = await getMealData({
@@ -108,19 +91,6 @@ export default function MealScreen() {
   useEffect(() => {
     fetchMeal();
   }, [fetchMeal]);
-
-  const handleScroll = (event: any) => {
-    const { nativeEvent } = event;
-    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
-    const isScrolledToTop = contentOffset.y === 0;
-    const isScrolledToBottom =
-      Math.round(contentOffset.y + layoutMeasurement.height) >=
-      Math.round(contentSize.height);
-    setIsTop(isScrolledToTop);
-    if (isScrolledToBottom && !isEnd) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
 
   const calculateMealSummary = () => {
     let carbohydrate = 0;
@@ -148,41 +118,48 @@ export default function MealScreen() {
   }
 
   return (
-    <BloodSugarContainer>
-      <ScrollView onScroll={handleScroll}>
-        {mealData.length > 0 &&
-          (curCarbohydrate > 0 || curProtein > 0 || curFat > 0) && (
-            <>
-              <MealHorizontalGraph
-                carbohydrate={curCarbohydrate}
-                protein={curProtein}
-                fat={curFat}
+    <Container>
+      <FlatList
+        data={mealData}
+        keyExtractor={(item) => item.time}
+        onScroll={(event) => handleScroll(event, isEnd, setPage)}
+        ListHeaderComponent={
+          <>
+            {mealData.length > 0 &&
+              (curCarbohydrate > 0 || curProtein > 0 || curFat > 0) && (
+                <>
+                  <MealHorizontalGraph
+                    carbohydrate={curCarbohydrate}
+                    protein={curProtein}
+                    fat={curFat}
+                  />
+                  <TextBox>
+                    <DefaultText color="secondary" typography="captionr">
+                      탄수화물 기준 섭취량 : {Math.round(baseCarbohydrate)}g
+                      현재 섭취량 :{Math.round(curCarbohydrate)}g
+                    </DefaultText>
+                    <DefaultText color="secondary" typography="captionr">
+                      단백질 기준 섭취량 : {Math.round(baseProtein)}g 현재
+                      섭취량 :{Math.round(curProtein)}g
+                    </DefaultText>
+                    <DefaultText color="secondary" typography="captionr">
+                      탄수화물 기준 섭취량 : {Math.round(baseFat)}g 현재 섭취량
+                      :{Math.round(curFat)}g
+                    </DefaultText>
+                  </TextBox>
+                </>
+              )}
+            <DatePickerControllerWrapper>
+              <DatePickerController
+                startDate={startDate}
+                setStartDate={setStartDateSafe}
+                endDate={endDate}
+                setEndDate={setEndDateSafe}
               />
-              <TextBox>
-                <DefaultText color="secondary" typography="captionr">
-                  탄수화물 기준 섭취량 : {Math.round(baseCarbohydrate)}g 현재
-                  섭취량 :{Math.round(curCarbohydrate)}g
-                </DefaultText>
-                <DefaultText color="secondary" typography="captionr">
-                  단백질 기준 섭취량 : {Math.round(baseProtein)}g 현재 섭취량 :
-                  {Math.round(curProtein)}g
-                </DefaultText>
-                <DefaultText color="secondary" typography="captionr">
-                  탄수화물 기준 섭취량 : {Math.round(baseFat)}g 현재 섭취량 :
-                  {Math.round(curFat)}g
-                </DefaultText>
-              </TextBox>
-            </>
-          )}
-        <DatePickerControllerWrapper>
-          <DatePickerController
-            startDate={startDate}
-            setStartDate={setStartDateSafe}
-            endDate={endDate}
-            setEndDate={setEndDateSafe}
-          />
-        </DatePickerControllerWrapper>
-        {mealData.map((meal) => (
+            </DatePickerControllerWrapper>
+          </>
+        }
+        renderItem={({ item: meal }) => (
           <CardWrapper key={meal.time}>
             <MealCard
               onPress={() => {
@@ -198,8 +175,8 @@ export default function MealScreen() {
               fat={meal.dayFoodFat || 0}
             />
           </CardWrapper>
-        ))}
-      </ScrollView>
+        )}
+      />
       {isTop && (
         <FillButtonWrapper>
           <MainFillButton
@@ -211,6 +188,6 @@ export default function MealScreen() {
           />
         </FillButtonWrapper>
       )}
-    </BloodSugarContainer>
+    </Container>
   );
 }
