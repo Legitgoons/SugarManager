@@ -1,4 +1,4 @@
-export type RootStackParam = {
+export interface RootStackParam {
   Home: undefined;
   Profile: undefined;
   Signin: undefined;
@@ -13,9 +13,9 @@ export type RootStackParam = {
   MealDaily: undefined;
   MealDetail: undefined;
   MealWrite: undefined;
-};
+}
 
-export type HomeDropdownParam = {
+export interface HomeDropdownParam {
   Profile: undefined;
   Alarm: undefined;
-};
+}
