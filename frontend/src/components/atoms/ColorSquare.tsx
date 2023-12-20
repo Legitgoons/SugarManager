@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { rWidth, rHeight } from '@/utils/style';
-import { ColorSquareProps, colorSquareType } from '@/types/colorSquare';
+import { ColorSquareProps, ColorSquareType } from '@/types/colorSquare';
 
 const ColorSquarexWrapper = styled.View<{
-  type: colorSquareType;
+  type: ColorSquareType;
 }>`
   width: ${rWidth(44)}px;
   height: ${rHeight(44)}px;
@@ -32,7 +32,7 @@ const SquareNumWrapper = styled.Text`
 
 /** ColorSquare Component
  * @param {Number} num Box에서 출력할 숫자
- * @param {colorSquareType} type 색을 출력하기 위해 입력받을 타입
+ * @param {ColorSquareType} type 색을 출력하기 위해 입력받을 타입
  * @returns {JSX.Element} 정사각형 Box 컴포넌트
  */
 
