@@ -1,4 +1,5 @@
 import { ColorType, TypographyType } from '@/styles/theme';
+import { DatePickerMode } from '@/types/datePicker';
 import React from 'react';
 import styled from 'styled-components/native';
 
@@ -15,14 +16,14 @@ const DatePickerFormatWrapper = styled.Text<DatePickerFormatWrapperProps>`
 interface DatePickerFormatProps {
   color: keyof ColorType;
   typography: keyof TypographyType;
-  mode: 'datetime' | 'date' | 'time';
+  mode: DatePickerMode;
   date: Date;
 }
 
 /**
  * @param {keyof ColorType} color 글자 색
  * @param {keyof TypographyType} typography 폰트
- * @param {'datetime' | 'date' | 'time'} mode formatting 해줄 형식
+ * @param {DatePickerMode} mode formatting 해줄 형식
  * @param {Date} date 날짜와 시간
  * @returns {JSX.Element} 날짜를 형식에 맞게 formatting해주는 Component
  */

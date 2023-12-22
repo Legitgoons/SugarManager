@@ -1,5 +1,5 @@
-import { colorSquareType } from '@/types/colorSquare';
-
+import { ColorSquareType } from '@/types/colorSquare';
+import { BloodSugarCategory } from '@/types/bloodSugar';
 /**
  * @property {number} count 해당 날짜의 측정 횟수
  * @property {string} time 측정 날짜
@@ -12,8 +12,8 @@ export interface BloodSugarPeriodResponseData {
   time: string;
   bloodSugarBefore: number | null;
   bloodSugarAfter: number | null;
-  bloodSugarBeforeStatus: colorSquareType;
-  bloodSugarAfterStatus: colorSquareType;
+  bloodSugarBeforeStatus: ColorSquareType;
+  bloodSugarAfterStatus: ColorSquareType;
 }
 
 /**
@@ -30,7 +30,7 @@ export interface BloodSugarPeriodApiResponse {
 
 /**
  * @property {number} bloodSugarPk PK값
- * @property {'BEFORE' | 'AFTER'} category BEFORE 식전, AFTER 식후
+ * @property {BloodSugarCategory} category BEFORE 식전, AFTER 식후
  * @property {string | null} content 사용자의 메모
  * @property {number} level 혈당 수치
  * @property {string} updatedAt 등록 시간
@@ -38,11 +38,11 @@ export interface BloodSugarPeriodApiResponse {
 
 export interface BloodSugarDetailResponseDataList {
   bloodSugarPk: number;
-  category: 'BEFORE' | 'AFTER';
+  category: BloodSugarCategory;
   content: string | null;
   level: number;
   registedAt: string;
-  status: colorSquareType;
+  status: ColorSquareType;
 }
 
 /**

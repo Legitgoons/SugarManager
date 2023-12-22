@@ -1,4 +1,4 @@
-import { colorSquareType } from '@/types/colorSquare';
+import { ColorSquareType } from '@/types/colorSquare';
 
 export interface MealPeriodResponseData {
   dayFoodCal: number;
@@ -43,9 +43,9 @@ export interface MenuImage {
 
 export interface BloodSugar {
   beforeLevel: number | null;
-  beforeStatus: colorSquareType;
+  beforeStatus: ColorSquareType;
   afterLevel: number | null;
-  afterStatus: colorSquareType;
+  afterStatus: ColorSquareType;
 }
 
 export interface Food {

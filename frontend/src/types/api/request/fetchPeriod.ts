@@ -5,12 +5,12 @@
  * @param {number} page 에러 정보
  */
 
-export type PeriodProps = {
+export interface PeriodProps {
   nickname: string;
   startDate: Date;
   endDate: Date;
   page: number;
-};
+}
 
 /**
  * @param {string} nickname 대상자 nickname
@@ -19,9 +19,9 @@ export type PeriodProps = {
  * @param {string} day 일
  */
 
-export type DailyProps = {
+export interface DailyProps {
   nickname: string;
   year: string;
   month: string;
   day: string;
-};
+}

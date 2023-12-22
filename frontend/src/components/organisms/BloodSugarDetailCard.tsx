@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import DefaultCard from '@/styles/Card';
 import { rWidth } from '@/utils/style';
-import { colorSquareType } from '@/types/colorSquare';
+import { ColorSquareType } from '@/types/colorSquare';
 import { DefalutCardProps } from '@/types/card';
 import { padNumber } from '@/utils/formatDate';
 import BloodSugarSquare from '../molecules/BloodSugarSquare';
@@ -47,7 +47,7 @@ interface BloodSugarDetailCardProps extends DefalutCardProps {
   time: string;
   isbefore: boolean;
   bloodSugarNum: number;
-  bloodSugarType: colorSquareType;
+  bloodSugarType: ColorSquareType;
   issue?: string;
 }
 

@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import DefaultCard from '@/styles/Card';
 import { rWidth } from '@/utils/style';
 import BlackRightArrowIcon from '@/assets/icon/BlackRightArrowIcon.svg';
-import { colorSquareType } from '@/types/colorSquare';
+import { ColorSquareType } from '@/types/colorSquare';
 import { DefalutCardProps } from '@/types/card';
 import BloodSugarSquare from '../molecules/BloodSugarSquare';
 
@@ -44,9 +44,9 @@ interface BloodSugarContentCardProps extends DefalutCardProps {
   date?: string;
   count?: number;
   beforeNum: number | null;
-  beforeType: colorSquareType | null;
+  beforeType: ColorSquareType | null;
   afterNum: number | null;
-  afterType: colorSquareType | null;
+  afterType: ColorSquareType | null;
   onPress?: () => void;
 }
 
