@@ -128,7 +128,7 @@ body
 - `Style` : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
 - `Refactor` : 코드 리펙토링
 - `Test` : 테스트 코드, 리펙토링 테스트 코드 추가
-- `Chore` : 빌드 업무 수정, 패키지 매니저 수정
+- `Chore` : 간단한 코드 수정
 - `Merged`: 상위 브랜치의 commit을 pull 받을 때
 
 ### 3. Subject
